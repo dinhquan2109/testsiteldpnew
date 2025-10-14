@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test HSK1</title>
+</head>
+<body>
+    <h1>Test HSK1 Loading</h1>
+    <div id="status">Loading...</div>
+    
+    <script type="module">
+        console.log('🚀 Testing HSK1 modules...');
+        
+        try {
+            // Test basic import
+            const supabaseConfig = await import('./assets/js/supabase-config.js');
+            console.log('✅ supabase-config loaded:', supabaseConfig);
+            
+            const apiFunctions = await import('./assets/js/api-functions.js');
+            console.log('✅ api-functions loaded:', apiFunctions);
+            
+            const hsk1Test = await import('./assets/js/hsk1-test.js');
+            console.log('✅ hsk1-test loaded:', hsk1Test);
+            
+            document.getElementById('status').textContent = 'All modules loaded successfully!';
+            console.log('🎉 All modules loaded successfully');
+            
+        } catch (error) {
+            console.error('❌ Error loading modules:', error);
+            document.getElementById('status').textContent = 'Error: ' + error.message;
+        }
+    </script>
+</body>
+</html>

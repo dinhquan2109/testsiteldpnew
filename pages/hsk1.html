@@ -124,39 +124,13 @@
     </div>
 
     <!-- JavaScript Files -->
-    <script type="module">
-        console.log('🚀 Loading HSK1 modules...');
-        
-        // Load modules in order
-        try {
-            await import('../assets/js/supabase-config.js');
-            console.log('✅ supabase-config loaded');
-            
-            await import('../assets/js/api-functions.js');
-            console.log('✅ api-functions loaded');
-            
-            await import('../assets/js/audio-handler.js');
-            console.log('✅ audio-handler loaded');
-            
-            await import('../assets/js/timer-functions.js');
-            console.log('✅ timer-functions loaded');
-            
-            await import('../assets/js/section-display.js');
-            console.log('✅ section-display loaded');
-            
-            await import('../assets/js/test-scoring.js');
-            console.log('✅ test-scoring loaded');
-            
-            await import('../assets/js/result-display.js');
-            console.log('✅ result-display loaded');
-            
-            await import('../assets/js/hsk1-test.js');
-            console.log('✅ hsk1-test loaded');
-            
-            console.log('🎉 All HSK1 modules loaded successfully');
-        } catch (error) {
-            console.error('❌ Error loading HSK1 modules:', error);
-        }
-    </script>
+    <script type="module" src="../assets/js/supabase-config.js"></script>
+    <script type="module" src="../assets/js/api-functions.js"></script>
+    <script type="module" src="../assets/js/audio-handler.js"></script>
+    <script type="module" src="../assets/js/timer-functions.js"></script>
+    <script type="module" src="../assets/js/section-display.js"></script>
+    <script type="module" src="../assets/js/test-scoring.js"></script>
+    <script type="module" src="../assets/js/result-display.js"></script>
+    <script type="module" src="../assets/js/hsk1-test.js"></script>
 </body>
 </html>

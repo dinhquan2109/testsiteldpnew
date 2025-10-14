@@ -1,5 +1,11 @@
 // ===== HSK1 TEST LOGIC =====
-// Note: This file is used as a module, so imports are handled by the module system
+import { setSelectedLevel } from './supabase-config.js';
+import { getQuestionsByLevel, saveTestResults } from './api-functions.js';
+import { displaySection } from './section-display.js';
+import { startTimer, clearTimer } from './timer-functions.js';
+import { resetAudio } from './audio-handler.js';
+import { calculateScore } from './test-scoring.js';
+import { displayResult } from './result-display.js';
 
 // ===== AUTO SET HSK1 LEVEL =====
 function autoSetHSK1Level() {
@@ -200,6 +206,13 @@ function isSectionComplete() {
 function getCurrentSection() {
     return parseInt(localStorage.getItem('currentSection') || '1');
 }
+
+// ===== EXPORTS =====
+export { 
+    loadHSK1Questions, 
+    submitHSK1Test, 
+    autoSetHSK1Level 
+};
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
