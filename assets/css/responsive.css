@@ -1,0 +1,139 @@
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 30px;
+    }
+    .logo img {
+        max-width: 50%;
+        max-height: 50%;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 24px;
+        padding: 8px 25px;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .info-icon {
+        float: none;
+        display: block;
+        margin-bottom: 15px;
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .form-section {
+        padding: 25px 20px;
+    }
+
+    .form-title {
+        font-size: 20px;
+    }
+
+    .illustration {
+        display: none;
+    }
+
+    .banner-title {
+        font-size: 36px;
+    }
+
+    .banner-subtitle {
+        font-size: 24px;
+        padding: 8px 30px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .test-container {
+        padding: 10px;
+    }
+
+    .test-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .question-progress {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .progress-circles {
+        flex-direction: column;
+    }
+
+    .question-card {
+        padding: 25px 20px;
+    }
+
+    .question-nav {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .nav-button {
+        width: 100%;
+    }
+
+    .btn-submit {
+        max-width: 100%;
+    }
+
+    .result-container {
+        padding: 20px;
+    }
+
+    .support-popup {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 260px;
+        max-width: 90vw;
+    }
+
+    .support-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+    .level-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .level-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .level-option {
+        padding: 20px;
+    }
+}

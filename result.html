@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả Bài Thi - ALOHA HSK Placement Test</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/test-pages.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Result Page -->
+    <div class="result-page show" id="resultPage">
+        <div class="result-container">
+            <!-- Spiral Binding -->
+            <div class="spiral-binding">
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+            </div>
+
+            <div class="result-logo">
+                <div class="logo-lines">
+                    <div class="logo-line"></div>
+                    <div class="logo-line"></div>
+                    <div class="logo-line"></div>
+                </div>
+            </div>
+
+            <div class="result-content">
+                <h1 class="result-title-new">CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH BÀI THI</h1>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <strong>Họ và tên:</strong> <span id="resultName"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Trình độ:</strong> <span id="resultLevel"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Thời gian hoàn thành:</strong> <span id="completionTime"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Điểm số:</strong> <span id="finalScore"></span>/<span id="totalQuestions"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Đánh giá:</strong> <span id="levelBadge"></span>
+                    </div>
+                </div>
+
+                <div class="completion-message">
+                    <p>
+                        Chúc mừng bạn đã hoàn thành bài thi <strong>HSK Placement Test</strong> cùng với ALOHA.
+                    </p>
+                    <p>
+                        Bộ phận Tư vấn Tuyển sinh ALOHA sẽ liên hệ bạn trong thời gian sớm nhất để trả kết quả bài test và tư vấn lộ trình học phù hợp.
+                    </p>
+                    <p id="resultMessage">
+                    </p>
+                </div>
+
+                <!-- Answers Grid -->
+                <div class="answers-grid">
+                    <div class="answers-section">
+                        <h3>📊 Kết quả chi tiết</h3>
+                        <div class="answers-grid-container">
+                            <div class="answers-subsection">
+                                <h4>🎧 Phần Nghe</h4>
+                                <div class="answers-grid" id="listeningGrid">
+                                    <!-- Listening answers will be rendered here -->
+                                </div>
+                            </div>
+                            <div class="answers-subsection">
+                                <h4>📖 Phần Đọc</h4>
+                                <div class="answers-grid" id="readingGrid">
+                                    <!-- Reading answers will be rendered here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-buttons">
+                    <button class="btn-result home" id="btnFinish"><span>Hoàn tất</span></button>
+                    <button class="btn-result retake" id="btnRetake"><span>Làm lại bài thi</span></button>
+                </div>
+
+                <!-- AI Feedback Section -->
+                <div class="ai-feedback-section" id="aiFeedbackSection" style="display: none;">
+                    <div class="ai-feedback-header">
+                        <h3>🤖 Nhận xét AI cho phần viết</h3>
+                    </div>
+                    <div class="ai-feedback-content" id="aiFeedbackContent">
+                        <!-- AI feedback will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script type="module" src="assets/js/result.js"></script>
+</body>
+</html>

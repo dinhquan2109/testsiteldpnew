@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Test - ALOHA HSK</title>
+    <link rel="stylesheet" href="assets/css/index2-styles.css">
+    <link rel="stylesheet" href="assets/css/test-pages.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container main-page" id="mainPage">
+        <header>
+            <div class="logo"><img src="https://ibb.co/k2wdh8zp" alt="ALOHA Logo"></div>
+            <button class="support-btn" id="supportBtn">
+                Hỗ trợ khẩn cấp
+                <div class="support-popup" id="supportPopup">
+                    <div class="support-popup-title">Hỗ trợ khẩn cấp</div>
+                    
+                    <div class="support-item">
+                        <a href="https://zalo.me/1158613476135726965" target="_blank">
+                            <div class="support-item-icon">💬</div>
+                            <div class="support-item-text">
+                                <span class="support-item-label">Zalo OA</span>
+                                <span class="support-item-value">Aloha School</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="support-item">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div class="support-item-icon">📞</div>
+                            <div class="support-item-text">
+                                <span class="support-item-label">Hotline</span>
+                                <span class="support-item-value">02486857468</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </button>
+        </header>
+
+        <div class="hero-banner">
+            <h1 class="hero-title">
+                <span class="easy">Bài thi đánh giá đầu vào</span><br>
+                <span class="placement"> tiếng trung HSK </span>
+            </h1>
+        </div>
+
+        <div class="main-content">
+            <div class="decorative-lights"></div>
+
+            <div class="info-section">
+                <div class="info-icon">📝</div>
+                <div class="info-text">
+                    <p>Bài thi Đánh giá năng lực Tiếng Trung giúp<strong> Aloha</strong> và Học viên có thể đánh giá được năng lực đầu vào trước khi lựa chọn Lớp phù hợp tại <strong>Aloha</strong> HSK.</p>
+                    
+                    <ul class="info-list">
+                        <li><strong>Bài thi </strong> Bài thi gồm 3 kỹ năng: Nghe - Đọc - Viết với số lượng câu hỏi tương ứng với từng Level. </li>
+                        <li>Sau khi làm xong, Học viên sẽ nhận được Kết quả kèm Lộ trình học phù hợp từ BP. Chuyên môn và Tư vấn tuyển sinh.</li>
+                        <li>Mọi thắc mắc liên hệ Hotline: <strong>02486857468</strong>  hoặc ZaloOA: <strong>Aloha School</strong> để được hỗ trợ.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-title">Nhập thông tin để bắt đầu bài kiểm tra</h2>
+                
+                <form id="placementForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>* Họ và tên: (Ví dụ: Nguyễn Văn An)</label>
+                            <input type="text" name="fullname" id="fullname" required placeholder="Nhập họ và tên đầy đủ">
+                            <span class="check-icon" id="fullnameCheck">✓</span>
+                            <div class="error-message" id="fullnameError">Vui lòng nhập họ và tên đầy đủ</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tuổi (không bắt buộc)</label>
+                            <input type="number" name="age" id="age" placeholder="Nhập tuổi của bạn" min="1" max="120">
+                            <span class="check-icon" id="ageCheck">✓</span>
+                            <div class="error-message" id="ageError">Tuổi phải từ 1 đến 120</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>* Số điện thoại</label>
+                            <input type="tel" name="phone" id="phone" required placeholder="Nhập số điện thoại">
+                            <span class="check-icon" id="phoneCheck">✓</span>
+                            <div class="error-message" id="phoneError">Số điện thoại phải có 10-11 chữ số</div>
+                        </div>
+                        <div class="form-group">
+                            <label>* Email</label>
+                            <input type="email" name="email" id="email" required placeholder="Nhập email của bạn">
+                            <span class="check-icon" id="emailCheck">✓</span>
+                            <div class="error-message" id="emailError">Email không đúng định dạng (ví dụ: example@email.com)</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">ĐI TỚI BÀI THI</button>
+                </form>
+            </div>
+
+            <div class="illustration">
+                <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="100" cy="200" rx="60" ry="20" fill="#7cb342" opacity="0.3"/>
+                    <circle cx="100" cy="100" r="40" fill="#fdd5b1"/>
+                    <circle cx="85" cy="100" r="3" fill="#333"/>
+                    <circle cx="115" cy="100" r="3" fill="#333"/>
+                    <path d="M 85 115 Q 100 125 115 115" stroke="#333" stroke-width="2" fill="none"/>
+                    <path d="M 60 70 Q 100 50 140 70" fill="#2c2c2c"/>
+                    <rect x="70" y="140" width="60" height="60" rx="10" fill="#7cb342"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">×</button>
+                
+                <div class="modal-illustration">
+                    <svg width="150" height="150" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="80" r="50" fill="#7cb342"/>
+                        <circle cx="100" cy="80" r="40" fill="#fdd5b1"/>
+                        <circle cx="85" cy="75" r="3" fill="#333"/>
+                        <circle cx="115" cy="75" r="3" fill="#333"/>
+                        <path d="M 85 90 Q 100 100 115 90" stroke="#333" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="modal-text">
+                    <p>Chúng tôi sẽ thông báo kết quả kiểm tra năng lực qua SDT và Email.</p>
+                    <p>Bạn có chắc chắn <span class="modal-phone" id="modalPhone">0987654321</span> là số của bạn</p>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" id="btnChangePhone">Số của tôi là số khác</button>
+                    <button class="modal-btn primary" id="btnConfirm">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions-page" id="instructionsPage">
+        <div class="instructions-container">
+            <div class="instructions-header">
+                <div class="instructions-logo">Aloha</div>
+                
+                <div class="instructions-banner">
+                    <div class="banner-title">PLACEMENT</div>
+                    <div class="banner-subtitle">TEST</div>
+                </div>
+            </div>
+
+            <div class="instructions-content">
+                <h2 class="instructions-title">Hướng dẫn làm bài</h2>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">🌱</div>
+                    <div class="instruction-text">
+                        Bài test gồm <strong>3 phần</strong> trong thời gian <strong>20 phút</strong>:
+                        <br>• <strong>Phần 1 - Nghe:</strong> 5 câu (1 file audio, chỉ nghe 2 lần)
+                        <br>• <strong>Phần 2 - Đọc hiểu:</strong> 5 câu (1 đoạn văn)
+                        <br>• <strong>Phần 3 - Viết:</strong> 1 bài tự luận
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">🎧</div>
+                    <div class="instruction-text">
+                        <strong>Phần Nghe:</strong> File audio chỉ được phát <strong>TỐI ĐA 2 LẦN</strong>. Hãy tập trung lắng nghe!
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">📖</div>
+                    <div class="instruction-text">
+                        <strong>Phần Đọc:</strong> Đọc kỹ đoạn văn trước khi trả lời câu hỏi.
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">✍️</div>
+                    <div class="instruction-text">
+                        <strong>Phần Viết:</strong> Viết bài tự luận theo yêu cầu đề bài.
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">⏸️</div>
+                    <div class="instruction-text">
+                        Sau khi bấm "<strong>NỘP BÀI</strong>", thí sinh không thể làm lại bài thi.
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">📧</div>
+                    <div class="instruction-text">
+                        Thí sinh sẽ được nhận kết quả thi ngay sau khi hoàn thành bài thi.
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <div class="instruction-icon">▶️</div>
+                    <div class="instruction-text">
+                        Chọn trình độ muốn kiểm tra và ấn "<strong>BẮT ĐẦU</strong>" để vào làm bài.
+                    </div>
+                </div>
+
+                <div class="level-selector">
+                    <h3 class="level-selector-title">Vui lòng chọn trình độ muốn test</h3>
+                    <div class="level-grid">
+                        <div class="level-option" data-level="hsk1" data-range="1-22" data-hsk="1" data-table="questions">
+                            <div class="level-name">HSK1</div>
+                        </div>
+                        <div class="level-option" data-level="hsk2" data-hsk="2" data-table="hsk2_questions">
+                            <div class="level-name">HSK2</div>
+                        </div>
+                        <div class="level-option" data-level="hsk3" data-hsk="3" data-table="hsk3_questions">
+                            <div class="level-name">HSK3</div>
+                        </div>
+                        <div class="level-option" data-level="hsk4" data-hsk="4" data-table="hsk4_questions">
+                            <div class="level-name">HSK4</div>
+                        </div>
+                        <div class="level-option" data-level="hsk5" data-hsk="5" data-table="hsk5_questions">
+                            <div class="level-name">HSK5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="start-test-btn" id="startTestBtn" disabled>BẮT ĐẦU</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-page" id="testPage">
+        <div class="test-container">
+            <div class="test-header">
+                <div class="question-progress">
+                    <div class="progress-counter" id="questionCounter">Phần 1: Nghe</div>
+                    <div class="progress-circles">
+                        <div class="progress-row">
+                            <div class="circle">1</div>
+                            <div class="circle">2</div>
+                            <div class="circle">3</div>
+                            <div class="circle">4</div>
+                            <div class="circle">5</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timer-section">
+                    <div class="timer-icon">⏱️</div>
+                    <div class="timer-display" id="timerDisplay">20:00</div>
+                </div>
+            </div>
+
+            <div class="question-card" id="questionsContainer">
+                <!-- Questions will be dynamically rendered here -->
+            </div>
+
+            <div class="question-nav">
+                <button class="nav-button btn-submit" id="btnSubmit" style="display: none;">NỘP BÀI</button>
+                <button class="nav-button btn-next-section" id="btnNextSection">Tiếp theo →</button>
+            </div>
+            <div class="page-info" id="pageInfo">Phần 1/3 - Nghe</div>
+        </div>
+    </div>
+
+    <div class="result-page" id="resultPage">
+        <div class="result-container">
+            <!-- Spiral Binding -->
+            <div class="spiral-binding">
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+                <div class="spiral-hole"></div>
+            </div>
+
+            <div class="result-logo">
+                <div class="logo-lines">
+                    <div class="logo-line"></div>
+                    <div class="logo-line"></div>
+                    <div class="logo-line"></div>
+                </div>
+            </div>
+
+            <div class="result-content">
+                <h1 class="result-title-new">CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH BÀI THI</h1>
+
+                <div class="result-card">
+                    <div class="result-info">
+                        <strong>Họ và tên:</strong> <span id="resultName"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Trình độ:</strong> <span id="resultLevel"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Thời gian hoàn thành:</strong> <span id="completionTime"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Điểm số:</strong> <span id="finalScore"></span>/<span id="totalQuestions"></span>
+                    </div>
+                    <div class="result-info">
+                        <strong>Đánh giá:</strong> <span id="levelBadge"></span>
+                    </div>
+                </div>
+
+                <div class="completion-message">
+                    <p>
+                        Chúc mừng bạn đã hoàn thành bài thi <strong>HSK Placement Test</strong> cùng với ALOHA.
+                    </p>
+                    <p>
+                        Bộ phận Tư vấn Tuyển sinh ALOHA sẽ liên hệ bạn trong thời gian sớm nhất để trả kết quả bài test và tư vấn lộ trình học phù hợp.
+                    </p>
+                    <p id="resultMessage">
+                    </p>
+                </div>
+
+                <!-- Answers Grid -->
+                <div class="answers-grid">
+                    <div class="answers-section">
+                        <h3>📊 Kết quả chi tiết</h3>
+                        <div class="answers-grid-container">
+                            <div class="answers-subsection">
+                                <h4>🎧 Phần Nghe</h4>
+                                <div class="answers-grid" id="listeningGrid">
+                                    <!-- Listening answers will be rendered here -->
+                                </div>
+                            </div>
+                            <div class="answers-subsection">
+                                <h4>📖 Phần Đọc</h4>
+                                <div class="answers-grid" id="readingGrid">
+                                    <!-- Reading answers will be rendered here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-buttons">
+                    <button class="btn-result home" id="btnFinish"><span>Hoàn tất</span></button>
+                </div>
+
+                <!-- AI Feedback Section -->
+                <div class="ai-feedback-section" id="aiFeedbackSection" style="display: none;">
+                    <div class="ai-feedback-header">
+                        <h3>🤖 Nhận xét AI cho phần viết</h3>
+                    </div>
+                    <div class="ai-feedback-content" id="aiFeedbackContent">
+                        <!-- AI feedback will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script type="module" src="assets/js/supabase-config.js"></script>
+    <script type="module" src="assets/js/api-functions.js"></script>
+    <script type="module" src="assets/js/form-validation.js"></script>
+    <script type="module" src="assets/js/audio-handler.js"></script>
+    <script type="module" src="assets/js/timer-functions.js"></script>
+    <script type="module" src="assets/js/level-selection.js"></script>
+    <script type="module" src="assets/js/section-display.js"></script>
+    <script type="module" src="assets/js/test-scoring.js"></script>
+    <script type="module" src="assets/js/result-display.js"></script>
+    <script type="module" src="assets/js/main-new.js"></script>
+</body>
+</html>

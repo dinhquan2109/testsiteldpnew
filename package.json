@@ -1,0 +1,36 @@
+{
+  "name": "hsk-placement-test",
+  "version": "1.0.0",
+  "description": "HSK Placement Test Application for Aloha School",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static site'",
+    "deploy": "echo 'Deploy to your hosting service'"
+  },
+  "keywords": [
+    "hsk",
+    "placement-test",
+    "chinese",
+    "language-test",
+    "aloha-school"
+  ],
+  "author": "Aloha School",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aloha-school/hsk-placement-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aloha-school/hsk-placement-test/issues"
+  },
+  "homepage": "https://github.com/aloha-school/hsk-placement-test#readme"
+}
