@@ -37,6 +37,28 @@ async function loadHSK5Questions() {
 // ===== SUBMIT TEST FOR HSK5 =====
 async function submitHSK5Test() {
     try {
+        // Show grading message
+        const questionsContainer = document.getElementById('questionsContainer');
+        
+        if (questionsContainer) {
+            questionsContainer.innerHTML = `
+                <div style="text-align: center; padding: 50px; background: #f8f9fa; border-radius: 10px; margin: 20px;">
+                    <div style="font-size: 24px; margin-bottom: 20px;">📝</div>
+                    <h2 style="color: #2c3e50; margin-bottom: 15px;">Đang chấm bài...</h2>
+                    <p style="color: #7f8c8d; font-size: 16px;">Vui lòng chờ trong giây lát</p>
+                    <div style="margin-top: 20px;">
+                        <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+        }
+
         const scoreData = await calculateScore();
         const userAnswers = JSON.parse(localStorage.getItem('userAnswers') || '{}');
         const userId = localStorage.getItem('userRowId');
