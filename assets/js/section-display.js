@@ -49,7 +49,7 @@ export function displaySection(sectionNum) {
         document.getElementById('pageInfo').textContent = 'Phần 1/3 - Nghe';
         
         // Update progress circles for listening section
-        updateProgressCircles(sectionQuestions.length, 1);
+        updateSectionProgressCircles(sectionQuestions.length, 1);
         
     } else if (sectionNum === 2) {
         // SECTION 2: HSK1 = Đọc/Điền; HSK2+ = Nghe + Hình ảnh
@@ -72,7 +72,7 @@ export function displaySection(sectionNum) {
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Đọc';
             
             // Update progress circles for reading section
-            updateProgressCircles(sectionQuestions.length, 2);
+            updateSectionProgressCircles(sectionQuestions.length, 2);
         } else {
             html += `
                 <div class="section-header">
@@ -97,7 +97,7 @@ export function displaySection(sectionNum) {
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Nghe + Hình ảnh';
             
             // Update progress circles for listening+images section
-            updateProgressCircles(sectionQuestions.length, 2);
+            updateSectionProgressCircles(sectionQuestions.length, 2);
         }
         
     } else if (sectionNum === 3) {
@@ -128,7 +128,7 @@ export function displaySection(sectionNum) {
         document.getElementById('pageInfo').textContent = 'Phần 3/3 - Viết';
         
         // Update progress circles for writing section
-        updateProgressCircles(sectionQuestions.length, 3);
+        updateSectionProgressCircles(sectionQuestions.length, 3);
     }
     
     container.innerHTML = html;
@@ -156,7 +156,7 @@ export function displaySection(sectionNum) {
     
     // Attach event listeners
     attachAnswerEventListeners();
-    updateProgressCircles();
+    updateSectionProgressCircles();
     updateNavButtons();
     
     // Audio setup
@@ -273,7 +273,7 @@ function attachAnswerEventListeners() {
             
             // Save answer
             saveUserAnswer(questionIdx, option);
-            updateProgressCircles();
+            updateSectionProgressCircles();
             updateNavButtons();
         });
     });
@@ -287,7 +287,7 @@ function attachAnswerEventListeners() {
             parent.querySelectorAll('.image-toggle').forEach(t => t.classList.remove('selected'));
             this.classList.add('selected');
             saveUserAnswer(questionIdx, choice);
-            updateProgressCircles();
+            updateSectionProgressCircles();
             updateNavButtons();
         });
     });
@@ -302,7 +302,7 @@ function attachAnswerEventListeners() {
             } else {
                 removeUserAnswer(questionIdx);
             }
-            updateProgressCircles();
+            updateSectionProgressCircles();
             updateNavButtons();
         });
     });
@@ -327,7 +327,7 @@ function attachAnswerEventListeners() {
                 }
             }
             
-            updateProgressCircles();
+            updateSectionProgressCircles();
             updateNavButtons();
         });
     });
@@ -348,7 +348,7 @@ function removeUserAnswer(questionIdx) {
 }
 
 // ===== UPDATE PROGRESS CIRCLES =====
-function updateProgressCircles() {
+function updateSectionProgressCircles() {
     const progressRow = document.querySelector('.progress-row');
     if (!progressRow) return;
     
@@ -483,7 +483,7 @@ function isSectionComplete() {
 }
 
 // ===== UPDATE PROGRESS CIRCLES =====
-function updateProgressCircles(totalQuestions, sectionNum) {
+function updateSectionProgressCircles(totalQuestions, sectionNum) {
     const progressCircles = document.querySelector('.progress-circles');
     if (!progressCircles) return;
     
