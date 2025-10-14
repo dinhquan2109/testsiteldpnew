@@ -11,6 +11,8 @@ function autoSetHSK1Level() {
 // ===== LOAD HSK1 QUESTIONS =====
 async function loadHSK1Questions() {
     try {
+        console.log('🚀 Starting HSK1 test load...');
+        
         // Clear previous test data
         localStorage.removeItem('userAnswers');
         localStorage.removeItem('currentSection');
@@ -19,22 +21,33 @@ async function loadHSK1Questions() {
         localStorage.removeItem('readingQuestions');
         localStorage.removeItem('writingQuestions');
         
+        console.log('📡 Fetching questions from API...');
         const result = await getQuestionsByLevel('questions', '1-22');
+        console.log('📡 API result:', result);
         
         if (!result.success) {
+            console.error('❌ API failed:', result.error);
             alert(`Đề thi HSK1 đang được cập nhật.`);
             return;
         }
 
+        console.log('✅ Questions loaded successfully');
+        
         // Reset audio count
         resetAudio();
         
         // Set initial section
         localStorage.setItem('currentSection', '1');
 
+        console.log('⏰ Starting timer...');
         startTimer(60);
+        
+        console.log('📄 Displaying section 1...');
         displaySection(1);
+        
+        console.log('✅ HSK1 test setup complete');
     } catch (err) {
+        console.error('❌ Error in loadHSK1Questions:', err);
         alert('Lỗi khi tải câu hỏi HSK1: ' + err.message);
     }
 }

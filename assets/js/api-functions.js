@@ -32,12 +32,16 @@ export async function saveUserInfo(userData) {
 // ===== GET QUESTIONS BY LEVEL =====
 export async function getQuestionsByLevel(selectedTable, selectedRange) {
     try {
+        console.log('🔍 getQuestionsByLevel called with:', { selectedTable, selectedRange });
+        
         let questions;
         let error;
         
         if (selectedTable === 'questions' && selectedRange) {
             // Backward compatibility for HSK1 using main table + range
             const [startNum, endNum] = selectedRange.split('-').map(Number);
+            console.log('📊 Querying questions table with range:', startNum, 'to', endNum);
+            
             ({ data: questions, error } = await supabase
                 .from('questions')
                 .select('*')
@@ -46,6 +50,8 @@ export async function getQuestionsByLevel(selectedTable, selectedRange) {
                 .order('order_number'));
         } else {
             // Per-level tables: expect explicit section field
+            console.log('📊 Querying per-level table:', selectedTable);
+            
             ({ data: questions, error } = await supabase
                 .from(selectedTable)
                 .select('*')
@@ -53,9 +59,15 @@ export async function getQuestionsByLevel(selectedTable, selectedRange) {
                 .order('order_number', { ascending: true }));
         }
 
-        if (error) throw error;
+        console.log('📊 Supabase response:', { questions: questions?.length, error });
+
+        if (error) {
+            console.error('❌ Supabase error:', error);
+            throw error;
+        }
 
         if (!questions || questions.length === 0) {
+            console.error('❌ No questions found');
             throw new Error('Không có câu hỏi cho trình độ này');
         }
 
