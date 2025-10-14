@@ -267,11 +267,464 @@
 
     <!-- Result page has been moved to result.html -->
 
-    <!-- JavaScript Files -->
-    <script type="module" src="assets/js/main.js"></script>
-    <script type="module" src="assets/js/validation.js"></script>
-    <script type="module" src="assets/js/test-engine.js"></script>
-    <script type="module" src="assets/js/ai-feedback.js"></script>
-    <script type="module" src="assets/js/supabase.js"></script>
+    <!-- JavaScript Files - NO MODULES -->
+    <script>
+        console.log('🚀 Main script loaded - no modules');
+
+        // Global variables
+        let userRowId = null;
+        let selectedLevel = null;
+        let selectedHSK = null;
+
+        // Validation functions
+        function validatePhone(phone) {
+            const phoneRegex = /^[0-9]{10,11}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+            return emailRegex.test(email);
+        }
+
+        function validateName(name) {
+            return name.trim().length >= 3;
+        }
+
+        function validateAge(age) {
+            if (age === '') return true;
+            const ageNum = parseInt(age);
+            return !isNaN(ageNum) && ageNum >= 1 && ageNum <= 120;
+        }
+
+        function validateForm() {
+            console.log('🔍 Starting form validation...');
+            
+            const fullname = document.getElementById('fullname').value.trim();
+            const ageValue = document.getElementById('age').value.trim();
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            console.log('📝 Form values:', { fullname, ageValue, phone, email });
+
+            let isValid = true;
+            let errors = [];
+
+            // Validate fullname
+            if (!validateName(fullname)) {
+                document.getElementById('fullname').classList.add('error');
+                isValid = false;
+                errors.push('Họ và tên phải có ít nhất 3 ký tự');
+            }
+
+            // Validate age (optional)
+            if (ageValue !== '' && !validateAge(ageValue)) {
+                document.getElementById('age').classList.add('error');
+                isValid = false;
+                errors.push('Tuổi phải từ 1 đến 120');
+            }
+
+            // Validate phone
+            if (!validatePhone(phone)) {
+                document.getElementById('phone').classList.add('error');
+                isValid = false;
+                errors.push('Số điện thoại phải có 10-11 chữ số');
+            }
+
+            // Validate email
+            if (!validateEmail(email)) {
+                document.getElementById('email').classList.add('error');
+                isValid = false;
+                errors.push('Email không đúng định dạng');
+            }
+
+            console.log('✅ Validation result:', { isValid, errors });
+
+            if (!isValid) {
+                alert('Vui lòng kiểm tra lại thông tin đã nhập:\n' + errors.join('\n'));
+            }
+
+            return isValid;
+        }
+
+        // Real-time validation setup
+        function setupRealTimeValidation() {
+            // Fullname validation
+            const fullnameInput = document.getElementById('fullname');
+            const fullnameError = document.getElementById('fullnameError');
+            const fullnameCheck = document.getElementById('fullnameCheck');
+            
+            if (fullnameInput) {
+                fullnameInput.addEventListener('input', function() {
+                    const input = this;
+                    const value = input.value.trim();
+                    
+                    if (value.length === 0) {
+                        // Chưa nhập - ẩn tất cả
+                        input.classList.remove('error', 'valid');
+                        if (fullnameError) fullnameError.classList.remove('show');
+                        if (fullnameCheck) fullnameCheck.classList.remove('show');
+                    } else if (value.length < 3) {
+                        // Nhập sai - hiển thị X đỏ
+                        input.classList.add('error');
+                        input.classList.remove('valid');
+                        if (fullnameError) fullnameError.classList.add('show');
+                        if (fullnameCheck) {
+                            fullnameCheck.classList.add('show');
+                            fullnameCheck.innerHTML = '✕';
+                            fullnameCheck.style.background = '#f44336';
+                        }
+                    } else {
+                        // Nhập đúng - hiển thị tick xanh
+                        input.classList.remove('error');
+                        input.classList.add('valid');
+                        if (fullnameError) fullnameError.classList.remove('show');
+                        if (fullnameCheck) {
+                            fullnameCheck.classList.add('show');
+                            fullnameCheck.innerHTML = '✓';
+                            fullnameCheck.style.background = '#4caf50';
+                        }
+                    }
+                });
+            }
+
+            // Age validation
+            const ageInput = document.getElementById('age');
+            const ageError = document.getElementById('ageError');
+            const ageCheck = document.getElementById('ageCheck');
+            
+            if (ageInput) {
+                ageInput.addEventListener('input', function() {
+                    const input = this;
+                    const value = input.value.trim();
+
+                    if (value === '') {
+                        // Chưa nhập - ẩn tất cả (age là optional)
+                        input.classList.remove('error', 'valid');
+                        if (ageError) ageError.classList.remove('show');
+                        if (ageCheck) ageCheck.classList.remove('show');
+                        return;
+                    }
+
+                    const age = parseInt(value);
+                    if (isNaN(age) || age < 1 || age > 120) {
+                        // Nhập sai - hiển thị X đỏ
+                        input.classList.add('error');
+                        input.classList.remove('valid');
+                        if (ageError) ageError.classList.add('show');
+                        if (ageCheck) {
+                            ageCheck.classList.add('show');
+                            ageCheck.innerHTML = '✕';
+                            ageCheck.style.background = '#f44336';
+                        }
+                    } else {
+                        // Nhập đúng - hiển thị tick xanh
+                        input.classList.remove('error');
+                        input.classList.add('valid');
+                        if (ageError) ageError.classList.remove('show');
+                        if (ageCheck) {
+                            ageCheck.classList.add('show');
+                            ageCheck.innerHTML = '✓';
+                            ageCheck.style.background = '#4caf50';
+                        }
+                    }
+                });
+            }
+
+            // Phone validation
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+            const phoneCheck = document.getElementById('phoneCheck');
+            
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    const input = this;
+                    const value = input.value;
+                    
+                    if (value.length === 0) {
+                        // Chưa nhập - ẩn tất cả
+                        input.classList.remove('error', 'valid');
+                        if (phoneError) phoneError.classList.remove('show');
+                        if (phoneCheck) phoneCheck.classList.remove('show');
+                    } else if (!validatePhone(value)) {
+                        // Nhập sai - hiển thị X đỏ
+                        input.classList.add('error');
+                        input.classList.remove('valid');
+                        if (phoneError) phoneError.classList.add('show');
+                        if (phoneCheck) {
+                            phoneCheck.classList.add('show');
+                            phoneCheck.innerHTML = '✕';
+                            phoneCheck.style.background = '#f44336';
+                        }
+                    } else {
+                        // Nhập đúng - hiển thị tick xanh
+                        input.classList.remove('error');
+                        input.classList.add('valid');
+                        if (phoneError) phoneError.classList.remove('show');
+                        if (phoneCheck) {
+                            phoneCheck.classList.add('show');
+                            phoneCheck.innerHTML = '✓';
+                            phoneCheck.style.background = '#4caf50';
+                        }
+                    }
+                });
+            }
+
+            // Email validation
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailCheck = document.getElementById('emailCheck');
+            
+            if (emailInput) {
+                emailInput.addEventListener('input', function() {
+                    const input = this;
+                    const value = input.value;
+                    
+                    if (value.length === 0) {
+                        // Chưa nhập - ẩn tất cả
+                        input.classList.remove('error', 'valid');
+                        if (emailError) emailError.classList.remove('show');
+                        if (emailCheck) emailCheck.classList.remove('show');
+                    } else if (!validateEmail(value)) {
+                        // Nhập sai - hiển thị X đỏ
+                        input.classList.add('error');
+                        input.classList.remove('valid');
+                        if (emailError) emailError.classList.add('show');
+                        if (emailCheck) {
+                            emailCheck.classList.add('show');
+                            emailCheck.innerHTML = '✕';
+                            emailCheck.style.background = '#f44336';
+                        }
+                    } else {
+                        // Nhập đúng - hiển thị tick xanh
+                        input.classList.remove('error');
+                        input.classList.add('valid');
+                        if (emailError) emailError.classList.remove('show');
+                        if (emailCheck) {
+                            emailCheck.classList.add('show');
+                            emailCheck.innerHTML = '✓';
+                            emailCheck.style.background = '#4caf50';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Form submit handler
+        function setupFormSubmit() {
+            const form = document.getElementById('placementForm');
+            if (!form) {
+                console.error('❌ Form not found: placementForm');
+                return;
+            }
+            
+            console.log('✅ Form found, setting up submit handler');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('📤 Form submitted - preventDefault called');
+
+                if (!validateForm()) {
+                    console.log('❌ Form validation failed - stopping submission');
+                    return;
+                }
+                console.log('✅ Form validation passed');
+
+                const fullname = document.getElementById('fullname').value.trim();
+                const ageValue = document.getElementById('age').value.trim();
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+
+                console.log('📋 Form data collected:', { fullname, ageValue, phone, email });
+
+                // Show modal
+                const modalPhone = document.getElementById('modalPhone');
+                const modalOverlay = document.getElementById('modalOverlay');
+                
+                console.log('🔍 Modal elements found:', { modalPhone: !!modalPhone, modalOverlay: !!modalOverlay });
+                
+                if (modalPhone) {
+                    modalPhone.textContent = phone;
+                    console.log('📱 Modal phone updated to:', phone);
+                }
+                if (modalOverlay) {
+                    modalOverlay.classList.add('show');
+                    console.log('📱 Modal overlay shown');
+                }
+            });
+        }
+
+        // Modal handlers
+        function setupModalHandlers() {
+            const modalClose = document.getElementById('modalClose');
+            const btnChangePhone = document.getElementById('btnChangePhone');
+            const btnConfirm = document.getElementById('btnConfirm');
+            
+            if (!modalClose || !btnChangePhone || !btnConfirm) {
+                console.error('❌ Modal elements not found');
+                return;
+            }
+            
+            console.log('✅ Modal elements found, setting up handlers');
+            
+            modalClose.addEventListener('click', function() {
+                console.log('❌ Modal close clicked');
+                const modalOverlay = document.getElementById('modalOverlay');
+                if (modalOverlay) modalOverlay.classList.remove('show');
+            });
+
+            btnChangePhone.addEventListener('click', function() {
+                console.log('🔄 Change phone clicked');
+                const modalOverlay = document.getElementById('modalOverlay');
+                const phoneInput = document.getElementById('phone');
+                if (modalOverlay) modalOverlay.classList.remove('show');
+                if (phoneInput) phoneInput.focus();
+            });
+
+            btnConfirm.addEventListener('click', function() {
+                console.log('✅ Confirm button clicked - starting save process');
+                
+                const fullname = document.getElementById('fullname').value.trim();
+                const ageValue = document.getElementById('age').value.trim();
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                
+                console.log('💾 Saving user data:', { fullname, ageValue, phone, email });
+                
+                // Save to localStorage (simulate database save)
+                localStorage.setItem('fullname', fullname);
+                localStorage.setItem('phone', phone);
+                localStorage.setItem('email', email);
+                localStorage.setItem('age', ageValue);
+                userRowId = Date.now(); // Simulate user ID
+                console.log('💾 Data saved to localStorage, userRowId:', userRowId);
+
+                // Hide modal and show instructions
+                const modalOverlay = document.getElementById('modalOverlay');
+                const mainPage = document.getElementById('mainPage');
+                const instructionsPage = document.getElementById('instructionsPage');
+                
+                console.log('🔍 Page elements found:', { modalOverlay: !!modalOverlay, mainPage: !!mainPage, instructionsPage: !!instructionsPage });
+                
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('show');
+                    console.log('📱 Modal overlay hidden');
+                }
+                
+                setTimeout(() => {
+                    console.log('🔄 Switching to level selection...');
+                    if (mainPage) {
+                        mainPage.classList.add('hide');
+                        console.log('📄 Main page hidden');
+                    }
+                    if (instructionsPage) {
+                        instructionsPage.classList.add('show');
+                        console.log('📄 Level selection page shown');
+                    }
+                }, 100);
+            });
+        }
+
+        // Level selection
+        function setupLevelSelection() {
+            const levelOptions = document.querySelectorAll('.level-option');
+            const startBtn = document.getElementById('startTestBtn');
+            
+            console.log('🎯 Level options found:', levelOptions.length);
+            
+            levelOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    console.log('🎯 Level option clicked:', this.dataset.level);
+                    
+                    // Remove selected from all
+                    document.querySelectorAll('.level-option').forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected to this
+                    this.classList.add('selected');
+                    
+                    // Save selected level
+                    selectedLevel = this.dataset.level;
+                    selectedHSK = this.dataset.hsk;
+                    
+                    console.log('✅ Selected:', {level: selectedLevel, hsk: selectedHSK});
+                    
+                    // Enable start button
+                    if (startBtn) {
+                        startBtn.disabled = false;
+                        console.log('🚀 Start button enabled');
+                    }
+                });
+            });
+        }
+
+        // Start test
+        function setupStartTest() {
+            const startBtn = document.getElementById('startTestBtn');
+            if (!startBtn) {
+                console.error('❌ Start test button not found');
+                return;
+            }
+            
+            console.log('✅ Start test button found');
+            
+            startBtn.addEventListener('click', function() {
+                console.log('🚀 Start test button clicked');
+                
+                if (!selectedLevel) {
+                    alert('Vui lòng chọn trình độ muốn test!');
+                    return;
+                }
+
+                console.log('🎯 Starting test for level:', selectedLevel);
+                
+                // Redirect to appropriate HSK page
+                const hskPage = `pages/hsk${selectedHSK}.html`;
+                console.log('🔄 Redirecting to:', hskPage);
+                window.location.href = hskPage;
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎉 DOM loaded, initializing app...');
+            
+            try {
+                setupRealTimeValidation();
+                console.log('✅ Real-time validation setup complete');
+            } catch (error) {
+                console.error('❌ Error setting up real-time validation:', error);
+            }
+            
+            try {
+                setupFormSubmit();
+                console.log('✅ Form submit setup complete');
+            } catch (error) {
+                console.error('❌ Error setting up form submit:', error);
+            }
+            
+            try {
+                setupModalHandlers();
+                console.log('✅ Modal handlers setup complete');
+            } catch (error) {
+                console.error('❌ Error setting up modal handlers:', error);
+            }
+            
+            try {
+                setupLevelSelection();
+                console.log('✅ Level selection setup complete');
+            } catch (error) {
+                console.error('❌ Error setting up level selection:', error);
+            }
+            
+            try {
+                setupStartTest();
+                console.log('✅ Start test setup complete');
+            } catch (error) {
+                console.error('❌ Error setting up start test:', error);
+            }
+            
+            console.log('🎉 App initialization complete');
+        });
+    </script>
 </body>
 </html>

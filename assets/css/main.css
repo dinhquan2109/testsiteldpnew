@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Nunito', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1e7e5f 0%, #0d5943 100%);
+    background: linear-gradient(135deg, #0d5943 0%, #1e7e5f 30%, #2d8f6b 60%, #4a9d7a 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -48,8 +48,7 @@ header {
 
 /* ===== HERO BANNER ===== */
 .hero-banner {
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300"><rect fill="%231e7e5f" width="1200" height="300"/></svg>');
-    background-size: cover;
+    background: linear-gradient(135deg, #0d5943 0%, #1e7e5f 25%, #2d8f6b 50%, #4a9d7a 75%, #6bb88a 100%);
     text-align: center;
     padding: 40px 20px;
     border-radius: 15px;
@@ -89,7 +88,7 @@ header {
 
 /* ===== MAIN CONTENT ===== */
 .main-content {
-    background: #fef8e6;
+    background: linear-gradient(135deg, #ffffff 0%, #fef8e6 30%, #f5f0d8 60%, #ede7d0 100%);
     border-radius: 20px;
     padding: 50px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -248,7 +247,7 @@ header {
 .submit-btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #7cb342 0%, #558b2f 100%);
+    background: linear-gradient(135deg, #7cb342 0%, #6bb83a 25%, #5aa832 50%, #4a982a 75%, #3a881a 100%);
     color: white;
     border: none;
     border-radius: 50px;
@@ -298,7 +297,7 @@ header {
 }
 
 .modal-content {
-    background: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 30%, #f1f3f4 60%, #e8eaed 100%);
     border-radius: 20px;
     padding: 40px;
     max-width: 500px;
@@ -385,22 +384,22 @@ header {
 }
 
 .modal-btn.secondary {
-    background: #ff9800;
+    background: linear-gradient(135deg, #ff9800 0%, #ff8f00 25%, #ff8500 50%, #ff7b00 75%, #f57c00 100%);
     color: white;
 }
 
 .modal-btn.secondary:hover:not(:disabled) {
-    background: #f57c00;
+    background: linear-gradient(135deg, #f57c00 0%, #f57200 25%, #f56800 50%, #f55e00 75%, #e65100 100%);
     transform: translateY(-2px);
 }
 
 .modal-btn.primary {
-    background: #7cb342;
+    background: linear-gradient(135deg, #7cb342 0%, #6bb83a 25%, #5aa832 50%, #4a982a 75%, #3a881a 100%);
     color: white;
 }
 
 .modal-btn.primary:hover:not(:disabled) {
-    background: #689f38;
+    background: linear-gradient(135deg, #689f38 0%, #5a8f2a 25%, #4a7f1a 50%, #3a6f0a 75%, #2a5f00 100%);
     transform: translateY(-2px);
 }
 
