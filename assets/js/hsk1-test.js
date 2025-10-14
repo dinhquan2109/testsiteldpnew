@@ -224,14 +224,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load questions and start test immediately
     loadHSK1Questions();
     
-    // Setup navigation buttons
-    setupHSK1NavigationButtons();
-    
     // Setup submit button
-    setupHSK1SubmitButton();
+    const submitBtn = document.getElementById('btnSubmit');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', submitHSK1Test);
+    }
     
     // Setup finish button
-    setupHSK1FinishButton();
+    const finishBtn = document.getElementById('btnFinish');
+    if (finishBtn) {
+        finishBtn.addEventListener('click', function() {
+            window.location.href = '../index.html';
+        });
+    }
     
     console.log('HSK1 test initialization complete');
 });

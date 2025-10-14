@@ -124,13 +124,40 @@
     </div>
 
     <!-- JavaScript Files -->
-    <script type="module" src="../assets/js/supabase-config.js"></script>
-    <script type="module" src="../assets/js/api-functions.js"></script>
-    <script type="module" src="../assets/js/audio-handler.js"></script>
-    <script type="module" src="../assets/js/timer-functions.js"></script>
-    <script type="module" src="../assets/js/section-display.js"></script>
-    <script type="module" src="../assets/js/test-scoring.js"></script>
-    <script type="module" src="../assets/js/result-display.js"></script>
-    <script type="module" src="../assets/js/hsk1-test.js"></script>
+    <script type="module">
+        console.log('🚀 Loading HSK1 modules...');
+        
+        try {
+            // Load modules in order
+            const supabaseConfig = await import('../assets/js/supabase-config.js');
+            console.log('✅ supabase-config loaded');
+            
+            const apiFunctions = await import('../assets/js/api-functions.js');
+            console.log('✅ api-functions loaded');
+            
+            const audioHandler = await import('../assets/js/audio-handler.js');
+            console.log('✅ audio-handler loaded');
+            
+            const timerFunctions = await import('../assets/js/timer-functions.js');
+            console.log('✅ timer-functions loaded');
+            
+            const sectionDisplay = await import('../assets/js/section-display.js');
+            console.log('✅ section-display loaded');
+            
+            const testScoring = await import('../assets/js/test-scoring.js');
+            console.log('✅ test-scoring loaded');
+            
+            const resultDisplay = await import('../assets/js/result-display.js');
+            console.log('✅ result-display loaded');
+            
+            const hsk1Test = await import('../assets/js/hsk1-test.js');
+            console.log('✅ hsk1-test loaded');
+            
+            console.log('🎉 All HSK1 modules loaded successfully');
+        } catch (error) {
+            console.error('❌ Error loading HSK1 modules:', error);
+            alert('Lỗi khi tải HSK1: ' + error.message);
+        }
+    </script>
 </body>
 </html>
