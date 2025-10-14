@@ -45,8 +45,8 @@ export function displaySection(sectionNum) {
             </div>
         `;
         
-        document.getElementById('questionCounter').textContent = `Phần nghe (${sectionQuestions.length} câu)`;
-        document.getElementById('pageInfo').textContent = '1/3 phần nghe';
+        document.getElementById('questionCounter').textContent = `Phần 1: Nghe (${sectionQuestions.length} câu)`;
+        document.getElementById('pageInfo').textContent = 'Phần 1/3 - Nghe';
         
     } else if (sectionNum === 2) {
         // SECTION 2: HSK1 = Đọc/Điền; HSK2+ = Nghe + Hình ảnh
@@ -65,8 +65,8 @@ export function displaySection(sectionNum) {
                     <div class="passage-text">${passage}</div>
                 </div>
             `;
-            document.getElementById('questionCounter').textContent = `Phần 2: Điền đáp án (${sectionQuestions.length} câu)`;
-            document.getElementById('pageInfo').textContent = '2/3 - Điền đáp án';
+            document.getElementById('questionCounter').textContent = `Phần 2: Đọc (${sectionQuestions.length} câu)`;
+            document.getElementById('pageInfo').textContent = 'Phần 2/3 - Đọc';
         } else {
             html += `
                 <div class="section-header">
@@ -88,7 +88,7 @@ export function displaySection(sectionNum) {
                 </div>
             `;
             document.getElementById('questionCounter').textContent = `Phần 2: Nghe + Hình ảnh (${sectionQuestions.length} câu)`;
-            document.getElementById('pageInfo').textContent = '2/3 - Nghe + Hình ảnh';
+            document.getElementById('pageInfo').textContent = 'Phần 2/3 - Nghe + Hình ảnh';
         }
         
     } else if (sectionNum === 3) {
@@ -115,8 +115,8 @@ export function displaySection(sectionNum) {
             </div>
         `;
         
-        document.getElementById('questionCounter').textContent = `Phần viết`;
-        document.getElementById('pageInfo').textContent = '3/3 - Phần viết';
+        document.getElementById('questionCounter').textContent = `Phần 3: Viết`;
+        document.getElementById('pageInfo').textContent = 'Phần 3/3 - Viết';
     }
     
     container.innerHTML = html;

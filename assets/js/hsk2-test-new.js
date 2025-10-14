@@ -31,7 +31,7 @@ async function loadHSK2Questions() {
         audioPlayCount = 0;
         
         // Start timer
-        startTimer(20 * 60);
+        startTimer(60 * 60);
         
         // Display first section
         displayHSK2Section(1);
