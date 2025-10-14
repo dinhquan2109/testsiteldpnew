@@ -28,7 +28,7 @@ export function displaySection(sectionNum) {
         html += `
             <div class="section-header">
                 <div class="section-title">🎧 PHẦN 1: NGHE (Listening)</div>
-                <div class="section-description">Nghe file audio và trả lời 5 câu hỏi</div>
+                <div class="section-description">Nghe file audio và trả lời ${sectionQuestions.length} câu hỏi</div>
             </div>
             <div class="audio-section">
                 <div class="audio-info">⚠️ Chú ý phần nghe Audio chỉ nghe tối đa 2 lượt</div>
@@ -48,6 +48,9 @@ export function displaySection(sectionNum) {
         document.getElementById('questionCounter').textContent = `Phần 1: Nghe (${sectionQuestions.length} câu)`;
         document.getElementById('pageInfo').textContent = 'Phần 1/3 - Nghe';
         
+        // Update progress circles for listening section
+        updateProgressCircles(sectionQuestions.length, 1);
+        
     } else if (sectionNum === 2) {
         // SECTION 2: HSK1 = Đọc/Điền; HSK2+ = Nghe + Hình ảnh
         sectionQuestions = readingQuestions;
@@ -58,7 +61,7 @@ export function displaySection(sectionNum) {
             html += `
                 <div class="section-header">
                     <div class="section-title">📖 PHẦN 2: ĐIỀN ĐÁP ÁN</div>
-                    <div class="section-description">Đọc đoạn văn và điền đáp án đúng</div>
+                    <div class="section-description">Đọc đoạn văn và điền đáp án đúng (${sectionQuestions.length} câu)</div>
                 </div>
                 <div class="reading-passage">
                     <div class="passage-title">📖  Đọc văn:</div>
@@ -67,11 +70,14 @@ export function displaySection(sectionNum) {
             `;
             document.getElementById('questionCounter').textContent = `Phần 2: Đọc (${sectionQuestions.length} câu)`;
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Đọc';
+            
+            // Update progress circles for reading section
+            updateProgressCircles(sectionQuestions.length, 2);
         } else {
             html += `
                 <div class="section-header">
                     <div class="section-title">🎧 PHẦN 2: NGHE + NHẬN DIỆN HÌNH ẢNH</div>
-                    <div class="section-description">Nghe Audio, với mỗi hình bên dưới hãy chọn Tick (Có) hoặc X (Không)</div>
+                    <div class="section-description">Nghe Audio, với mỗi hình bên dưới hãy chọn Tick (Có) hoặc X (Không) (${sectionQuestions.length} câu)</div>
                 </div>
                 <div class="audio-section">
                     <div class="audio-info">⚠️ Audio tối đa 2 lượt</div>
@@ -89,6 +95,9 @@ export function displaySection(sectionNum) {
             `;
             document.getElementById('questionCounter').textContent = `Phần 2: Nghe + Hình ảnh (${sectionQuestions.length} câu)`;
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Nghe + Hình ảnh';
+            
+            // Update progress circles for listening+images section
+            updateProgressCircles(sectionQuestions.length, 2);
         }
         
     } else if (sectionNum === 3) {
@@ -103,7 +112,7 @@ export function displaySection(sectionNum) {
         html += `
             <div class="section-header">
                 <div class="section-title">✍️ PHẦN 3: VIẾT (Writing)</div>
-                <div class="section-description">Viết bài tự luận theo yêu cầu (không tính điểm)</div>
+                <div class="section-description">Viết bài tự luận theo yêu cầu (không tính điểm) (${sectionQuestions.length} câu)</div>
             </div>
             <div class="writing-section">
                 <div class="writing-instruction">
@@ -117,6 +126,9 @@ export function displaySection(sectionNum) {
         
         document.getElementById('questionCounter').textContent = `Phần 3: Viết`;
         document.getElementById('pageInfo').textContent = 'Phần 3/3 - Viết';
+        
+        // Update progress circles for writing section
+        updateProgressCircles(sectionQuestions.length, 3);
     }
     
     container.innerHTML = html;
@@ -468,4 +480,28 @@ function isSectionComplete() {
     
     console.log('Section complete!');
     return true;
+}
+
+// ===== UPDATE PROGRESS CIRCLES =====
+function updateProgressCircles(totalQuestions, sectionNum) {
+    const progressCircles = document.querySelector('.progress-circles');
+    if (!progressCircles) return;
+    
+    let html = '';
+    const questionsPerRow = 5;
+    const rows = Math.ceil(totalQuestions / questionsPerRow);
+    
+    for (let row = 0; row < rows; row++) {
+        html += '<div class="progress-row">';
+        const startQuestion = row * questionsPerRow + 1;
+        const endQuestion = Math.min(startQuestion + questionsPerRow - 1, totalQuestions);
+        
+        for (let i = startQuestion; i <= endQuestion; i++) {
+            html += `<div class="circle" data-question="${i}">${i}</div>`;
+        }
+        html += '</div>';
+    }
+    
+    progressCircles.innerHTML = html;
+    console.log(`Updated progress circles: ${totalQuestions} questions for section ${sectionNum}`);
 }

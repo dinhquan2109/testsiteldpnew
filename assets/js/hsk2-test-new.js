@@ -31,7 +31,7 @@ async function loadHSK2Questions() {
         audioPlayCount = 0;
         
         // Start timer
-        startTimer(60 * 60);
+        startTimer(60);
         
         // Display first section
         displayHSK2Section(1);
@@ -225,37 +225,79 @@ function displayHSK2Section(section) {
             <div class="hsk2-reading-section">
                 <div class="section-header">
                     <h2>📖 Phần Đọc</h2>
-                    <p>Xem các hình ảnh và chọn đáp án phù hợp</p>
+                    <p>Kéo thả hình ảnh để nối với các câu hỏi</p>
                 </div>
                 
-                <div class="hsk2-images-grid">
-                    <div class="image-option" data-option="A">
-                        <div class="image-placeholder">A</div>
-                        <div class="image-label">A</div>
+                <div class="matching-game-container">
+                    <!-- Images Section -->
+                    <div class="images-section">
+                        <div class="image-item" data-image="A" draggable="true">
+                            <div class="image-placeholder">A</div>
+                            <div class="image-label">Hình A</div>
+                        </div>
+                        <div class="image-item" data-image="B" draggable="true">
+                            <div class="image-placeholder">B</div>
+                            <div class="image-label">Hình B</div>
+                        </div>
+                        <div class="image-item" data-image="C" draggable="true">
+                            <div class="image-placeholder">C</div>
+                            <div class="image-label">Hình C</div>
+                        </div>
+                        <div class="image-item" data-image="D" draggable="true">
+                            <div class="image-placeholder">D</div>
+                            <div class="image-label">Hình D</div>
+                        </div>
+                        <div class="image-item" data-image="E" draggable="true">
+                            <div class="image-placeholder">E</div>
+                            <div class="image-label">Hình E</div>
+                        </div>
+                        <div class="image-item" data-image="F" draggable="true">
+                            <div class="image-placeholder">F</div>
+                            <div class="image-label">Hình F</div>
+                        </div>
                     </div>
-                    <div class="image-option" data-option="B">
-                        <div class="image-placeholder">B</div>
-                        <div class="image-label">B</div>
-                    </div>
-                    <div class="image-option" data-option="C">
-                        <div class="image-placeholder">C</div>
-                        <div class="image-label">C</div>
-                    </div>
-                    <div class="image-option" data-option="D">
-                        <div class="image-placeholder">D</div>
-                        <div class="image-label">D</div>
-                    </div>
-                    <div class="image-option" data-option="E">
-                        <div class="image-placeholder">E</div>
-                        <div class="image-label">E</div>
-                    </div>
-                    <div class="image-option" data-option="F">
-                        <div class="image-placeholder">F</div>
-                        <div class="image-label">F</div>
+                    
+                    <!-- Answer Slots Section -->
+                    <div class="answers-section">
+                        <div class="answer-slot" data-slot="A">
+                            <div class="answer-label">A</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="B">
+                            <div class="answer-label">B</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="C">
+                            <div class="answer-label">C</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="D">
+                            <div class="answer-label">D</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="E">
+                            <div class="answer-label">E</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="F">
+                            <div class="answer-label">F</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="hsk2-reading-questions">
+                <div class="matching-instruction">
+                    <h3>🎯 Hướng dẫn:</h3>
+                    <p>Kéo thả hình ảnh từ trên xuống các ô đáp án tương ứng bên dưới</p>
+                </div>
+                
+                <div class="questions-section">
                     ${generateReadingQuestions()}
                 </div>
             </div>
@@ -294,16 +336,23 @@ function generateListeningQuestions() {
 // ===== GENERATE READING QUESTIONS =====
 function generateReadingQuestions() {
     let html = '';
-    for (let i = 11; i <= 15; i++) {
+    const questions = [
+        { text: '这是一个苹果。', answer: 'A' },
+        { text: '这是一本书。', answer: 'B' },
+        { text: '这是一支笔。', answer: 'C' },
+        { text: '这是一辆车。', answer: 'D' },
+        { text: '这是一只猫。', answer: 'E' }
+    ];
+    
+    for (let i = 0; i < 5; i++) {
+        const questionNum = i + 11;
         html += `
-            <div class="hsk2-reading-question">
-                <div class="question-number">Câu ${i}</div>
-                <div class="question-text">
-                    <p>Chọn hình ảnh phù hợp với câu sau:</p>
-                    <p class="chinese-text">这是一个苹果。</p>
-                </div>
-                <div class="answer-input">
-                    <input type="text" class="answer-box" data-question="${i}" placeholder="Nhập A, B, C, D, E hoặc F" maxlength="1">
+            <div class="question-item">
+                <div class="question-number">Câu ${questionNum}</div>
+                <div class="question-text">Chọn hình ảnh phù hợp với câu sau:</div>
+                <div class="chinese-text">${questions[i].text}</div>
+                <div class="answer-display" data-question="${questionNum}">
+                    Chưa chọn đáp án
                 </div>
             </div>
         `;
@@ -372,24 +421,40 @@ function setupListeningQuestions() {
 
 // ===== SETUP READING QUESTIONS =====
 function setupReadingQuestions() {
-    const answerInputs = document.querySelectorAll('.answer-box');
+    // Setup answer slots with question numbers
+    const answerSlots = document.querySelectorAll('.answer-slot');
+    answerSlots.forEach((slot, index) => {
+        slot.dataset.question = index + 11; // Questions 11-15
+    });
     
-    answerInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            const questionId = this.dataset.question;
-            const answer = this.value.toUpperCase();
+    // Update answer display when image is dropped
+    document.addEventListener('drop', function(e) {
+        if (e.target.classList.contains('answer-slot')) {
+            const questionNum = e.target.dataset.question;
+            const imageLetter = e.dataTransfer.getData('text/plain');
             
-            // Validate input
-            if (['A', 'B', 'C', 'D', 'E', 'F'].includes(answer)) {
-                this.classList.remove('error');
-                this.classList.add('valid');
-                userAnswers[questionId] = answer;
-                console.log(`Question ${questionId}: ${answer}`);
-            } else {
-                this.classList.add('error');
-                this.classList.remove('valid');
+            // Update answer display
+            const answerDisplay = document.querySelector(`[data-question="${questionNum}"]`);
+            if (answerDisplay && answerDisplay.classList.contains('answer-display')) {
+                answerDisplay.textContent = `Đã chọn: ${imageLetter}`;
+                answerDisplay.classList.add('has-answer');
             }
-        });
+        }
+    });
+    
+    // Update answer display when image is removed
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-btn')) {
+            const slot = e.target.closest('.answer-slot');
+            const questionNum = slot.dataset.question;
+            
+            // Update answer display
+            const answerDisplay = document.querySelector(`[data-question="${questionNum}"]`);
+            if (answerDisplay && answerDisplay.classList.contains('answer-display')) {
+                answerDisplay.textContent = 'Chưa chọn đáp án';
+                answerDisplay.classList.remove('has-answer');
+            }
+        }
     });
 }
 
@@ -562,4 +627,114 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = '../index.html';
         });
     }
+    
+    // Setup drag and drop
+    setupDragAndDrop();
 });
+
+// ===== DRAG AND DROP FUNCTIONS =====
+function setupDragAndDrop() {
+    // Setup drag events for image items
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.classList.contains('image-item')) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', e.target.dataset.image);
+        }
+    });
+    
+    document.addEventListener('dragend', function(e) {
+        if (e.target.classList.contains('image-item')) {
+            e.target.classList.remove('dragging');
+        }
+    });
+    
+    // Setup drop events for answer slots
+    document.addEventListener('dragover', function(e) {
+        if (e.target.classList.contains('answer-slot')) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.target.classList.add('drag-over');
+        }
+    });
+    
+    document.addEventListener('dragleave', function(e) {
+        if (e.target.classList.contains('answer-slot')) {
+            e.target.classList.remove('drag-over');
+        }
+    });
+    
+    document.addEventListener('drop', function(e) {
+        if (e.target.classList.contains('answer-slot')) {
+            e.preventDefault();
+            e.target.classList.remove('drag-over');
+            
+            const imageLetter = e.dataTransfer.getData('text/plain');
+            const slotLetter = e.target.dataset.slot;
+            
+            // Check if slot is empty
+            if (!e.target.classList.contains('has-image')) {
+                // Add image to slot
+                addImageToSlot(e.target, imageLetter);
+                
+                // Hide the original image item
+                const originalImage = document.querySelector(`[data-image="${imageLetter}"]`);
+                if (originalImage) {
+                    originalImage.style.opacity = '0.3';
+                    originalImage.style.pointerEvents = 'none';
+                }
+            }
+        }
+    });
+    
+    // Setup remove button events
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-btn')) {
+            const slot = e.target.closest('.answer-slot');
+            const imageLetter = slot.dataset.slot;
+            
+            // Remove image from slot
+            removeImageFromSlot(slot);
+            
+            // Show the original image item
+            const originalImage = document.querySelector(`[data-image="${imageLetter}"]`);
+            if (originalImage) {
+                originalImage.style.opacity = '1';
+                originalImage.style.pointerEvents = 'auto';
+            }
+        }
+    });
+}
+
+function addImageToSlot(slot, imageLetter) {
+    slot.classList.add('has-image');
+    
+    const droppedImage = slot.querySelector('.dropped-image');
+    const removeBtn = slot.querySelector('.remove-btn');
+    
+    droppedImage.textContent = imageLetter;
+    droppedImage.style.display = 'flex';
+    removeBtn.style.display = 'block';
+    
+    // Store the answer
+    const questionIndex = slot.dataset.question || '0';
+    userAnswers[questionIndex] = imageLetter;
+    
+    console.log(`Image ${imageLetter} dropped to slot ${slot.dataset.slot}`);
+}
+
+function removeImageFromSlot(slot) {
+    slot.classList.remove('has-image');
+    
+    const droppedImage = slot.querySelector('.dropped-image');
+    const removeBtn = slot.querySelector('.remove-btn');
+    
+    droppedImage.style.display = 'none';
+    removeBtn.style.display = 'none';
+    
+    // Remove the answer
+    const questionIndex = slot.dataset.question || '0';
+    delete userAnswers[questionIndex];
+    
+    console.log(`Image removed from slot ${slot.dataset.slot}`);
+}

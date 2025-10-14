@@ -27,7 +27,7 @@ async function loadHSK4Questions() {
         // Reset audio count
         resetAudio();
 
-        startTimer(60 * 60);
+        startTimer(60);
         displaySection(1);
     } catch (err) {
         alert('Lỗi khi tải câu hỏi HSK4: ' + err.message);

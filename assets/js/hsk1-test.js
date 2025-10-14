@@ -38,7 +38,7 @@ async function loadHSK1Questions() {
         // Set initial section
         localStorage.setItem('currentSection', '1');
 
-        startTimer(60 * 60);
+        startTimer(60);
         displaySection(1);
     } catch (err) {
         alert('Lỗi khi tải câu hỏi HSK1: ' + err.message);
