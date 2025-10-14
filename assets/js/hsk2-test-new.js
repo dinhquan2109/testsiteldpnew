@@ -33,7 +33,7 @@ async function loadHSK2Questions() {
         // Start timer
         startTimer(60);
         
-        // Display first section
+        // Display all 20 questions in one page
         displayHSK2Section(1);
         
         console.log('✅ HSK2 questions loaded successfully');
@@ -182,15 +182,16 @@ function displayHSK2Section(section) {
     const questionCounter = document.getElementById('questionCounter');
     const pageInfo = document.getElementById('pageInfo');
     
-    if (section === 1) {
-        // Listening Section
-        questionCounter.textContent = 'Phần 1: Nghe';
-        pageInfo.textContent = 'Phần 1/2 - Nghe';
-        
-        container.innerHTML = `
+    // Always show all 20 questions in one page
+    questionCounter.textContent = 'HSK2 Test - 20 câu';
+    pageInfo.textContent = 'Tất cả câu hỏi';
+    
+    container.innerHTML = `
+        <div class="hsk2-complete-section">
+            <!-- Listening Section (Questions 1-10) -->
             <div class="hsk2-listening-section">
                 <div class="section-header">
-                    <h2>🎧 Phần Nghe</h2>
+                    <h2>🎧 Phần Nghe (Câu 1-10)</h2>
                     <p>Nghe audio và chọn đúng (✓) hoặc sai (✗) cho mỗi câu hỏi</p>
                 </div>
                 
@@ -211,20 +212,11 @@ function displayHSK2Section(section) {
                     ${generateListeningQuestions()}
                 </div>
             </div>
-        `;
-        
-        setupAudioControls();
-        setupListeningQuestions();
-        
-    } else if (section === 2) {
-        // Reading Section
-        questionCounter.textContent = 'Phần 2: Nghe + Hình ảnh (10 câu)';
-        pageInfo.textContent = 'Phần 2/2 - Nghe + Hình ảnh';
-        
-        container.innerHTML = `
+            
+            <!-- Image Matching Section (Questions 11-20) -->
             <div class="hsk2-reading-section">
                 <div class="section-header">
-                    <h2>🎧 Phần Nghe + Hình Ảnh</h2>
+                    <h2>🎧 Phần Nghe + Hình Ảnh (Câu 11-20)</h2>
                     <p>Nghe audio và kéo hình ảnh phù hợp vào ô trống</p>
                 </div>
                 
@@ -333,10 +325,13 @@ function displayHSK2Section(section) {
                     <p>Nghe audio và kéo hình ảnh A, B, C, D, E, F, G, H, I, J vào ô trống tương ứng với câu 11-20</p>
                 </div>
             </div>
-        `;
-        
-        setupReadingQuestions();
-    }
+        </div>
+    `;
+    
+    // Setup both sections
+    setupAudioControls();
+    setupListeningQuestions();
+    setupReadingQuestions();
 }
 
 // ===== GENERATE LISTENING QUESTIONS =====

@@ -117,6 +117,21 @@
     padding: 20px;
 }
 
+/* ===== COMPLETE SECTION ===== */
+.hsk2-complete-section {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.hsk2-complete-section .hsk2-listening-section {
+    margin-bottom: 20px;
+}
+
+.hsk2-complete-section .hsk2-reading-section {
+    margin-top: 20px;
+}
+
 /* ===== MATCHING GAME LAYOUT ===== */
 .matching-game-container {
     display: flex;
