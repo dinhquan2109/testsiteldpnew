@@ -218,18 +218,18 @@ function displayHSK2Section(section) {
         
     } else if (section === 2) {
         // Reading Section
-        questionCounter.textContent = 'Phần 2: Đọc';
-        pageInfo.textContent = 'Phần 2/2 - Đọc';
+        questionCounter.textContent = 'Phần 2: Nghe + Hình ảnh (10 câu)';
+        pageInfo.textContent = 'Phần 2/2 - Nghe + Hình ảnh';
         
         container.innerHTML = `
             <div class="hsk2-reading-section">
                 <div class="section-header">
-                    <h2>📖 Phần Đọc</h2>
-                    <p>Kéo thả hình ảnh để nối với các câu hỏi</p>
+                    <h2>🎧 Phần Nghe + Hình Ảnh</h2>
+                    <p>Nghe audio và kéo hình ảnh phù hợp vào ô trống</p>
                 </div>
                 
                 <div class="matching-game-container">
-                    <!-- Images Section -->
+                    <!-- Answer Options Section -->
                     <div class="images-section">
                         <div class="image-item" data-image="A" draggable="true">
                             <div class="image-placeholder">A</div>
@@ -255,37 +255,73 @@ function displayHSK2Section(section) {
                             <div class="image-placeholder">F</div>
                             <div class="image-label">Hình F</div>
                         </div>
+                        <div class="image-item" data-image="G" draggable="true">
+                            <div class="image-placeholder">G</div>
+                            <div class="image-label">Hình G</div>
+                        </div>
+                        <div class="image-item" data-image="H" draggable="true">
+                            <div class="image-placeholder">H</div>
+                            <div class="image-label">Hình H</div>
+                        </div>
+                        <div class="image-item" data-image="I" draggable="true">
+                            <div class="image-placeholder">I</div>
+                            <div class="image-label">Hình I</div>
+                        </div>
+                        <div class="image-item" data-image="J" draggable="true">
+                            <div class="image-placeholder">J</div>
+                            <div class="image-label">Hình J</div>
+                        </div>
                     </div>
                     
                     <!-- Answer Slots Section -->
                     <div class="answers-section">
-                        <div class="answer-slot" data-slot="A">
-                            <div class="answer-label">A</div>
+                        <div class="answer-slot" data-slot="11" data-question="11">
+                            <div class="answer-label">Câu 11</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
-                        <div class="answer-slot" data-slot="B">
-                            <div class="answer-label">B</div>
+                        <div class="answer-slot" data-slot="12" data-question="12">
+                            <div class="answer-label">Câu 12</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
-                        <div class="answer-slot" data-slot="C">
-                            <div class="answer-label">C</div>
+                        <div class="answer-slot" data-slot="13" data-question="13">
+                            <div class="answer-label">Câu 13</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
-                        <div class="answer-slot" data-slot="D">
-                            <div class="answer-label">D</div>
+                        <div class="answer-slot" data-slot="14" data-question="14">
+                            <div class="answer-label">Câu 14</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
-                        <div class="answer-slot" data-slot="E">
-                            <div class="answer-label">E</div>
+                        <div class="answer-slot" data-slot="15" data-question="15">
+                            <div class="answer-label">Câu 15</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
-                        <div class="answer-slot" data-slot="F">
-                            <div class="answer-label">F</div>
+                        <div class="answer-slot" data-slot="16" data-question="16">
+                            <div class="answer-label">Câu 16</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="17" data-question="17">
+                            <div class="answer-label">Câu 17</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="18" data-question="18">
+                            <div class="answer-label">Câu 18</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="19" data-question="19">
+                            <div class="answer-label">Câu 19</div>
+                            <div class="dropped-image" style="display: none;"></div>
+                            <button class="remove-btn" style="display: none;">×</button>
+                        </div>
+                        <div class="answer-slot" data-slot="20" data-question="20">
+                            <div class="answer-label">Câu 20</div>
                             <div class="dropped-image" style="display: none;"></div>
                             <button class="remove-btn" style="display: none;">×</button>
                         </div>
@@ -294,11 +330,7 @@ function displayHSK2Section(section) {
                 
                 <div class="matching-instruction">
                     <h3>🎯 Hướng dẫn:</h3>
-                    <p>Kéo thả hình ảnh từ trên xuống các ô đáp án tương ứng bên dưới</p>
-                </div>
-                
-                <div class="questions-section">
-                    ${generateReadingQuestions()}
+                    <p>Nghe audio và kéo hình ảnh A, B, C, D, E, F, G, H, I, J vào ô trống tương ứng với câu 11-20</p>
                 </div>
             </div>
         `;
@@ -334,31 +366,7 @@ function generateListeningQuestions() {
 }
 
 // ===== GENERATE READING QUESTIONS =====
-function generateReadingQuestions() {
-    let html = '';
-    const questions = [
-        { text: '这是一个苹果。', answer: 'A' },
-        { text: '这是一本书。', answer: 'B' },
-        { text: '这是一支笔。', answer: 'C' },
-        { text: '这是一辆车。', answer: 'D' },
-        { text: '这是一只猫。', answer: 'E' }
-    ];
-    
-    for (let i = 0; i < 5; i++) {
-        const questionNum = i + 11;
-        html += `
-            <div class="question-item">
-                <div class="question-number">Câu ${questionNum}</div>
-                <div class="question-text">Chọn hình ảnh phù hợp với câu sau:</div>
-                <div class="chinese-text">${questions[i].text}</div>
-                <div class="answer-display" data-question="${questionNum}">
-                    Chưa chọn đáp án
-                </div>
-            </div>
-        `;
-    }
-    return html;
-}
+// This function is no longer needed as we use direct HTML in the container
 
 // ===== SETUP AUDIO CONTROLS =====
 function setupAudioControls() {
@@ -421,41 +429,10 @@ function setupListeningQuestions() {
 
 // ===== SETUP READING QUESTIONS =====
 function setupReadingQuestions() {
-    // Setup answer slots with question numbers
-    const answerSlots = document.querySelectorAll('.answer-slot');
-    answerSlots.forEach((slot, index) => {
-        slot.dataset.question = index + 11; // Questions 11-15
-    });
+    console.log('Setting up reading questions with drag & drop');
     
-    // Update answer display when image is dropped
-    document.addEventListener('drop', function(e) {
-        if (e.target.classList.contains('answer-slot')) {
-            const questionNum = e.target.dataset.question;
-            const imageLetter = e.dataTransfer.getData('text/plain');
-            
-            // Update answer display
-            const answerDisplay = document.querySelector(`[data-question="${questionNum}"]`);
-            if (answerDisplay && answerDisplay.classList.contains('answer-display')) {
-                answerDisplay.textContent = `Đã chọn: ${imageLetter}`;
-                answerDisplay.classList.add('has-answer');
-            }
-        }
-    });
-    
-    // Update answer display when image is removed
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-btn')) {
-            const slot = e.target.closest('.answer-slot');
-            const questionNum = slot.dataset.question;
-            
-            // Update answer display
-            const answerDisplay = document.querySelector(`[data-question="${questionNum}"]`);
-            if (answerDisplay && answerDisplay.classList.contains('answer-display')) {
-                answerDisplay.textContent = 'Chưa chọn đáp án';
-                answerDisplay.classList.remove('has-answer');
-            }
-        }
-    });
+    // The answer slots are already set up in generateReadingQuestions()
+    // No need to set question numbers here as they're already set
 }
 
 // ===== SECTION NAVIGATION =====
@@ -717,10 +694,11 @@ function addImageToSlot(slot, imageLetter) {
     removeBtn.style.display = 'block';
     
     // Store the answer
-    const questionIndex = slot.dataset.question || '0';
-    userAnswers[questionIndex] = imageLetter;
-    
-    console.log(`Image ${imageLetter} dropped to slot ${slot.dataset.slot}`);
+    const questionIndex = slot.dataset.question;
+    if (questionIndex) {
+        userAnswers[questionIndex] = imageLetter;
+        console.log(`Question ${questionIndex}: Answer ${imageLetter}`);
+    }
 }
 
 function removeImageFromSlot(slot) {
@@ -733,8 +711,9 @@ function removeImageFromSlot(slot) {
     removeBtn.style.display = 'none';
     
     // Remove the answer
-    const questionIndex = slot.dataset.question || '0';
-    delete userAnswers[questionIndex];
-    
-    console.log(`Image removed from slot ${slot.dataset.slot}`);
+    const questionIndex = slot.dataset.question;
+    if (questionIndex) {
+        delete userAnswers[questionIndex];
+        console.log(`Question ${questionIndex}: Answer removed`);
+    }
 }
