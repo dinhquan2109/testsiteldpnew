@@ -1190,35 +1190,40 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ===== SETUP SCROLL LISTENER =====
 function setupScrollListener() {
-    let isShowingPart2 = false;
+    let currentSection = 1; // 1 = part1, 2 = part2
     
-    window.addEventListener('scroll', function() {
-        // Find the first section of part 2 (image matching section or question 35)
-        const imageMatchingSection = document.querySelector('.image-matching-section');
-        const part2Trigger = imageMatchingSection || document.getElementById('question-35');
+    const updateProgressDisplay = () => {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
         
-        if (part2Trigger) {
-            const rect = part2Trigger.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
+        // Find section headers
+        const imageMatchingHeader = document.querySelector('.image-matching-section');
+        
+        if (imageMatchingHeader) {
+            const rect = imageMatchingHeader.getBoundingClientRect();
             
-            // Show part 2 circles when part 2 section is visible (within 300px from top)
-            if (rect.top < 300 && !isShowingPart2) {
+            // Switch to part 2 when image matching section is near viewport
+            if (rect.top < windowHeight * 0.5 && currentSection === 1) {
                 document.body.classList.add('show-part2');
                 const questionCounter = document.getElementById('questionCounter');
                 if (questionCounter) {
                     questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
                 }
-                isShowingPart2 = true;
-            } else if (rect.top >= 300 && isShowingPart2) {
+                currentSection = 2;
+            } else if (rect.top >= windowHeight * 0.5 && currentSection === 2) {
                 document.body.classList.remove('show-part2');
                 const questionCounter = document.getElementById('questionCounter');
                 if (questionCounter) {
                     questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
                 }
-                isShowingPart2 = false;
+                currentSection = 1;
             }
         }
-    });
+    };
+    
+    window.addEventListener('scroll', updateProgressDisplay);
+    // Initial check
+    updateProgressDisplay();
 }
 
 // ===== EVENT LISTENERS =====

@@ -32,13 +32,13 @@
         .progress-circles {
             width: 100%;
             max-width: 100%;
-            max-height: 90px;
+            max-height: 75px;
             overflow: hidden;
         }
         
         /* Hide progress rows based on current page */
         .progress-row {
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             flex-wrap: nowrap;
@@ -55,21 +55,19 @@
             flex-shrink: 0;
         }
         
-        /* Progress rows visibility - show only 2 rows at a time */
-        .progress-row[data-page="1"] {
+        /* Show only first 2 rows (1-20) initially */
+        .progress-row[data-page="1"]:nth-of-type(1),
+        .progress-row[data-page="1"]:nth-of-type(2) {
             display: flex;
         }
         
-        .progress-row[data-page="2"] {
-            display: none;
-        }
-        
-        /* Show part 2 circles when user scrolls to reading section */
+        /* When scrolled to part 2, show first 2 rows of part 2 */
         body.show-part2 .progress-row[data-page="1"] {
             display: none;
         }
         
-        body.show-part2 .progress-row[data-page="2"] {
+        body.show-part2 .progress-row[data-page="2"]:nth-of-type(5),
+        body.show-part2 .progress-row[data-page="2"]:nth-of-type(6) {
             display: flex;
         }
         
@@ -907,11 +905,10 @@
             }
             
             .progress-circles {
-                max-height: 130px;
+                max-height: 80px;
             }
             
             .progress-row {
-                flex-wrap: wrap;
                 gap: 6px;
             }
             
