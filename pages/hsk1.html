@@ -14,7 +14,7 @@
     <style>
         .btn-result.home:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4) !important;
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5) !important;
         }
         
         .btn-result.home:active {
@@ -34,6 +34,7 @@
         
         .result-content > * {
             animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
         }
         
         .result-content > *:nth-child(1) { animation-delay: 0.1s; }
@@ -42,6 +43,7 @@
         .result-content > *:nth-child(4) { animation-delay: 0.4s; }
         .result-content > *:nth-child(5) { animation-delay: 0.5s; }
         .result-content > *:nth-child(6) { animation-delay: 0.6s; }
+        .result-content > *:nth-child(7) { animation-delay: 0.7s; }
     </style>
 </head>
 <body>
@@ -123,46 +125,51 @@
             </div>
 
             <div class="result-content" style="text-align: center; max-width: 700px; margin: 0 auto;">
-                <!-- Success Icon -->
+                <!-- Logo -->
                 <div style="margin: 40px 0 30px;">
-                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <img src="../assets/images/logoaloha-Photoroom.png" alt="ALOHA Logo" style="width: 180px; height: auto; margin: 0 auto; display: block;">
+                </div>
+
+                <!-- Success Icon -->
+                <div style="margin: 30px 0 30px;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3);">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                     </div>
                 </div>
 
                 <!-- Title -->
-                <h1 style="font-size: 32px; color: #2c3e50; font-weight: 700; margin-bottom: 20px; line-height: 1.4;">
-                    Chúc mừng <span id="resultName" style="color: #667eea;"></span>!
+                <h1 style="font-size: 28px; color: #2c3e50; font-weight: 700; margin-bottom: 15px; line-height: 1.4;">
+                    Chúc mừng <span id="resultName" style="color: #FF6B6B;"></span>!
                 </h1>
                 
                 <!-- Subtitle -->
-                <p style="font-size: 20px; color: #4a5568; margin-bottom: 40px; font-weight: 500;">
-                    Bạn đã hoàn thành bài thi <strong style="color: #667eea;">HSK1 Placement Test</strong>
+                <p style="font-size: 18px; color: #4a5568; margin-bottom: 35px; font-weight: 500;">
+                    Bạn đã hoàn thành bài thi <strong style="color: #FF6B6B;">HSK1 Placement Test</strong>
                 </p>
 
                 <!-- Message Card -->
-                <div style="background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%); border-radius: 20px; padding: 40px; margin: 40px 0; box-shadow: 0 5px 25px rgba(0,0,0,0.08); border: 2px solid #e2e8f0;">
-                    <div style="display: inline-block; background: white; border-radius: 50%; padding: 15px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div style="background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E0 100%); border-radius: 20px; padding: 35px; margin: 35px 0; box-shadow: 0 5px 25px rgba(255, 107, 107, 0.15); border: 2px solid #FFD4CC;">
+                    <div style="display: inline-block; background: white; border-radius: 50%; padding: 12px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(255, 107, 107, 0.2);">
+                        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                     </div>
-                    <p style="font-size: 18px; color: #2c3e50; line-height: 1.8; margin: 0;">
-                        Bộ phận <strong style="color: #667eea;">Tư vấn Tuyển sinh ALOHA</strong> sẽ liên hệ bạn trong thời gian sớm nhất để<br>
+                    <p style="font-size: 17px; color: #2c3e50; line-height: 1.8; margin: 0;">
+                        Bộ phận <strong style="color: #FF6B6B;">Tư vấn Tuyển sinh ALOHA</strong> sẽ liên hệ bạn trong thời gian sớm nhất để<br>
                         <strong>trả kết quả bài test</strong> và <strong>tư vấn lộ trình học phù hợp</strong>.
                     </p>
                 </div>
 
                 <!-- Thank You -->
-                <p style="font-size: 16px; color: #718096; margin: 30px 0 40px; font-style: italic;">
+                <p style="font-size: 15px; color: #718096; margin: 25px 0 35px; font-style: italic;">
                     Cảm ơn bạn đã tin tưởng và đồng hành cùng ALOHA! 🌸
                 </p>
 
                 <!-- Button -->
                 <div class="result-buttons">
-                    <button class="btn-result home" id="btnFinish" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 50px; font-size: 18px; border-radius: 30px; cursor: pointer; font-weight: 600; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                    <button class="btn-result home" id="btnFinish" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); color: white; border: none; padding: 14px 45px; font-size: 17px; border-radius: 30px; cursor: pointer; font-weight: 600; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); transition: all 0.3s ease;">
                         <span>Hoàn tất</span>
                     </button>
                 </div>
