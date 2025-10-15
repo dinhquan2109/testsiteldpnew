@@ -27,7 +27,7 @@ async function getQuestionsByLevel(tableName, range = null) {
     let query = supabase.from(tableName).select('*');
     
     if (range) {
-        // For HSK1 with range (e.g., "1-22")
+        // For HSK1 with range (e.g., "1-11")
         const [startNum, endNum] = range.split('-').map(Number);
         query = query
             .gte('order_number', startNum)

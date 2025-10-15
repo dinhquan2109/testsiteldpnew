@@ -10,7 +10,7 @@ import { displayResult } from './result-display.js';
 // ===== AUTO SET HSK1 LEVEL =====
 function autoSetHSK1Level() {
     // Automatically set HSK1 level
-    setSelectedLevel('hsk1', '1-22', '1', 'questions');
+    setSelectedLevel('hsk1', '1-11', '1', 'questions');
     console.log('HSK1 level auto-set');
 }
 
@@ -28,7 +28,7 @@ async function loadHSK1Questions() {
         localStorage.removeItem('writingQuestions');
         
         console.log('📡 Fetching questions from API...');
-        const result = await getQuestionsByLevel('questions', '1-22');
+        const result = await getQuestionsByLevel('questions', '1-11');
         console.log('📡 API result:', result);
         
         if (!result.success) {

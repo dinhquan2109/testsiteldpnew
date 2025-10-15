@@ -142,19 +142,23 @@
         const HSK1_MAX_AUDIO_PLAYS = 2;
 
         // ===== SUPABASE CLIENT =====
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let supabase = null;
 
         // ===== LOAD SUPABASE SCRIPT =====
         function loadSupabase() {
             return new Promise((resolve, reject) => {
                 if (window.supabase) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     resolve();
                     return;
                 }
                 
                 const script = document.createElement('script');
                 script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-                script.onload = () => resolve();
+                script.onload = () => {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    resolve();
+                };
                 script.onerror = () => reject(new Error('Failed to load Supabase'));
                 document.head.appendChild(script);
             });
@@ -164,12 +168,17 @@
         async function loadHSK1Questions() {
             try {
                 console.log('📡 Fetching HSK1 questions...');
+                console.log('🔗 Supabase client:', supabase);
+                
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
                 
                 const { data: questions, error } = await supabase
                     .from('questions')
                     .select('*')
                     .gte('order_number', 1)
-                    .lte('order_number', 22)
+                    .lte('order_number', 11)
                     .order('order_number');
 
                 if (error) {
@@ -177,14 +186,16 @@
                 }
 
                 if (!questions || questions.length === 0) {
-                    throw new Error('Không có câu hỏi cho HSK1');
+                    console.log('⚠️ No questions from Supabase, using fallback data');
+                    hsk1TestQuestions = generateFallbackQuestions();
+                } else {
+                    hsk1TestQuestions = questions;
                 }
-
-                hsk1TestQuestions = questions;
+                
                 console.log('✅ Questions loaded:', hsk1TestQuestions.length);
 
                 // Start timer
-                startTimer(60 * 60); // 60 minutes
+                startTimer(60); // 60 minutes
 
                 // Display first section
                 displaySection(1);
@@ -201,6 +212,122 @@
                     </div>
                 `;
             }
+        }
+
+        // ===== GENERATE FALLBACK QUESTIONS =====
+        function generateFallbackQuestions() {
+            return [
+                // Listening questions (1-5)
+                {
+                    id: 1,
+                    order_number: 1,
+                    question_text: "Nghe và chọn đáp án đúng",
+                    option_a: "A. 你好",
+                    option_b: "B. 再见", 
+                    option_c: "C. 谢谢",
+                    correct_answer: "A",
+                    audio_url: "https://example.com/audio1.mp3"
+                },
+                {
+                    id: 2,
+                    order_number: 2,
+                    question_text: "Nghe và chọn đáp án đúng",
+                    option_a: "A. 苹果",
+                    option_b: "B. 香蕉",
+                    option_c: "C. 橙子",
+                    correct_answer: "A",
+                    audio_url: "https://example.com/audio2.mp3"
+                },
+                {
+                    id: 3,
+                    order_number: 3,
+                    question_text: "Nghe và chọn đáp án đúng",
+                    option_a: "A. 红色",
+                    option_b: "B. 蓝色",
+                    option_c: "C. 绿色",
+                    correct_answer: "A",
+                    audio_url: "https://example.com/audio3.mp3"
+                },
+                {
+                    id: 4,
+                    order_number: 4,
+                    question_text: "Nghe và chọn đáp án đúng",
+                    option_a: "A. 一",
+                    option_b: "B. 二",
+                    option_c: "C. 三",
+                    correct_answer: "A",
+                    audio_url: "https://example.com/audio4.mp3"
+                },
+                {
+                    id: 5,
+                    order_number: 5,
+                    question_text: "Nghe và chọn đáp án đúng",
+                    option_a: "A. 大",
+                    option_b: "B. 小",
+                    option_c: "C. 高",
+                    correct_answer: "A",
+                    audio_url: "https://example.com/audio5.mp3"
+                },
+                // Reading questions (6-10)
+                {
+                    id: 6,
+                    order_number: 6,
+                    question_text: "Chọn từ đúng",
+                    option_a: "A. 书",
+                    option_b: "B. 笔",
+                    option_c: "C. 纸",
+                    correct_answer: "A",
+                    reading_passage: "这是一本书。"
+                },
+                {
+                    id: 7,
+                    order_number: 7,
+                    question_text: "Chọn từ đúng",
+                    option_a: "A. 猫",
+                    option_b: "B. 狗",
+                    option_c: "C. 鸟",
+                    correct_answer: "A",
+                    reading_passage: "这是一只猫。"
+                },
+                {
+                    id: 8,
+                    order_number: 8,
+                    question_text: "Chọn từ đúng",
+                    option_a: "A. 水",
+                    option_b: "B. 火",
+                    option_c: "C. 土",
+                    correct_answer: "A",
+                    reading_passage: "这是水。"
+                },
+                {
+                    id: 9,
+                    order_number: 9,
+                    question_text: "Chọn từ đúng",
+                    option_a: "A. 天",
+                    option_b: "B. 地",
+                    option_c: "C. 人",
+                    correct_answer: "A",
+                    reading_passage: "这是天。"
+                },
+                {
+                    id: 10,
+                    order_number: 10,
+                    question_text: "Chọn từ đúng",
+                    option_a: "A. 山",
+                    option_b: "B. 海",
+                    option_c: "C. 河",
+                    correct_answer: "A",
+                    reading_passage: "这是山。"
+                },
+                // Writing question (11)
+                {
+                    id: 11,
+                    order_number: 11,
+                    question_text: "Viết một đoạn văn ngắn về gia đình bạn (không tính điểm)",
+                    correct_answer: "",
+                    writing_prompt: "请写一段关于你家庭的短文。"
+                }
+            ];
         }
 
         // ===== DISPLAY SECTION =====
@@ -269,7 +396,7 @@
                 startIdx = listeningQuestions.length + readingQuestions.length;
                 
                 const writingQ = sectionQuestions[0];
-                const savedAnswer = userAnswers[startIdx] || '';
+                const savedAnswer = hsk1UserAnswers[startIdx] || '';
                 const wordCount = savedAnswer.split(/\s+/).filter(w => w.length > 0).length;
                 
                 html += `
@@ -343,8 +470,8 @@
                             <div class="option-item ${savedAnswer === 'C' ? 'selected' : ''}" data-question="${globalIdx}" data-option="C">
                                 <div class="option-label">C</div>
                                 <div class="option-text">${question.option_c}</div>
-                            </div>
-                        </div>
+                </div>
+            </div>
                     </div>
                 `;
             });
@@ -528,8 +655,8 @@
         }
 
         // ===== TIMER FUNCTIONS =====
-        function startTimer(seconds) {
-            let remaining = seconds;
+        function startTimer(minutes) {
+            let remaining = minutes * 60; // Convert minutes to seconds
             updateTimerDisplay(remaining);
 
             hsk1TimerInterval = setInterval(() => {
@@ -563,8 +690,8 @@
             playBtn.addEventListener('click', handleAudioPlay);
             
             audio.addEventListener('ended', function() {
-                audioPlayCount++;
-                if (audioPlayCount >= MAX_AUDIO_PLAYS) {
+                hsk1AudioPlayCount++;
+                if (hsk1AudioPlayCount >= HSK1_MAX_AUDIO_PLAYS) {
                     playBtn.disabled = true;
                     playBtn.textContent = 'Đã hết lượt nghe';
                 }
@@ -601,8 +728,8 @@
                         <p style="color: #7f8c8d; font-size: 16px;">Vui lòng chờ trong giây lát</p>
                         <div style="margin-top: 20px;">
                             <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        </div>
-                    </div>
+        </div>
+    </div>
                 `;
 
                 // Calculate score
