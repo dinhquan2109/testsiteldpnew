@@ -145,9 +145,9 @@ function displayAllQuestions() {
                     ${['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map(letter => {
                         const imageUrl = imageMap[letter] || `https://via.placeholder.com/120?text=${letter}`;
                         return `
-                            <div class="reading-image-item" draggable="true" data-answer="${letter}" id="image-${letter}">
+                            <div class="reading-image-item" draggable="true" data-answer="${letter}" data-image-url="${imageUrl}" id="image-${letter}">
                                 <div class="image-label">${letter}</div>
-                                <img src="${imageUrl}" alt="${letter}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                                <img src="${imageUrl}" alt="${letter}">
                             </div>
                         `;
                     }).join('')}
@@ -165,7 +165,8 @@ function displayAllQuestions() {
                                 <div class="drop-zone" data-question="${globalIdx}">
                                     ${savedAnswer ? `
                                         <div class="dropped-answer" data-answer="${savedAnswer}">
-                                            <span class="answer-letter">${savedAnswer}</span>
+                                            <img src="${imageMap[savedAnswer] || `https://via.placeholder.com/60?text=${savedAnswer}`}" alt="${savedAnswer}" class="dropped-answer-image">
+                                            <span class="dropped-answer-letter">${savedAnswer}</span>
                                             <button class="remove-answer-btn" data-question="${globalIdx}" data-answer="${savedAnswer}">×</button>
                                         </div>
                                     ` : '<span class="drop-placeholder">Kéo vào đây</span>'}
@@ -264,6 +265,9 @@ function setupDragAndDrop() {
                 return; // Don't allow drop
             }
             
+            // Get image URL
+            const imageUrl = imageElement ? imageElement.dataset.imageUrl : `https://via.placeholder.com/60?text=${answer}`;
+            
             // Remove old answer if exists
             const oldAnswer = this.querySelector('.dropped-answer')?.dataset.answer;
             if (oldAnswer) {
@@ -274,12 +278,13 @@ function setupDragAndDrop() {
             this.querySelectorAll('.dropped-answer').forEach(el => el.remove());
             this.querySelectorAll('.drop-placeholder').forEach(el => el.remove());
             
-            // Add new answer
+            // Add new answer with image
             const answerEl = document.createElement('div');
             answerEl.className = 'dropped-answer';
             answerEl.dataset.answer = answer;
             answerEl.innerHTML = `
-                <span class="answer-letter">${answer}</span>
+                <img src="${imageUrl}" alt="${answer}" class="dropped-answer-image">
+                <span class="dropped-answer-letter">${answer}</span>
                 <button class="remove-answer-btn" data-question="${questionIdx}" data-answer="${answer}">×</button>
             `;
             
