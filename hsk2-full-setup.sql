@@ -17,6 +17,12 @@ CREATE TABLE hsk2_questions (
     option_a_text TEXT,
     option_b_text TEXT,
     option_c_text TEXT,
+    image_a_url TEXT,
+    image_b_url TEXT,
+    image_c_url TEXT,
+    image_d_url TEXT,
+    image_e_url TEXT,
+    image_f_url TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -144,6 +150,50 @@ Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice');
 
+-- PHẦN 5: GHÉP HÌNH ẢNH (Questions 36-40) - 6 images + 5 questions
+-- Tất cả các câu dùng chung 6 hình ảnh A-F
+INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, image_a_url, image_b_url, image_c_url, image_d_url, image_e_url, image_f_url, question_type) VALUES
+(36, 'image_matching', 'Mỗi ge xīngqīliù, wǒ dōu qù dǎ lánqiú.', 'D', 
+    'https://your-storage-url.com/images/hsk2_img_A.jpg',
+    'https://your-storage-url.com/images/hsk2_img_B.jpg',
+    'https://your-storage-url.com/images/hsk2_img_C.jpg',
+    'https://your-storage-url.com/images/hsk2_img_D.jpg',
+    'https://your-storage-url.com/images/hsk2_img_E.jpg',
+    'https://your-storage-url.com/images/hsk2_img_F.jpg',
+    'input_matching'),
+(37, 'image_matching', 'Zhèyàng kàn shū duì yǎnjīng bù hǎo.', 'B',
+    'https://your-storage-url.com/images/hsk2_img_A.jpg',
+    'https://your-storage-url.com/images/hsk2_img_B.jpg',
+    'https://your-storage-url.com/images/hsk2_img_C.jpg',
+    'https://your-storage-url.com/images/hsk2_img_D.jpg',
+    'https://your-storage-url.com/images/hsk2_img_E.jpg',
+    'https://your-storage-url.com/images/hsk2_img_F.jpg',
+    'input_matching'),
+(38, 'image_matching', 'Fúwùyuán, nǐmen zhèr yǒu shénme hǎochī de cài?', 'C',
+    'https://your-storage-url.com/images/hsk2_img_A.jpg',
+    'https://your-storage-url.com/images/hsk2_img_B.jpg',
+    'https://your-storage-url.com/images/hsk2_img_C.jpg',
+    'https://your-storage-url.com/images/hsk2_img_D.jpg',
+    'https://your-storage-url.com/images/hsk2_img_E.jpg',
+    'https://your-storage-url.com/images/hsk2_img_F.jpg',
+    'input_matching'),
+(39, 'image_matching', 'Nǐ yě ài tiàowǔ? Tài hǎo le.', 'F',
+    'https://your-storage-url.com/images/hsk2_img_A.jpg',
+    'https://your-storage-url.com/images/hsk2_img_B.jpg',
+    'https://your-storage-url.com/images/hsk2_img_C.jpg',
+    'https://your-storage-url.com/images/hsk2_img_D.jpg',
+    'https://your-storage-url.com/images/hsk2_img_E.jpg',
+    'https://your-storage-url.com/images/hsk2_img_F.jpg',
+    'input_matching'),
+(40, 'image_matching', 'Míngtiān shàngwǔ xuéxiào jiàn, zàijiàn.', 'E',
+    'https://your-storage-url.com/images/hsk2_img_A.jpg',
+    'https://your-storage-url.com/images/hsk2_img_B.jpg',
+    'https://your-storage-url.com/images/hsk2_img_C.jpg',
+    'https://your-storage-url.com/images/hsk2_img_D.jpg',
+    'https://your-storage-url.com/images/hsk2_img_E.jpg',
+    'https://your-storage-url.com/images/hsk2_img_F.jpg',
+    'input_matching');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
 SELECT order_number, section, correct_answer, question_type 
@@ -153,28 +203,31 @@ ORDER BY order_number;
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 35 câu hỏi
+- Tổng cộng: 40 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
 - Câu 21-30: Comprehension Part 1 (Multiple Choice A/B/C) - Đoạn văn 1
 - Câu 31-35: Comprehension Part 2 (Multiple Choice A/B/C) - Đoạn văn 2
+- Câu 36-40: Image Matching (Input A-F) - 6 hình ảnh + điền đáp án
 
 📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
 - Reading: 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
 - Comprehension: 'A', 'B', hoặc 'C'
+- Image Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 70 điểm (35 câu x 2 điểm)
+- Tổng điểm: 80 điểm (40 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
 1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)
 2. Upload image files listening vào bucket 'images' (10 files: hsk2_q1.jpg - hsk2_q10.jpg)
 3. Upload image files reading vào bucket 'images' (10 files: hsk2_reading_A.jpg - hsk2_reading_J.jpg)
-4. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
-5. Update passage_text cho comprehension section với 2 đoạn văn thật (câu 21-30 và 31-35)
-6. Test trên website
+4. Upload image files matching vào bucket 'images' (6 files: hsk2_img_A.jpg - hsk2_img_F.jpg)
+5. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
+6. Update passage_text cho comprehension section với 2 đoạn văn thật (câu 21-30 và 31-35)
+7. Test trên website
 
 📌 CẬP NHẬT URL:
 Thay 'your-storage-url.com' bằng URL thực tế của Supabase Storage:

@@ -279,6 +279,52 @@ function displayCurrentPage() {
         `;
     }
     
+    // PAGE 4: IMAGE MATCHING (36-40) - 6 images + 5 questions with input
+    const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
+    if (hsk2CurrentPage === 4 && imageMatchingQuestions.length > 0) {
+        const imageMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length;
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">🖼️ PHẦN 5: GHÉP HÌNH ẢNH (Image Matching)</div>
+                <div class="section-description">Nhìn hình ảnh và điền đáp án A, B, C, D, E hoặc F vào ô trống</div>
+            </div>
+            <div class="image-matching-section">
+                <div class="images-grid-container">
+                    <div class="images-grid-6">
+                        ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => {
+                            const imageUrl = imageMatchingQuestions[0]?.[`image_${letter.toLowerCase()}_url`] || `https://via.placeholder.com/200x150?text=${letter}`;
+                            return `
+                                <div class="image-option-item">
+                                    <div class="image-option-label">${letter}</div>
+                                    <img src="${imageUrl}" alt="${letter}">
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="image-matching-questions">
+                    ${imageMatchingQuestions.map((q, idx) => {
+                        const globalIdx = imageMatchingStartIdx + idx;
+                        const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                        return `
+                            <div class="image-matching-question-item" id="question-${globalIdx}">
+                                <span class="question-number-inline">${globalIdx + 1}.</span>
+                                <div class="question-text-content">${q.question_text || ''}</div>
+                                <input type="text" 
+                                       class="image-matching-input" 
+                                       data-question="${globalIdx}"
+                                       value="${savedAnswer}"
+                                       maxlength="1"
+                                       placeholder="A-F">
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
@@ -317,6 +363,30 @@ function attachEventListeners() {
             this.classList.add('selected');
             
             saveUserAnswer(questionIdx, answer);
+            updateProgressCircles();
+            updateNavButtons();
+        });
+    });
+    
+    // Image matching inputs
+    document.querySelectorAll('.image-matching-input').forEach(input => {
+        input.addEventListener('input', function() {
+            const questionIdx = parseInt(this.dataset.question);
+            let answer = this.value.toUpperCase().trim();
+            
+            // Only allow A-F
+            if (answer && !['A', 'B', 'C', 'D', 'E', 'F'].includes(answer)) {
+                answer = '';
+                this.value = '';
+            } else {
+                this.value = answer;
+            }
+            
+            if (answer) {
+                saveUserAnswer(questionIdx, answer);
+            } else {
+                removeUserAnswer(questionIdx);
+            }
             updateProgressCircles();
             updateNavButtons();
         });
@@ -531,6 +601,20 @@ function updateNavButtons() {
         const page3AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 30 && parseInt(key) < 35).length;
         
         if (page3AnsweredCount >= 5) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 4) {
+        // Page 4: Check if answered 5 image matching questions (35-39)
+        const page4AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 40).length;
+        
+        if (page4AnsweredCount >= 5) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -737,11 +821,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.addEventListener('click', function(e) {
     if (e.target.id === 'btnNextSection') {
         if (hsk2CurrentPage === 1) {
-            // Go to page 2 (comprehension part 1)
             hsk2CurrentPage = 2;
         } else if (hsk2CurrentPage === 2) {
-            // Go to page 3 (comprehension part 2)
             hsk2CurrentPage = 3;
+        } else if (hsk2CurrentPage === 3) {
+            hsk2CurrentPage = 4;
         }
         displayCurrentPage();
         updateProgressCircles();
@@ -751,10 +835,10 @@ document.addEventListener('click', function(e) {
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page3AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 30 && parseInt(key) < 35).length;
+        const page4AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 40).length;
         
-        if (page3AnsweredCount < 5) {
-            if (!confirm(`Bạn mới trả lời ${page3AnsweredCount}/5 câu phần 4.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page4AnsweredCount < 5) {
+            if (!confirm(`Bạn mới trả lời ${page4AnsweredCount}/5 câu phần 5.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -771,16 +855,19 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-        document.body.classList.remove('page-2', 'page-3');
+        document.body.classList.remove('page-2', 'page-3', 'page-4');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/3 - Nghe & Đọc (Câu 1-20)';
+            pageInfo.textContent = 'Phần 1/4 - Nghe & Đọc (Câu 1-20)';
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/3 - Đọc hiểu 1 (Câu 21-30)';
+            pageInfo.textContent = 'Phần 2/4 - Đọc hiểu 1 (Câu 21-30)';
             document.body.classList.add('page-2');
         } else if (hsk2CurrentPage === 3) {
-            pageInfo.textContent = 'Phần 3/3 - Đọc hiểu 2 (Câu 31-35)';
+            pageInfo.textContent = 'Phần 3/4 - Đọc hiểu 2 (Câu 31-35)';
             document.body.classList.add('page-3');
+        } else if (hsk2CurrentPage === 4) {
+            pageInfo.textContent = 'Phần 4/4 - Ghép hình ảnh (Câu 36-40)';
+            document.body.classList.add('page-4');
         }
     }
 }
