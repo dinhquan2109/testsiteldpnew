@@ -129,28 +129,36 @@
         
         try {
             // Load modules in order
-            const supabaseConfig = await import('../assets/js/supabase-config.js');
+            console.log('Loading supabase-config...');
+            await import('../assets/js/supabase-config.js');
             console.log('✅ supabase-config loaded');
             
-            const apiFunctions = await import('../assets/js/api-functions.js');
+            console.log('Loading api-functions...');
+            await import('../assets/js/api-functions.js');
             console.log('✅ api-functions loaded');
             
-            const audioHandler = await import('../assets/js/audio-handler.js');
+            console.log('Loading audio-handler...');
+            await import('../assets/js/audio-handler.js');
             console.log('✅ audio-handler loaded');
             
-            const timerFunctions = await import('../assets/js/timer-functions.js');
+            console.log('Loading timer-functions...');
+            await import('../assets/js/timer-functions.js');
             console.log('✅ timer-functions loaded');
             
-            const sectionDisplay = await import('../assets/js/section-display.js');
+            console.log('Loading section-display...');
+            await import('../assets/js/section-display.js');
             console.log('✅ section-display loaded');
             
-            const testScoring = await import('../assets/js/test-scoring.js');
+            console.log('Loading test-scoring...');
+            await import('../assets/js/test-scoring.js');
             console.log('✅ test-scoring loaded');
             
-            const resultDisplay = await import('../assets/js/result-display.js');
+            console.log('Loading result-display...');
+            await import('../assets/js/result-display.js');
             console.log('✅ result-display loaded');
             
-            const hsk1Test = await import('../assets/js/hsk1-test.js');
+            console.log('Loading hsk1-test...');
+            await import('../assets/js/hsk1-test.js');
             console.log('✅ hsk1-test loaded');
             
             console.log('🎉 All HSK1 modules loaded successfully');

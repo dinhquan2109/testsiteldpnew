@@ -211,7 +211,12 @@ function getCurrentSection() {
 export { 
     loadHSK1Questions, 
     submitHSK1Test, 
-    autoSetHSK1Level 
+    autoSetHSK1Level,
+    setupHSK1SubmitButton,
+    setupHSK1FinishButton,
+    setupHSK1NavigationButtons,
+    isSectionComplete,
+    getCurrentSection
 };
 
 // ===== INITIALIZATION =====
