@@ -59,8 +59,7 @@ async function loadHSK2Questions() {
         console.log('✅ Questions loaded:', hsk2TestQuestions.length);
         
         startTimer(60);
-        displayCurrentPage();
-        updatePageInfo();
+        displayAllQuestions();
 
     } catch (error) {
         console.error('❌ Error loading questions:', error);
@@ -74,8 +73,8 @@ async function loadHSK2Questions() {
     }
 }
 
-// ===== DISPLAY CURRENT PAGE =====
-function displayCurrentPage() {
+// ===== DISPLAY ALL QUESTIONS =====
+function displayAllQuestions() {
     const container = document.getElementById('questionsContainer');
     let html = '';
     
@@ -83,9 +82,8 @@ function displayCurrentPage() {
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
     const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
     
-    // PAGE 1: 🎧 PHẦN 1 – 听力 (NGHE HIỂU) - Câu 1-35
-    if (hsk2CurrentPage === 1) {
-        // Phần 1 (1-10): Mỗi câu có 1 bức tranh, nghe 1 câu đơn, chọn bức tranh phù hợp
+    // 🎧 PHẦN 1 – 听力 (NGHE HIỂU) - Câu 1-35
+    // Phần 1 (1-10): Mỗi câu có 1 bức tranh, nghe 1 câu đơn, chọn bức tranh phù hợp
     html += `
         <div class="section-header">
             <div class="section-title">🎧 Phần 1 (1–10): Nghe và chọn tranh</div>
@@ -127,7 +125,7 @@ function displayCurrentPage() {
     });
     html += '</div>';
     
-    // READING SECTION (11-20) - Drag & Drop
+    // Phần 2 (11-15): Nghe hội thoại ngắn
     const readingStartIdx = listeningQuestions.length;
     
     // Create image map from reading questions (each question has correct_answer A-J and image_url)
@@ -183,10 +181,9 @@ function displayCurrentPage() {
             </div>
         </div>
         `;
-    }
     
-    // COMPREHENSION PART 1 (21-30) - Still in Page 1
-    if (hsk2CurrentPage === 1 && comprehensionQuestions.length > 0) {
+    // Phần 3 (16-25): Nghe hội thoại + câu hỏi
+    if (comprehensionQuestions.length > 0) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
         const comprehensionPart1 = comprehensionQuestions.slice(0, 10); // First 10 questions (21-30)
         const passageText = comprehensionPart1[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
@@ -232,8 +229,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // COMPREHENSION PART 2 (31-35) - Still in Page 1
-    if (hsk2CurrentPage === 1 && comprehensionQuestions.length > 10) {
+    // Phần 4 (26-35): Nghe hội thoại dài + câu hỏi
+    if (comprehensionQuestions.length > 10) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
         const comprehensionPart2 = comprehensionQuestions.slice(10, 15); // Questions 31-35
         const passageText = comprehensionPart2[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
@@ -279,14 +276,14 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 2: 📖 PHẦN 2 – 阅读 (ĐỌC HIỂU) - Câu 36-60
+    // 📖 PHẦN 2 – 阅读 (ĐỌC HIỂU) - Câu 36-60
     const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
     const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
     const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
     const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
     
     // Phần 1 (36-40): Ghép 2 câu sao cho nghĩa hợp lý
-    if (hsk2CurrentPage === 2 && imageMatchingQuestions.length > 0) {
+    if (imageMatchingQuestions.length > 0) {
         const imageMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length;
         
         html += `
@@ -330,8 +327,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // WORD DRAG-DROP (41-45) - 6 words + 5 fill-in-blank questions
-    if (hsk2CurrentPage === 2 && wordMatchingQuestions.length > 0) {
+    // Phần 2 (41-45): Đọc câu và chọn đáp án
+    if (wordMatchingQuestions.length > 0) {
         const wordMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length;
         
         // Get 6 words from first question
@@ -396,8 +393,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // Q&A JUDGMENT (46-50) - Question + Answer, judge if answer is correct
-    if (hsk2CurrentPage === 2 && qaJudgmentQuestions.length > 0) {
+    // Phần 3 (46-50): Đánh giá đúng/sai
+    if (qaJudgmentQuestions.length > 0) {
         const qaJudgmentStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length;
         
         html += `
@@ -440,8 +437,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // SENTENCE MATCHING (51-60) - Two parts with options and fill-in answers
-    if (hsk2CurrentPage === 2 && sentenceMatchingQuestions.length > 0) {
+    // Phần 4 & 5 (51-60): Ghép câu và điền từ
+    if (sentenceMatchingQuestions.length > 0) {
         const sentenceMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length + qaJudgmentQuestions.length;
         
         // Split into two parts: 51-55 (A-F) and 56-60 (A-E)
@@ -965,31 +962,16 @@ function updateNavButtons() {
     const btnSubmit = document.getElementById('btnSubmit');
     const btnNext = document.getElementById('btnNextSection');
     
-    if (hsk2CurrentPage === 1) {
-        // Page 1: Check if answered 35 questions (0-34) - NGHE HIỂU
-        const page1AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) < 35).length;
-        
-        if (page1AnsweredCount >= 35) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 2) {
-        // Page 2: Check if answered 25 questions (35-59) - ĐỌC HIỂU
-        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 60).length;
-        
-        if (page2AnsweredCount >= 25) {
-            if (btnSubmit) btnSubmit.style.display = 'block';
-            if (btnNext) btnNext.style.display = 'none';
-        } else {
-            if (btnSubmit) btnSubmit.style.display = 'none';
-            if (btnNext) btnNext.style.display = 'none';
-        }
+    // Hide Next button (not used anymore)
+    if (btnNext) btnNext.style.display = 'none';
+    
+    // Show Submit button when all 60 questions are answered
+    const answeredCount = Object.keys(hsk2UserAnswers).length;
+    
+    if (answeredCount >= 60) {
+        if (btnSubmit) btnSubmit.style.display = 'block';
+    } else {
+        if (btnSubmit) btnSubmit.style.display = 'none';
     }
 }
 
@@ -1090,24 +1072,43 @@ async function saveTestResults(resultData) {
 // ===== CALCULATE SCORE =====
 function calculateScore() {
     let score = 0;
-    let correct = 0;
+    let correctPart1 = 0; // Câu 1-35
+    let correctPart2 = 0; // Câu 36-60
+    
+    // Phần 1: Câu 1-35 (NGHE HIỂU) - 100 điểm
+    const pointsPerQuestionPart1 = 100 / 35; // ≈ 2.857 điểm/câu
+    
+    // Phần 2: Câu 36-60 (ĐỌC HIỂU) - 100 điểm
+    const pointsPerQuestionPart2 = 100 / 25; // = 4 điểm/câu
     
     hsk2TestQuestions.forEach((q, idx) => {
         if (q.section === 'writing') return; // Skip writing
         
         const userAnswer = hsk2UserAnswers[idx];
         if (userAnswer && userAnswer.toLowerCase() === q.correct_answer.toLowerCase()) {
-            score += 2; // 2 points per question (20 questions × 2 = 40 points)
-            correct++;
+            if (idx < 35) {
+                // Câu 1-35: NGHE HIỂU
+                score += pointsPerQuestionPart1;
+                correctPart1++;
+            } else {
+                // Câu 36-60: ĐỌC HIỂU
+                score += pointsPerQuestionPart2;
+                correctPart2++;
+            }
         }
     });
     
+    // Round score to 2 decimal places
+    score = Math.round(score * 100) / 100;
+    
     const totalQuestions = hsk2TestQuestions.filter(q => q.section !== 'writing').length;
+    const correct = correctPart1 + correctPart2;
     
-    console.log('Score:', score, '/', totalQuestions * 2);
-    console.log('Correct:', correct, '/', totalQuestions);
+    console.log('📊 PHẦN 1 (1-35):', correctPart1, '/35 câu đúng,', Math.round(correctPart1 * pointsPerQuestionPart1 * 100) / 100, '/100 điểm');
+    console.log('📊 PHẦN 2 (36-60):', correctPart2, '/25 câu đúng,', Math.round(correctPart2 * pointsPerQuestionPart2 * 100) / 100, '/100 điểm');
+    console.log('🎯 TỔNG:', correct, '/', totalQuestions, 'câu đúng,', score, '/200 điểm');
     
-    return { score, correct, total: totalQuestions, maxScore: totalQuestions * 2 };
+    return { score, correct, total: totalQuestions, maxScore: 200 };
 }
 
 // ===== SUBMIT TEST =====
@@ -1188,22 +1189,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ===== EVENT LISTENERS =====
 document.addEventListener('click', function(e) {
-    if (e.target.id === 'btnNextSection') {
-        if (hsk2CurrentPage === 1) {
-            hsk2CurrentPage = 2;
-            displayCurrentPage();
-            updateProgressCircles();
-            updateNavButtons();
-            updatePageInfo();
-            window.scrollTo(0, 0);
-        }
-    }
-    
     if (e.target.id === 'btnSubmit') {
-        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 60).length;
+        const answeredCount = Object.keys(hsk2UserAnswers).length;
         
-        if (page2AnsweredCount < 25) {
-            if (!confirm(`Bạn mới trả lời ${page2AnsweredCount}/25 câu phần 2 (Đọc hiểu).\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (answeredCount < 60) {
+            if (!confirm(`Bạn mới trả lời ${answeredCount}/60 câu.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -1214,44 +1204,5 @@ document.addEventListener('click', function(e) {
     if (e.target.id === 'btnFinish') {
         window.location.href = '../index.html';
     }
-    
-    // TEST BUTTON - XÓA SAU KHI TEST XONG
-    if (e.target.id === 'btnTestNext') {
-        if (hsk2CurrentPage < 2) {
-            hsk2CurrentPage++;
-            displayCurrentPage();
-            updateProgressCircles();
-            updateNavButtons();
-            updatePageInfo();
-            window.scrollTo(0, 0);
-            console.log('🔧 TEST: Jumped to page', hsk2CurrentPage);
-        } else {
-            alert('Đã đến page cuối (2/2)');
-        }
-    }
 });
-
-// ===== UPDATE PAGE INFO =====
-function updatePageInfo() {
-    const pageInfo = document.getElementById('pageInfo');
-    const questionCounter = document.getElementById('questionCounter');
-    
-    if (pageInfo) {
-        document.body.classList.remove('page-1', 'page-2');
-        
-        if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU (Câu 1-35)';
-            document.body.classList.add('page-1');
-            if (questionCounter) {
-                questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
-            }
-        } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU (Câu 36-60)';
-            document.body.classList.add('page-2');
-            if (questionCounter) {
-                questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
-            }
-        }
-    }
-}
 
