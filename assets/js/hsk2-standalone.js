@@ -79,6 +79,7 @@ function displayAllQuestions() {
     
     const listeningQuestions = hsk2TestQuestions.filter(q => q.section === 'listening');
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
+    const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
     
     // LISTENING SECTION (1-10)
     html += `
@@ -179,6 +180,44 @@ function displayAllQuestions() {
         </div>
     `;
     
+    // COMPREHENSION SECTION (21-30) - Passage + Multiple Choice
+    if (comprehensionQuestions.length > 0) {
+        const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
+        const passageText = comprehensionQuestions[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">📖 PHẦN 3: ĐỌC HIỂU (Reading Comprehension)</div>
+                <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
+            </div>
+            <div class="comprehension-section">
+                <div class="passage-text">
+                    ${passageText}
+                </div>
+                <div class="comprehension-questions">
+                    ${comprehensionQuestions.map((q, idx) => {
+                        const globalIdx = comprehensionStartIdx + idx;
+                        const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                        return `
+                            <div class="comprehension-question-item" id="question-${globalIdx}">
+                                <span class="question-number-inline">${globalIdx + 1}.</span>
+                                <div class="comprehension-options">
+                                    ${['A', 'B', 'C'].map(letter => `
+                                        <button class="comprehension-option ${savedAnswer === letter ? 'selected' : ''}" 
+                                                data-question="${globalIdx}" 
+                                                data-answer="${letter}">
+                                            ${letter}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
@@ -195,6 +234,21 @@ function attachEventListeners() {
             const answer = this.dataset.answer;
             
             this.parentElement.querySelectorAll('.tf-option').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            saveUserAnswer(questionIdx, answer);
+            updateProgressCircles();
+            updateNavButtons();
+        });
+    });
+    
+    // Comprehension options (A, B, C)
+    document.querySelectorAll('.comprehension-option').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const questionIdx = parseInt(this.dataset.question);
+            const answer = this.dataset.answer;
+            
+            this.parentElement.querySelectorAll('.comprehension-option').forEach(b => b.classList.remove('selected'));
             this.classList.add('selected');
             
             saveUserAnswer(questionIdx, answer);

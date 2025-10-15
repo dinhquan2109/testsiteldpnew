@@ -13,6 +13,7 @@ CREATE TABLE hsk2_questions (
     correct_answer TEXT,
     audio_url TEXT,
     image_url TEXT,
+    passage_text TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -56,32 +57,90 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 (19, 'reading', 'Kéo hình ảnh phù hợp vào ô trống', 'I', 'https://your-storage-url.com/images/hsk2_reading_I.jpg', 'image_matching'),
 (20, 'reading', 'Kéo hình ảnh phù hợp vào ô trống', 'J', 'https://your-storage-url.com/images/hsk2_reading_J.jpg', 'image_matching');
 
+-- PHẦN 3: ĐỌC HIỂU (Questions 21-30) - Đoạn văn + Multiple Choice A/B/C
+-- Tất cả 10 câu dùng chung 1 đoạn văn
+INSERT INTO hsk2_questions (order_number, section, correct_answer, passage_text, question_type) VALUES
+(21, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(22, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(23, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(24, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(25, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(26, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(27, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(28, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(29, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(30, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
-SELECT order_number, section, question_text, correct_answer, question_type 
+SELECT order_number, section, correct_answer, question_type 
 FROM hsk2_questions 
 ORDER BY order_number;
 
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 20 câu hỏi
+- Tổng cộng: 30 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
+- Câu 21-30: Comprehension (Multiple Choice A/B/C) - Có passage_text
 
-📌 ĐÁNG ÁN:
+📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
 - Reading: 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
+- Comprehension: 'A', 'B', hoặc 'C'
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 40 điểm (20 câu x 2 điểm)
+- Tổng điểm: 60 điểm (30 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
-1. Upload audio files vào Supabase Storage bucket 'audio'
-2. Upload image files vào Supabase Storage bucket 'images'
-3. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
-4. Test trên website
+1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)
+2. Upload image files listening vào bucket 'images' (10 files: hsk2_q1.jpg - hsk2_q10.jpg)
+3. Upload image files reading vào bucket 'images' (10 files: hsk2_reading_A.jpg - hsk2_reading_J.jpg)
+4. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
+5. Update passage_text cho comprehension section với nội dung thật
+6. Test trên website
 
 📌 CẬP NHẬT URL:
 Thay 'your-storage-url.com' bằng URL thực tế của Supabase Storage:
@@ -99,4 +158,3 @@ SELECT COUNT(*) as total_questions FROM hsk2_questions;
 
 -- Phân bố theo section:
 SELECT section, COUNT(*) as count FROM hsk2_questions GROUP BY section ORDER BY section;
-
