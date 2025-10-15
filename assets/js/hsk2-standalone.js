@@ -9,7 +9,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let hsk2TestQuestions = [];
 let hsk2UserAnswers = {};
 let hsk2CurrentQuestion = 1;
-let hsk2CurrentPage = 1; // Page 1: câu 1-35 (NGHE HIỂU), Page 2: câu 36-60 (ĐỌC HIỂU)
+// Removed page logic - display all questions at once
 let hsk2TimerInterval = null;
 let hsk2AudioPlayCount = 0;
 const HSK2_MAX_AUDIO_PLAYS = 2;

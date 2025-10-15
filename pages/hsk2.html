@@ -28,13 +28,28 @@
             color: white;
         }
         
+        /* Progress circles container */
+        .progress-circles {
+            width: 100%;
+            max-width: 100%;
+        }
+        
         /* Hide progress rows based on current page */
         .progress-row {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 8px;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .circle {
+            width: 35px;
+            height: 35px;
+            min-width: 35px;
+            min-height: 35px;
+            flex-shrink: 0;
         }
         
         .progress-row[data-page="2"] {
@@ -888,6 +903,19 @@
             
             .sentence-options-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .progress-row {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .circle {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                min-height: 30px;
+                font-size: 12px;
             }
         }
         
