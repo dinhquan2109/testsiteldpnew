@@ -261,7 +261,11 @@ function attachEventListeners() {
             const questionIdx = parseInt(this.dataset.question);
             const answer = this.dataset.answer;
             
-            this.parentElement.querySelectorAll('.comprehension-option').forEach(b => b.classList.remove('selected'));
+            // Remove selected from all options of this question
+            const questionItem = this.closest('.comprehension-question-item');
+            questionItem.querySelectorAll('.comprehension-option').forEach(b => b.classList.remove('selected'));
+            
+            // Add selected to clicked option
             this.classList.add('selected');
             
             saveUserAnswer(questionIdx, answer);
