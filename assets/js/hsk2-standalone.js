@@ -1126,6 +1126,21 @@ document.addEventListener('click', function(e) {
     if (e.target.id === 'btnFinish') {
         window.location.href = '../index.html';
     }
+    
+    // TEST BUTTON - XÓA SAU KHI TEST XONG
+    if (e.target.id === 'btnTestNext') {
+        if (hsk2CurrentPage < 6) {
+            hsk2CurrentPage++;
+            displayCurrentPage();
+            updateProgressCircles();
+            updateNavButtons();
+            updatePageInfo();
+            window.scrollTo(0, 0);
+            console.log('🔧 TEST: Jumped to page', hsk2CurrentPage);
+        } else {
+            alert('Đã đến page cuối (6/6)');
+        }
+    }
 });
 
 // ===== UPDATE PAGE INFO =====
