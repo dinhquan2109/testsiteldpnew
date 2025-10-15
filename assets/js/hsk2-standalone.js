@@ -83,13 +83,13 @@ function displayCurrentPage() {
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
     const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
     
-    // PAGE 1: LISTENING + READING + COMPREHENSION (1-35) - NGHE HIỂU
+    // PAGE 1: 🎧 PHẦN 1 – 听力 (NGHE HIỂU) - Câu 1-35
     if (hsk2CurrentPage === 1) {
-        // LISTENING SECTION (1-10)
+        // Phần 1 (1-10): Mỗi câu có 1 bức tranh, nghe 1 câu đơn, chọn bức tranh phù hợp
     html += `
         <div class="section-header">
-            <div class="section-title">🎧 Nghe và chọn đúng/sai</div>
-            <div class="section-description">Nghe file audio và chọn đúng (✓) hoặc sai (✗)</div>
+            <div class="section-title">🎧 Phần 1 (1–10): Nghe và chọn tranh</div>
+            <div class="section-description">Mỗi câu có 1 bức tranh, nghe 1 câu đơn và chọn bức tranh phù hợp</div>
         </div>
         <div class="audio-section">
             <div class="audio-info">⚠️ Chú ý phần nghe Audio chỉ nghe tối đa 2 lượt</div>
@@ -140,8 +140,8 @@ function displayCurrentPage() {
     
     html += `
         <div class="section-header" style="margin-top: 40px;">
-            <div class="section-title">🎧 Nghe và chọn đáp án đúng</div>
-            <div class="section-description">Kéo thả đáp án A-J vào các ô câu hỏi 11-20 (mỗi ảnh chỉ dùng 1 lần)</div>
+            <div class="section-title">🎧 Phần 2 (11–15): Nghe hội thoại ngắn</div>
+            <div class="section-description">Nghe 1 đoạn hội thoại ngắn (2 câu), chọn đáp án A–F tương ứng</div>
         </div>
         <div class="reading-section-layout">
             <div class="reading-images-col">
@@ -193,8 +193,8 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📖 Đọc đoạn văn - Phần 1</div>
-                <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
+                <div class="section-title">🎧 Phần 3 (16–25): Nghe hội thoại + câu hỏi</div>
+                <div class="section-description">Nghe hội thoại → câu hỏi → chọn A/B/C</div>
             </div>
             <div class="comprehension-section">
                 <div class="passage-text">
@@ -240,8 +240,8 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📖 Đọc đoạn văn - Phần 2</div>
-                <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
+                <div class="section-title">🎧 Phần 4 (26–35): Nghe hội thoại dài + câu hỏi</div>
+                <div class="section-description">Nghe hội thoại dài hơn → câu hỏi → chọn A/B/C</div>
             </div>
             <div class="comprehension-section">
                 <div class="passage-text">
@@ -279,20 +279,20 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 2: ĐỌC HIỂU (Reading Comprehension) - 36-60
+    // PAGE 2: 📖 PHẦN 2 – 阅读 (ĐỌC HIỂU) - Câu 36-60
     const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
     const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
     const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
     const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
     
-    // IMAGE MATCHING (36-40) - 6 images + 5 questions with input
+    // Phần 1 (36-40): Ghép 2 câu sao cho nghĩa hợp lý
     if (hsk2CurrentPage === 2 && imageMatchingQuestions.length > 0) {
         const imageMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length;
         
         html += `
             <div class="section-header">
-                <div class="section-title">🖼️ Ghép hình ảnh</div>
-                <div class="section-description">Nhìn hình ảnh và điền đáp án A, B, C, D, E hoặc F vào ô trống</div>
+                <div class="section-title">📖 Phần 1 (36–40): Ghép câu</div>
+                <div class="section-description">Ghép 2 câu sao cho nghĩa hợp lý (hỏi–đáp, nguyên nhân–kết quả)</div>
             </div>
             <div class="image-matching-section">
                 <div class="images-grid-container">
@@ -346,8 +346,8 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">✍️ Điền từ vào chỗ trống</div>
-                <div class="section-description">Kéo từ A-F vào chỗ trống trong câu (mỗi từ chỉ dùng 1 lần)</div>
+                <div class="section-title">📖 Phần 2 (41–45): Đọc câu và chọn đáp án</div>
+                <div class="section-description">Đọc 5 câu → chọn đáp án tương ứng trong danh sách A–F</div>
             </div>
             <div class="word-matching-section">
                 <div class="words-container">
@@ -402,8 +402,8 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">💬 Đánh giá câu trả lời</div>
-                <div class="section-description">Đọc câu hỏi và câu trả lời, chọn câu trả lời đúng (✓) hoặc sai (✗)</div>
+                <div class="section-title">📖 Phần 3 (46–50): Đánh giá đúng/sai</div>
+                <div class="section-description">Đọc đoạn mô tả + câu đánh giá → chọn đúng (对) hay sai (错)</div>
             </div>
             <div class="qa-judgment-section">
                 ${qaJudgmentQuestions.map((q, idx) => {
@@ -448,14 +448,7 @@ function displayCurrentPage() {
         const part1Questions = sentenceMatchingQuestions.slice(0, 5); // 51-55
         const part2Questions = sentenceMatchingQuestions.slice(5, 10); // 56-60
         
-        html += `
-            <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📝 Ghép câu</div>
-                <div class="section-description">Chọn đáp án phù hợp và điền vào ô trống</div>
-            </div>
-        `;
-        
-        // PART 1: Questions 51-55 with options A-F
+        // PART 1: Questions 51-55 - Đọc đoạn ngắn + câu hỏi → chọn A/B/C/D/E/F
         if (part1Questions.length > 0) {
             const part1Options = {
                 'A': part1Questions[0]?.option_a_sentence || 'A',
@@ -467,8 +460,11 @@ function displayCurrentPage() {
             };
             
             html += `
+                <div class="section-header" style="margin-top: 40px;">
+                    <div class="section-title">📖 Phần 4 (51–55): Đọc đoạn + trả lời câu hỏi</div>
+                    <div class="section-description">Đọc đoạn ngắn + câu hỏi → chọn A/B/C/D/E/F</div>
+                </div>
                 <div class="sentence-matching-part" id="sentence-part1">
-                    <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 51-55</h4>
                     <div class="sentence-options-grid">
                         ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => `
                             <div class="sentence-option-box">
@@ -499,7 +495,7 @@ function displayCurrentPage() {
             `;
         }
         
-        // PART 2: Questions 56-60 with options A-E
+        // PART 2: Questions 56-60 - Điền từ vào chỗ trống
         if (part2Questions.length > 0) {
             const part2Options = {
                 'A': part2Questions[0]?.option_a_sentence || 'A',
@@ -510,8 +506,11 @@ function displayCurrentPage() {
             };
             
             html += `
-                <div class="sentence-matching-part" id="sentence-part2" style="margin-top: 40px;">
-                    <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 56-60</h4>
+                <div class="section-header" style="margin-top: 40px;">
+                    <div class="section-title">📖 Phần 5 (56–60): Điền từ vào chỗ trống</div>
+                    <div class="section-description">Mỗi đoạn có chỗ trống, chọn từ điền vào cho đúng ngữ pháp/ý nghĩa</div>
+                </div>
+                <div class="sentence-matching-part" id="sentence-part2">
                     <div class="sentence-options-grid">
                         ${['A', 'B', 'C', 'D', 'E'].map(letter => `
                             <div class="sentence-option-box">
@@ -1235,15 +1234,23 @@ document.addEventListener('click', function(e) {
 // ===== UPDATE PAGE INFO =====
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
+    const questionCounter = document.getElementById('questionCounter');
+    
     if (pageInfo) {
         document.body.classList.remove('page-1', 'page-2');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/2 - NGHE HIỂU (Câu 1-35)';
+            pageInfo.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU (Câu 1-35)';
             document.body.classList.add('page-1');
+            if (questionCounter) {
+                questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
+            }
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/2 - ĐỌC HIỂU (Câu 36-60)';
+            pageInfo.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU (Câu 36-60)';
             document.body.classList.add('page-2');
+            if (questionCounter) {
+                questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
+            }
         }
     }
 }
