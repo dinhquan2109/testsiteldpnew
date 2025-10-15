@@ -9,7 +9,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let hsk2TestQuestions = [];
 let hsk2UserAnswers = {};
 let hsk2CurrentQuestion = 1;
-let hsk2CurrentPage = 1; // Page 1: câu 1-20, Page 2: câu 21-30
+let hsk2CurrentPage = 1; // Page 1: câu 1-35 (NGHE HIỂU), Page 2: câu 36-60 (ĐỌC HIỂU)
 let hsk2TimerInterval = null;
 let hsk2AudioPlayCount = 0;
 const HSK2_MAX_AUDIO_PLAYS = 2;
@@ -83,12 +83,19 @@ function displayCurrentPage() {
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
     const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
     
-    // PAGE 1: LISTENING + READING (1-20)
+    // PAGE 1: LISTENING + READING + COMPREHENSION (1-35) - NGHE HIỂU
     if (hsk2CurrentPage === 1) {
+        html += `
+            <div class="section-header">
+                <div class="section-title">🎧 PHẦN 1: NGHE HIỂU (Listening Comprehension)</div>
+                <div class="section-description">Phần thi nghe và hiểu câu hỏi</div>
+            </div>
+        `;
+        
         // LISTENING SECTION (1-10)
     html += `
-        <div class="section-header">
-            <div class="section-title">🎧 PHẦN 1: NGHE (Listening)</div>
+        <div class="section-header" style="margin-top: 20px;">
+            <div class="section-title" style="font-size: 20px;">🎧 Nghe và chọn đúng/sai</div>
             <div class="section-description">Nghe file audio và chọn đúng (✓) hoặc sai (✗)</div>
         </div>
         <div class="audio-section">
@@ -185,15 +192,15 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 2: COMPREHENSION PART 1 (21-30)
-    if (hsk2CurrentPage === 2 && comprehensionQuestions.length > 0) {
+    // COMPREHENSION PART 1 (21-30) - Still in Page 1
+    if (hsk2CurrentPage === 1 && comprehensionQuestions.length > 0) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
         const comprehensionPart1 = comprehensionQuestions.slice(0, 10); // First 10 questions (21-30)
         const passageText = comprehensionPart1[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📖 PHẦN 3: ĐỌC HIỂU - Phần 1 (Reading Comprehension)</div>
+                <div class="section-title" style="font-size: 20px;">📖 Đọc đoạn văn - Phần 1</div>
                 <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
             </div>
             <div class="comprehension-section">
@@ -232,15 +239,15 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 3: COMPREHENSION PART 2 (31-35)
-    if (hsk2CurrentPage === 3 && comprehensionQuestions.length > 10) {
+    // COMPREHENSION PART 2 (31-35) - Still in Page 1
+    if (hsk2CurrentPage === 1 && comprehensionQuestions.length > 10) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
         const comprehensionPart2 = comprehensionQuestions.slice(10, 15); // Questions 31-35
         const passageText = comprehensionPart2[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📖 PHẦN 4: ĐỌC HIỂU - Phần 2 (Reading Comprehension)</div>
+                <div class="section-title" style="font-size: 20px;">📖 Đọc đoạn văn - Phần 2</div>
                 <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
             </div>
             <div class="comprehension-section">
@@ -279,14 +286,28 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 4: IMAGE MATCHING (36-40) - 6 images + 5 questions with input
+    // PAGE 2: ĐỌC HIỂU (Reading Comprehension) - 36-60
     const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
-    if (hsk2CurrentPage === 4 && imageMatchingQuestions.length > 0) {
+    const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
+    const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
+    const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
+    
+    if (hsk2CurrentPage === 2) {
+        html += `
+            <div class="section-header">
+                <div class="section-title">📖 PHẦN 2: ĐỌC HIỂU (Reading Comprehension)</div>
+                <div class="section-description">Phần thi đọc hiểu và làm bài tập</div>
+            </div>
+        `;
+    }
+    
+    // IMAGE MATCHING (36-40) - 6 images + 5 questions with input
+    if (hsk2CurrentPage === 2 && imageMatchingQuestions.length > 0) {
         const imageMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length;
         
         html += `
-            <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">🖼️ PHẦN 5: GHÉP HÌNH ẢNH (Image Matching)</div>
+            <div class="section-header" style="margin-top: 20px;">
+                <div class="section-title" style="font-size: 20px;">🖼️ Ghép hình ảnh</div>
                 <div class="section-description">Nhìn hình ảnh và điền đáp án A, B, C, D, E hoặc F vào ô trống</div>
             </div>
             <div class="image-matching-section">
@@ -325,9 +346,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 5: WORD DRAG-DROP (41-45) - 6 words + 5 fill-in-blank questions
-    const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
-    if (hsk2CurrentPage === 5 && wordMatchingQuestions.length > 0) {
+    // WORD DRAG-DROP (41-45) - 6 words + 5 fill-in-blank questions
+    if (hsk2CurrentPage === 2 && wordMatchingQuestions.length > 0) {
         const wordMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length;
         
         // Get 6 words from first question
@@ -342,7 +362,7 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">✍️ PHẦN 6: ĐIỀN TỪ VÀO CHỖ TRỐNG (Fill in the Blanks)</div>
+                <div class="section-title" style="font-size: 20px;">✍️ Điền từ vào chỗ trống</div>
                 <div class="section-description">Kéo từ A-F vào chỗ trống trong câu (mỗi từ chỉ dùng 1 lần)</div>
             </div>
             <div class="word-matching-section">
@@ -392,14 +412,13 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 6: Q&A JUDGMENT (46-50) - Question + Answer, judge if answer is correct
-    const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
-    if (hsk2CurrentPage === 6 && qaJudgmentQuestions.length > 0) {
+    // Q&A JUDGMENT (46-50) - Question + Answer, judge if answer is correct
+    if (hsk2CurrentPage === 2 && qaJudgmentQuestions.length > 0) {
         const qaJudgmentStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length;
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">💬 PHẦN 7: ĐÁNH GIÁ CÂU TRẢ LỜI (Q&A Judgment)</div>
+                <div class="section-title" style="font-size: 20px;">💬 Đánh giá câu trả lời</div>
                 <div class="section-description">Đọc câu hỏi và câu trả lời, chọn câu trả lời đúng (✓) hoặc sai (✗)</div>
             </div>
             <div class="qa-judgment-section">
@@ -437,9 +456,8 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 7: SENTENCE MATCHING (51-60) - Two parts with options and fill-in answers
-    const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
-    if (hsk2CurrentPage === 7 && sentenceMatchingQuestions.length > 0) {
+    // SENTENCE MATCHING (51-60) - Two parts with options and fill-in answers
+    if (hsk2CurrentPage === 2 && sentenceMatchingQuestions.length > 0) {
         const sentenceMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length + qaJudgmentQuestions.length;
         
         // Split into two parts: 51-55 (A-F) and 56-60 (A-E)
@@ -448,7 +466,7 @@ function displayCurrentPage() {
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📝 PHẦN 8: GHÉP CÂU (Sentence Matching)</div>
+                <div class="section-title" style="font-size: 20px;">📝 Ghép câu</div>
                 <div class="section-description">Chọn đáp án phù hợp và điền vào ô trống</div>
             </div>
         `;
@@ -965,10 +983,10 @@ function updateNavButtons() {
     const btnNext = document.getElementById('btnNextSection');
     
     if (hsk2CurrentPage === 1) {
-        // Page 1: Check if answered 20 questions (0-19)
-        const page1AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) < 20).length;
+        // Page 1: Check if answered 35 questions (0-34) - NGHE HIỂU
+        const page1AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) < 35).length;
         
-        if (page1AnsweredCount >= 20) {
+        if (page1AnsweredCount >= 35) {
             if (btnNext) {
                 btnNext.style.display = 'block';
                 btnNext.textContent = 'Tiếp tục →';
@@ -979,80 +997,10 @@ function updateNavButtons() {
             if (btnSubmit) btnSubmit.style.display = 'none';
         }
     } else if (hsk2CurrentPage === 2) {
-        // Page 2: Check if answered 10 comprehension questions (20-29)
-        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 20 && parseInt(key) < 30).length;
+        // Page 2: Check if answered 25 questions (35-59) - ĐỌC HIỂU
+        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 60).length;
         
-        if (page2AnsweredCount >= 10) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 3) {
-        // Page 3: Check if answered 5 comprehension questions (30-34)
-        const page3AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 30 && parseInt(key) < 35).length;
-        
-        if (page3AnsweredCount >= 5) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 4) {
-        // Page 4: Check if answered 5 image matching questions (35-39)
-        const page4AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 40).length;
-        
-        if (page4AnsweredCount >= 5) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 5) {
-        // Page 5: Check if answered 5 word matching questions (40-44)
-        const page5AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 40 && parseInt(key) < 45).length;
-        
-        if (page5AnsweredCount >= 5) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 6) {
-        // Page 6: Check if answered 5 Q&A judgment questions (45-49)
-        const page6AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 45 && parseInt(key) < 50).length;
-        
-        if (page6AnsweredCount >= 5) {
-            if (btnNext) {
-                btnNext.style.display = 'block';
-                btnNext.textContent = 'Tiếp tục →';
-            }
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        } else {
-            if (btnNext) btnNext.style.display = 'none';
-            if (btnSubmit) btnSubmit.style.display = 'none';
-        }
-    } else if (hsk2CurrentPage === 7) {
-        // Page 7: Check if answered 10 sentence matching questions (50-59)
-        const page7AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 50 && parseInt(key) < 60).length;
-        
-        if (page7AnsweredCount >= 10) {
+        if (page2AnsweredCount >= 25) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -1260,29 +1208,19 @@ document.addEventListener('click', function(e) {
     if (e.target.id === 'btnNextSection') {
         if (hsk2CurrentPage === 1) {
             hsk2CurrentPage = 2;
-        } else if (hsk2CurrentPage === 2) {
-            hsk2CurrentPage = 3;
-        } else if (hsk2CurrentPage === 3) {
-            hsk2CurrentPage = 4;
-        } else if (hsk2CurrentPage === 4) {
-            hsk2CurrentPage = 5;
-        } else if (hsk2CurrentPage === 5) {
-            hsk2CurrentPage = 6;
-        } else if (hsk2CurrentPage === 6) {
-            hsk2CurrentPage = 7;
+            displayCurrentPage();
+            updateProgressCircles();
+            updateNavButtons();
+            updatePageInfo();
+            window.scrollTo(0, 0);
         }
-        displayCurrentPage();
-        updateProgressCircles();
-        updateNavButtons();
-        updatePageInfo();
-        window.scrollTo(0, 0);
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page7AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 50 && parseInt(key) < 60).length;
+        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 60).length;
         
-        if (page7AnsweredCount < 10) {
-            if (!confirm(`Bạn mới trả lời ${page7AnsweredCount}/10 câu phần 8.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page2AnsweredCount < 25) {
+            if (!confirm(`Bạn mới trả lời ${page2AnsweredCount}/25 câu phần 2 (Đọc hiểu).\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -1296,7 +1234,7 @@ document.addEventListener('click', function(e) {
     
     // TEST BUTTON - XÓA SAU KHI TEST XONG
     if (e.target.id === 'btnTestNext') {
-        if (hsk2CurrentPage < 7) {
+        if (hsk2CurrentPage < 2) {
             hsk2CurrentPage++;
             displayCurrentPage();
             updateProgressCircles();
@@ -1305,7 +1243,7 @@ document.addEventListener('click', function(e) {
             window.scrollTo(0, 0);
             console.log('🔧 TEST: Jumped to page', hsk2CurrentPage);
         } else {
-            alert('Đã đến page cuối (7/7)');
+            alert('Đã đến page cuối (2/2)');
         }
     }
 });
@@ -1314,28 +1252,14 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5', 'page-6', 'page-7');
+        document.body.classList.remove('page-1', 'page-2');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/7 - Nghe & Đọc (Câu 1-20)';
+            pageInfo.textContent = 'Phần 1/2 - NGHE HIỂU (Câu 1-35)';
+            document.body.classList.add('page-1');
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/7 - Đọc hiểu 1 (Câu 21-30)';
+            pageInfo.textContent = 'Phần 2/2 - ĐỌC HIỂU (Câu 36-60)';
             document.body.classList.add('page-2');
-        } else if (hsk2CurrentPage === 3) {
-            pageInfo.textContent = 'Phần 3/7 - Đọc hiểu 2 (Câu 31-35)';
-            document.body.classList.add('page-3');
-        } else if (hsk2CurrentPage === 4) {
-            pageInfo.textContent = 'Phần 4/7 - Ghép hình ảnh (Câu 36-40)';
-            document.body.classList.add('page-4');
-        } else if (hsk2CurrentPage === 5) {
-            pageInfo.textContent = 'Phần 5/7 - Điền từ (Câu 41-45)';
-            document.body.classList.add('page-5');
-        } else if (hsk2CurrentPage === 6) {
-            pageInfo.textContent = 'Phần 6/7 - Đánh giá (Câu 46-50)';
-            document.body.classList.add('page-6');
-        } else if (hsk2CurrentPage === 7) {
-            pageInfo.textContent = 'Phần 7/7 - Ghép câu (Câu 51-60)';
-            document.body.classList.add('page-7');
         }
     }
 }
