@@ -203,16 +203,24 @@ function displayCurrentPage() {
                     ${comprehensionQuestions.map((q, idx) => {
                         const globalIdx = comprehensionStartIdx + idx;
                         const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                        const optionTexts = {
+                            'A': q.option_a_text || 'Đáp án A',
+                            'B': q.option_b_text || 'Đáp án B',
+                            'C': q.option_c_text || 'Đáp án C'
+                        };
                         return `
                             <div class="comprehension-question-item" id="question-${globalIdx}">
                                 <span class="question-number-inline">${globalIdx + 1}.</span>
                                 <div class="comprehension-options">
                                     ${['A', 'B', 'C'].map(letter => `
-                                        <button class="comprehension-option ${savedAnswer === letter ? 'selected' : ''}" 
-                                                data-question="${globalIdx}" 
-                                                data-answer="${letter}">
-                                            ${letter}
-                                        </button>
+                                        <div class="option-wrapper">
+                                            <button class="comprehension-option ${savedAnswer === letter ? 'selected' : ''}" 
+                                                    data-question="${globalIdx}" 
+                                                    data-answer="${letter}">
+                                                ${letter}
+                                            </button>
+                                            <span class="option-text">${optionTexts[letter]}</span>
+                                        </div>
                                     `).join('')}
                                 </div>
                             </div>

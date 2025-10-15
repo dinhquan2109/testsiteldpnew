@@ -38,8 +38,28 @@ UPDATE hsk2_questions SET correct_answer = 'B' WHERE order_number = 28;
 UPDATE hsk2_questions SET correct_answer = 'C' WHERE order_number = 29;
 UPDATE hsk2_questions SET correct_answer = 'A' WHERE order_number = 30;
 
+-- ===== CẬP NHẬT TEXT ĐÁP ÁN A/B/C =====
+-- Text sẽ hiển thị bên cạnh nút A/B/C
+
+UPDATE hsk2_questions SET option_a_text = '大 贵 了', option_b_text = '不 好吃', option_c_text = '已经 好 了' WHERE order_number = 21;
+UPDATE hsk2_questions SET option_a_text = '找 人', option_b_text = '洗 衣服', option_c_text = '看 电视' WHERE order_number = 22;
+UPDATE hsk2_questions SET option_a_text = '阴', option_b_text = '晴', option_c_text = '下 雨' WHERE order_number = 23;
+UPDATE hsk2_questions SET option_a_text = '学生', option_b_text = '妈妈', option_c_text = '男朋友' WHERE order_number = 24;
+UPDATE hsk2_questions SET option_a_text = '做 饭', option_b_text = '买 东西', option_c_text = '去 医院' WHERE order_number = 25;
+UPDATE hsk2_questions SET option_a_text = '很 高', option_b_text = '很 忙', option_c_text = '很 远' WHERE order_number = 26;
+UPDATE hsk2_questions SET option_a_text = '星期六', option_b_text = '明天', option_c_text = '今天' WHERE order_number = 27;
+UPDATE hsk2_questions SET option_a_text = '在 家', option_b_text = '在 学校', option_c_text = '在 公司' WHERE order_number = 28;
+UPDATE hsk2_questions SET option_a_text = '喝 咖啡', option_b_text = '喝 茶', option_c_text = '喝 水' WHERE order_number = 29;
+UPDATE hsk2_questions SET option_a_text = '八 点', option_b_text = '九 点', option_c_text = '十 点' WHERE order_number = 30;
+
 -- ===== VERIFY DỮ LIỆU SAU KHI UPDATE =====
-SELECT order_number, correct_answer, LEFT(passage_text, 50) as passage_preview
+SELECT 
+    order_number, 
+    correct_answer,
+    option_a_text,
+    option_b_text,
+    option_c_text,
+    LEFT(passage_text, 50) as passage_preview
 FROM hsk2_questions 
 WHERE section = 'comprehension'
 ORDER BY order_number;

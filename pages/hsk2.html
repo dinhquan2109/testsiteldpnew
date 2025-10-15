@@ -301,11 +301,18 @@
         
         .comprehension-options {
             display: flex;
-            gap: 10px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .option-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .comprehension-option {
-            width: 60px;
+            width: 50px;
             height: 50px;
             border: 2px solid #ddd;
             background: white;
@@ -315,6 +322,7 @@
             color: #2c3e50;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         
         .comprehension-option:hover {
@@ -327,6 +335,13 @@
             background: #FF6B6B;
             color: white;
             border-color: #FF6B6B;
+        }
+        
+        .option-text {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
         
         @media (max-width: 768px) {

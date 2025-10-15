@@ -14,6 +14,9 @@ CREATE TABLE hsk2_questions (
     audio_url TEXT,
     image_url TEXT,
     passage_text TEXT,
+    option_a_text TEXT,
+    option_b_text TEXT,
+    option_c_text TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -59,53 +62,54 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 
 -- PHẦN 3: ĐỌC HIỂU (Questions 21-30) - Đoạn văn + Multiple Choice A/B/C
 -- Tất cả 10 câu dùng chung 1 đoạn văn
-INSERT INTO hsk2_questions (order_number, section, correct_answer, passage_text, question_type) VALUES
-(21, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+-- Mỗi câu có text cho 3 đáp án A, B, C
+INSERT INTO hsk2_questions (order_number, section, correct_answer, option_a_text, option_b_text, option_c_text, passage_text, question_type) VALUES
+(21, 'comprehension', 'A', '大 贵 了', '不 好吃', '已经 好 了', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(22, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(22, 'comprehension', 'B', '找 人', '洗 衣服', '看 电视', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(23, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(23, 'comprehension', 'C', '阴', '晴', '下 雨', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(24, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(24, 'comprehension', 'A', '学生', '妈妈', '男朋友', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(25, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(25, 'comprehension', 'B', '做 饭', '买 东西', '去 医院', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(26, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(26, 'comprehension', 'C', '很 高', '很 忙', '很 远', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(27, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(27, 'comprehension', 'A', '星期六', '明天', '今天', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(28, 'comprehension', 'B', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(28, 'comprehension', 'B', '在 家', '在 学校', '在 公司', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(29, 'comprehension', 'C', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(29, 'comprehension', 'C', '喝 咖啡', '喝 茶', '喝 水', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
-(30, 'comprehension', 'A', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+(30, 'comprehension', 'A', '八 点', '九 点', '十 点', 'Đây là đoạn văn mẫu cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
 
 Đoạn văn này nên dài khoảng 200-300 từ, phù hợp với trình độ HSK2. Nội dung có thể về cuộc sống hàng ngày, văn hóa Trung Quốc, hoặc các chủ đề quen thuộc.
 
