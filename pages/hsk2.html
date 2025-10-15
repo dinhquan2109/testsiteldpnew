@@ -29,15 +29,26 @@
         }
         
         /* Hide progress rows based on current page */
-        .progress-row[data-page="2"] {
+        .progress-row[data-page="2"],
+        .progress-row[data-page="3"] {
             display: none;
         }
         
-        body.page-2 .progress-row[data-page="1"] {
+        body.page-2 .progress-row[data-page="1"],
+        body.page-2 .progress-row[data-page="3"] {
             display: none;
         }
         
         body.page-2 .progress-row[data-page="2"] {
+            display: flex;
+        }
+        
+        body.page-3 .progress-row[data-page="1"],
+        body.page-3 .progress-row[data-page="2"] {
+            display: none;
+        }
+        
+        body.page-3 .progress-row[data-page="3"] {
             display: flex;
         }
         
@@ -449,6 +460,13 @@
                             <div class="circle">28</div>
                             <div class="circle">29</div>
                             <div class="circle">30</div>
+                        </div>
+                        <div class="progress-row" data-page="3">
+                            <div class="circle">31</div>
+                            <div class="circle">32</div>
+                            <div class="circle">33</div>
+                            <div class="circle">34</div>
+                            <div class="circle">35</div>
                         </div>
                     </div>
                 </div>

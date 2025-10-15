@@ -115,6 +115,35 @@ Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21
 
 Sau khi đọc đoạn văn này, học viên sẽ trả lời 10 câu hỏi (21-30) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice');
 
+-- PHẦN 4: ĐỌC HIỂU - PHẦN 2 (Questions 31-35) - Đoạn văn khác + Multiple Choice A/B/C
+-- 5 câu dùng chung 1 đoạn văn mới
+INSERT INTO hsk2_questions (order_number, section, correct_answer, option_a_text, option_b_text, option_c_text, passage_text, question_type) VALUES
+(31, 'comprehension', 'B', '去 公园', '去 商店', '去 学校', 'Đây là đoạn văn thứ 2 cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này cũng nên dài khoảng 150-200 từ, phù hợp với trình độ HSK2. 
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(32, 'comprehension', 'C', '昨天', '前天', '上个月', 'Đây là đoạn văn thứ 2 cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này cũng nên dài khoảng 150-200 từ, phù hợp với trình độ HSK2. 
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(33, 'comprehension', 'A', '爸爸 妈妈', '老师 同学', '朋友', 'Đây là đoạn văn thứ 2 cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này cũng nên dài khoảng 150-200 từ, phù hợp với trình độ HSK2. 
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(34, 'comprehension', 'B', '很 热', '很 冷', '很 舒服', 'Đây là đoạn văn thứ 2 cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này cũng nên dài khoảng 150-200 từ, phù hợp với trình độ HSK2. 
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice'),
+(35, 'comprehension', 'C', '不 喜欢', '不 知道', '很 喜欢', 'Đây là đoạn văn thứ 2 cho phần đọc hiểu. Bạn cần thay thế đoạn văn này bằng nội dung thật từ đề thi HSK2.
+
+Đoạn văn này cũng nên dài khoảng 150-200 từ, phù hợp với trình độ HSK2. 
+
+Sau khi đọc đoạn văn này, học viên sẽ trả lời 5 câu hỏi (31-35) bằng cách chọn đáp án A, B hoặc C cho mỗi câu.', 'multiple_choice');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
 SELECT order_number, section, correct_answer, question_type 
@@ -124,10 +153,11 @@ ORDER BY order_number;
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 30 câu hỏi
+- Tổng cộng: 35 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
-- Câu 21-30: Comprehension (Multiple Choice A/B/C) - Có passage_text
+- Câu 21-30: Comprehension Part 1 (Multiple Choice A/B/C) - Đoạn văn 1
+- Câu 31-35: Comprehension Part 2 (Multiple Choice A/B/C) - Đoạn văn 2
 
 📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
@@ -136,14 +166,14 @@ ORDER BY order_number;
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 60 điểm (30 câu x 2 điểm)
+- Tổng điểm: 70 điểm (35 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
 1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)
 2. Upload image files listening vào bucket 'images' (10 files: hsk2_q1.jpg - hsk2_q10.jpg)
 3. Upload image files reading vào bucket 'images' (10 files: hsk2_reading_A.jpg - hsk2_reading_J.jpg)
 4. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
-5. Update passage_text cho comprehension section với nội dung thật
+5. Update passage_text cho comprehension section với 2 đoạn văn thật (câu 21-30 và 31-35)
 6. Test trên website
 
 📌 CẬP NHẬT URL:

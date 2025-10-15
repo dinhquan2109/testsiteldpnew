@@ -185,14 +185,15 @@ function displayCurrentPage() {
         `;
     }
     
-    // PAGE 2: COMPREHENSION (21-30)
+    // PAGE 2: COMPREHENSION PART 1 (21-30)
     if (hsk2CurrentPage === 2 && comprehensionQuestions.length > 0) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
-        const passageText = comprehensionQuestions[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
+        const comprehensionPart1 = comprehensionQuestions.slice(0, 10); // First 10 questions (21-30)
+        const passageText = comprehensionPart1[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
         
         html += `
             <div class="section-header" style="margin-top: 40px;">
-                <div class="section-title">📖 PHẦN 3: ĐỌC HIỂU (Reading Comprehension)</div>
+                <div class="section-title">📖 PHẦN 3: ĐỌC HIỂU - Phần 1 (Reading Comprehension)</div>
                 <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
             </div>
             <div class="comprehension-section">
@@ -200,8 +201,55 @@ function displayCurrentPage() {
                     ${passageText}
                 </div>
                 <div class="comprehension-questions">
-                    ${comprehensionQuestions.map((q, idx) => {
+                    ${comprehensionPart1.map((q, idx) => {
                         const globalIdx = comprehensionStartIdx + idx;
+                        const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                        const optionTexts = {
+                            'A': q.option_a_text || 'Đáp án A',
+                            'B': q.option_b_text || 'Đáp án B',
+                            'C': q.option_c_text || 'Đáp án C'
+                        };
+                        return `
+                            <div class="comprehension-question-item" id="question-${globalIdx}">
+                                <span class="question-number-inline">${globalIdx + 1}.</span>
+                                <div class="comprehension-options">
+                                    ${['A', 'B', 'C'].map(letter => `
+                                        <div class="option-wrapper">
+                                            <button class="comprehension-option ${savedAnswer === letter ? 'selected' : ''}" 
+                                                    data-question="${globalIdx}" 
+                                                    data-answer="${letter}">
+                                                ${letter}
+                                            </button>
+                                            <span class="option-text">${optionTexts[letter]}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+        </div>
+        `;
+    }
+    
+    // PAGE 3: COMPREHENSION PART 2 (31-35)
+    if (hsk2CurrentPage === 3 && comprehensionQuestions.length > 10) {
+        const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
+        const comprehensionPart2 = comprehensionQuestions.slice(10, 15); // Questions 31-35
+        const passageText = comprehensionPart2[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">📖 PHẦN 4: ĐỌC HIỂU - Phần 2 (Reading Comprehension)</div>
+                <div class="section-description">Đọc đoạn văn và chọn đáp án đúng (A, B hoặc C)</div>
+            </div>
+            <div class="comprehension-section">
+                <div class="passage-text">
+                    ${passageText}
+                </div>
+                <div class="comprehension-questions">
+                    ${comprehensionPart2.map((q, idx) => {
+                        const globalIdx = comprehensionStartIdx + 10 + idx; // Start from 30 (index 30 = question 31)
                         const savedAnswer = hsk2UserAnswers[globalIdx] || '';
                         const optionTexts = {
                             'A': q.option_a_text || 'Đáp án A',
@@ -469,6 +517,20 @@ function updateNavButtons() {
         const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 20 && parseInt(key) < 30).length;
         
         if (page2AnsweredCount >= 10) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 3) {
+        // Page 3: Check if answered 5 comprehension questions (30-34)
+        const page3AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 30 && parseInt(key) < 35).length;
+        
+        if (page3AnsweredCount >= 5) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -674,8 +736,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 // ===== EVENT LISTENERS =====
 document.addEventListener('click', function(e) {
     if (e.target.id === 'btnNextSection') {
-        // Go to page 2 (comprehension)
-        hsk2CurrentPage = 2;
+        if (hsk2CurrentPage === 1) {
+            // Go to page 2 (comprehension part 1)
+            hsk2CurrentPage = 2;
+        } else if (hsk2CurrentPage === 2) {
+            // Go to page 3 (comprehension part 2)
+            hsk2CurrentPage = 3;
+        }
         displayCurrentPage();
         updateProgressCircles();
         updateNavButtons();
@@ -684,10 +751,10 @@ document.addEventListener('click', function(e) {
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 20 && parseInt(key) < 30).length;
+        const page3AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 30 && parseInt(key) < 35).length;
         
-        if (page2AnsweredCount < 10) {
-            if (!confirm(`Bạn mới trả lời ${page2AnsweredCount}/10 câu phần 3.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page3AnsweredCount < 5) {
+            if (!confirm(`Bạn mới trả lời ${page3AnsweredCount}/5 câu phần 4.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -704,12 +771,16 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
+        document.body.classList.remove('page-2', 'page-3');
+        
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/2 - Nghe & Đọc (Câu 1-20)';
-            document.body.classList.remove('page-2');
-        } else {
-            pageInfo.textContent = 'Phần 2/2 - Đọc hiểu (Câu 21-30)';
+            pageInfo.textContent = 'Phần 1/3 - Nghe & Đọc (Câu 1-20)';
+        } else if (hsk2CurrentPage === 2) {
+            pageInfo.textContent = 'Phần 2/3 - Đọc hiểu 1 (Câu 21-30)';
             document.body.classList.add('page-2');
+        } else if (hsk2CurrentPage === 3) {
+            pageInfo.textContent = 'Phần 3/3 - Đọc hiểu 2 (Câu 31-35)';
+            document.body.classList.add('page-3');
         }
     }
 }
