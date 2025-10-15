@@ -544,6 +544,7 @@ function displayAllQuestions() {
     updateProgressCircles();
     setupAudio();
     updateNavButtons();
+    setupScrollListener();
 }
 
 // ===== ATTACH EVENT LISTENERS =====
@@ -1186,6 +1187,39 @@ document.addEventListener('DOMContentLoaded', async function() {
         alert('Lỗi khởi tạo: ' + error.message);
     }
 });
+
+// ===== SETUP SCROLL LISTENER =====
+function setupScrollListener() {
+    let isShowingPart2 = false;
+    
+    window.addEventListener('scroll', function() {
+        // Find the first section of part 2 (image matching section or question 35)
+        const imageMatchingSection = document.querySelector('.image-matching-section');
+        const part2Trigger = imageMatchingSection || document.getElementById('question-35');
+        
+        if (part2Trigger) {
+            const rect = part2Trigger.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Show part 2 circles when part 2 section is visible (within 300px from top)
+            if (rect.top < 300 && !isShowingPart2) {
+                document.body.classList.add('show-part2');
+                const questionCounter = document.getElementById('questionCounter');
+                if (questionCounter) {
+                    questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
+                }
+                isShowingPart2 = true;
+            } else if (rect.top >= 300 && isShowingPart2) {
+                document.body.classList.remove('show-part2');
+                const questionCounter = document.getElementById('questionCounter');
+                if (questionCounter) {
+                    questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
+                }
+                isShowingPart2 = false;
+            }
+        }
+    });
+}
 
 // ===== EVENT LISTENERS =====
 document.addEventListener('click', function(e) {
