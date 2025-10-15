@@ -28,45 +28,65 @@
             color: white;
         }
         
+        /* Question progress section */
+        .question-progress {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 20px !important;
+            flex-wrap: wrap !important;
+        }
+        
         /* Progress circles container */
         .progress-circles {
-            width: 100%;
-            max-width: 100%;
-            max-height: 75px;
-            overflow: hidden;
+            width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            flex: 1 !important;
         }
         
         /* Hide progress rows based on current page */
         .progress-row {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: nowrap;
-            gap: 8px;
-            margin-bottom: 8px;
+            display: none !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;
+            gap: 6px !important;
+            width: 100% !important;
         }
         
         .circle {
-            width: 32px;
-            height: 32px;
-            min-width: 32px;
-            min-height: 32px;
-            font-size: 13px;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            min-height: 30px;
+            font-size: 12px;
             flex-shrink: 0;
         }
         
         /* Show page 1 rows (18 + 17 circles) initially */
         .progress-row[data-page="1"] {
-            display: flex;
+            display: flex !important;
         }
         
         /* When scrolled to part 2, hide page 1 and show page 2 rows (13 + 12 circles) */
         body.show-part2 .progress-row[data-page="1"] {
-            display: none;
+            display: none !important;
         }
         
         body.show-part2 .progress-row[data-page="2"] {
-            display: flex;
+            display: flex !important;
+        }
+        
+        /* Ensure test container can scroll */
+        .test-container {
+            overflow-y: auto !important;
+            max-height: none !important;
+        }
+        
+        .question-card {
+            min-height: auto !important;
         }
         
         /* Two column layout for listening questions */
@@ -902,20 +922,25 @@
                 grid-template-columns: 1fr;
             }
             
+            .question-progress {
+                flex-direction: column !important;
+            }
+            
             .progress-circles {
-                max-height: 80px;
+                width: 100% !important;
             }
             
             .progress-row {
-                gap: 6px;
+                gap: 4px !important;
+                flex-wrap: wrap !important;
             }
             
             .circle {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                min-height: 28px;
-                font-size: 11px;
+                width: 26px !important;
+                height: 26px !important;
+                min-width: 26px !important;
+                min-height: 26px !important;
+                font-size: 11px !important;
             }
         }
         
