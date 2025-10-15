@@ -9,6 +9,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let hsk2TestQuestions = [];
 let hsk2UserAnswers = {};
 let hsk2CurrentQuestion = 1;
+let hsk2CurrentPage = 1; // Page 1: câu 1-20, Page 2: câu 21-30
 let hsk2TimerInterval = null;
 let hsk2AudioPlayCount = 0;
 const HSK2_MAX_AUDIO_PLAYS = 2;
@@ -58,7 +59,8 @@ async function loadHSK2Questions() {
         console.log('✅ Questions loaded:', hsk2TestQuestions.length);
         
         startTimer(60);
-        displayAllQuestions();
+        displayCurrentPage();
+        updatePageInfo();
 
     } catch (error) {
         console.error('❌ Error loading questions:', error);
@@ -72,8 +74,8 @@ async function loadHSK2Questions() {
     }
 }
 
-// ===== DISPLAY ALL QUESTIONS (1-20 on one page) =====
-function displayAllQuestions() {
+// ===== DISPLAY CURRENT PAGE =====
+function displayCurrentPage() {
     const container = document.getElementById('questionsContainer');
     let html = '';
     
@@ -81,7 +83,9 @@ function displayAllQuestions() {
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
     const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
     
-    // LISTENING SECTION (1-10)
+    // PAGE 1: LISTENING + READING (1-20)
+    if (hsk2CurrentPage === 1) {
+        // LISTENING SECTION (1-10)
     html += `
         <div class="section-header">
             <div class="section-title">🎧 PHẦN 1: NGHE (Listening)</div>
@@ -178,10 +182,11 @@ function displayAllQuestions() {
                 </div>
             </div>
         </div>
-    `;
+        `;
+    }
     
-    // COMPREHENSION SECTION (21-30) - Passage + Multiple Choice
-    if (comprehensionQuestions.length > 0) {
+    // PAGE 2: COMPREHENSION (21-30)
+    if (hsk2CurrentPage === 2 && comprehensionQuestions.length > 0) {
         const comprehensionStartIdx = listeningQuestions.length + readingQuestions.length;
         const passageText = comprehensionQuestions[0]?.passage_text || 'Đoạn văn sẽ hiển thị ở đây...';
         
@@ -433,15 +438,31 @@ function updateNavButtons() {
     const btnSubmit = document.getElementById('btnSubmit');
     const btnNext = document.getElementById('btnNextSection');
     
-    const totalQuestions = hsk2TestQuestions.filter(q => q.section !== 'writing').length;
-    const answeredCount = Object.keys(hsk2UserAnswers).length;
-    
-    if (answeredCount >= totalQuestions) {
-        if (btnSubmit) btnSubmit.style.display = 'block';
-        if (btnNext) btnNext.style.display = 'none';
-    } else {
-        if (btnSubmit) btnSubmit.style.display = 'none';
-        if (btnNext) btnNext.style.display = 'none';
+    if (hsk2CurrentPage === 1) {
+        // Page 1: Check if answered 20 questions (0-19)
+        const page1AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) < 20).length;
+        
+        if (page1AnsweredCount >= 20) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 2) {
+        // Page 2: Check if answered 10 comprehension questions (20-29)
+        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 20 && parseInt(key) < 30).length;
+        
+        if (page2AnsweredCount >= 10) {
+            if (btnSubmit) btnSubmit.style.display = 'block';
+            if (btnNext) btnNext.style.display = 'none';
+        } else {
+            if (btnSubmit) btnSubmit.style.display = 'none';
+            if (btnNext) btnNext.style.display = 'none';
+        }
     }
 }
 
@@ -640,12 +661,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ===== EVENT LISTENERS =====
 document.addEventListener('click', function(e) {
+    if (e.target.id === 'btnNextSection') {
+        // Go to page 2 (comprehension)
+        hsk2CurrentPage = 2;
+        displayCurrentPage();
+        updateProgressCircles();
+        updateNavButtons();
+        updatePageInfo();
+        window.scrollTo(0, 0);
+    }
+    
     if (e.target.id === 'btnSubmit') {
-        const totalQuestions = hsk2TestQuestions.filter(q => q.section !== 'writing').length;
-        const answeredCount = Object.keys(hsk2UserAnswers).length;
+        const page2AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 20 && parseInt(key) < 30).length;
         
-        if (answeredCount < totalQuestions) {
-            if (!confirm(`Bạn mới trả lời ${answeredCount}/${totalQuestions} câu.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page2AnsweredCount < 10) {
+            if (!confirm(`Bạn mới trả lời ${page2AnsweredCount}/10 câu phần 3.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -657,4 +687,18 @@ document.addEventListener('click', function(e) {
         window.location.href = '../index.html';
     }
 });
+
+// ===== UPDATE PAGE INFO =====
+function updatePageInfo() {
+    const pageInfo = document.getElementById('pageInfo');
+    if (pageInfo) {
+        if (hsk2CurrentPage === 1) {
+            pageInfo.textContent = 'Phần 1/2 - Nghe & Đọc (Câu 1-20)';
+            document.body.classList.remove('page-2');
+        } else {
+            pageInfo.textContent = 'Phần 2/2 - Đọc hiểu (Câu 21-30)';
+            document.body.classList.add('page-2');
+        }
+    }
+}
 

@@ -28,6 +28,19 @@
             color: white;
         }
         
+        /* Hide progress rows based on current page */
+        .progress-row[data-page="2"] {
+            display: none;
+        }
+        
+        body.page-2 .progress-row[data-page="1"] {
+            display: none;
+        }
+        
+        body.page-2 .progress-row[data-page="2"] {
+            display: flex;
+        }
+        
         /* Two column layout for listening questions */
         .questions-two-col {
             display: grid;
@@ -371,8 +384,8 @@
             <div class="test-header">
                 <div class="question-progress">
                     <div class="progress-counter" id="questionCounter">Phần 1: Nghe</div>
-                    <div class="progress-circles">
-                        <div class="progress-row">
+                    <div class="progress-circles" id="progressCircles">
+                        <div class="progress-row" data-page="1">
                             <div class="circle">1</div>
                             <div class="circle">2</div>
                             <div class="circle">3</div>
@@ -384,7 +397,7 @@
                             <div class="circle">9</div>
                             <div class="circle">10</div>
                         </div>
-                        <div class="progress-row">
+                        <div class="progress-row" data-page="1">
                             <div class="circle">11</div>
                             <div class="circle">12</div>
                             <div class="circle">13</div>
@@ -396,7 +409,7 @@
                             <div class="circle">19</div>
                             <div class="circle">20</div>
                         </div>
-                        <div class="progress-row">
+                        <div class="progress-row" data-page="2">
                             <div class="circle">21</div>
                             <div class="circle">22</div>
                             <div class="circle">23</div>
