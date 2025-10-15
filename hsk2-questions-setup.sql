@@ -43,21 +43,22 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 (10, 'listening', 'Nghe và chọn đúng (✓) hoặc sai (✗)', 'false', 'https://your-storage-url.com/audio/hsk2_q10.mp3', 'https://your-storage-url.com/images/hsk2_q10.jpg', 'true_false');
 
 -- ===== PHẦN 2: ĐỌC (Questions 11-20) =====
--- 6 images (A-F) + 10 questions
--- Đáp án: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
+-- 10 images (A-J) + 10 questions
+-- Mỗi ảnh chỉ được dùng 1 lần
+-- Đáp án: 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', hoặc 'J'
 
 -- Question 11-20: Reading comprehension with image matching (drag & drop)
 INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, question_type) VALUES
 (11, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'A', 'image_matching'),
-(12, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'C', 'image_matching'),
-(13, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'E', 'image_matching'),
-(14, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'B', 'image_matching'),
-(15, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching'),
+(12, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'B', 'image_matching'),
+(13, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'C', 'image_matching'),
+(14, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching'),
+(15, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'E', 'image_matching'),
 (16, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'F', 'image_matching'),
-(17, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'A', 'image_matching'),
-(18, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'B', 'image_matching'),
-(19, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'C', 'image_matching'),
-(20, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching');
+(17, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'G', 'image_matching'),
+(18, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'H', 'image_matching'),
+(19, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'I', 'image_matching'),
+(20, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'J', 'image_matching');
 
 -- ===== PHẦN 3: VIẾT (Question 21) - OPTIONAL =====
 -- Writing essay (không tính điểm, chỉ để AI feedback)
@@ -76,7 +77,7 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 -- 3. Upload files:
 --    - Audio: hsk2_q1.mp3, hsk2_q2.mp3, ..., hsk2_q10.mp3
 --    - Images: hsk2_q1.jpg, hsk2_q2.jpg, ..., hsk2_q10.jpg (cho listening)
---    - Images: hsk2_reading_A.jpg, hsk2_reading_B.jpg, ..., hsk2_reading_F.jpg (cho reading)
+--    - Images: hsk2_reading_A.jpg, B.jpg, ..., J.jpg (10 ảnh cho reading)
 -- 4. Copy public URL của mỗi file và paste vào SQL ở trên
 
 -- ===== VERIFY DỮ LIỆU =====
@@ -86,6 +87,6 @@ SELECT * FROM hsk2_questions ORDER BY order_number;
 -- ===== KẾT QUẢ MONG ĐỢI =====
 -- Tổng: 20 câu hỏi (hoặc 21 nếu có writing)
 -- - Questions 1-10: Listening (true/false với audio + image)
--- - Questions 11-20: Reading (drag & drop A/B/C/D/E/F)
+-- - Questions 11-20: Reading (drag & drop A-J, mỗi ảnh dùng 1 lần)
 -- - Question 21: Writing (essay không tính điểm - optional)
 

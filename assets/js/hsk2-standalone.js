@@ -127,14 +127,14 @@ function displayAllQuestions() {
     html += `
         <div class="section-header" style="margin-top: 40px;">
             <div class="section-title">📖 PHẦN 2: ĐỌC (Reading)</div>
-            <div class="section-description">Kéo thả đáp án A-F vào các ô câu hỏi 11-20</div>
+            <div class="section-description">Kéo thả đáp án A-J vào các ô câu hỏi 11-20 (mỗi ảnh chỉ dùng 1 lần)</div>
         </div>
         <div class="reading-section-layout">
             <div class="reading-images-col">
-                <h4 style="text-align: center; margin-bottom: 15px;">Hình ảnh (A-F)</h4>
+                <h4 style="text-align: center; margin-bottom: 15px;">Hình ảnh (A-J)</h4>
                 <div class="reading-images-grid" id="readingImagesGrid">
-                    ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => `
-                        <div class="reading-image-item" draggable="true" data-answer="${letter}">
+                    ${['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map(letter => `
+                        <div class="reading-image-item" draggable="true" data-answer="${letter}" id="image-${letter}">
                             <div class="image-label">${letter}</div>
                             <img src="https://via.placeholder.com/120?text=${letter}" alt="${letter}">
                         </div>
@@ -151,7 +151,12 @@ function displayAllQuestions() {
                             <div class="reading-question-box" id="question-${globalIdx}" data-question="${globalIdx}">
                                 <div class="question-number">${globalIdx + 1}</div>
                                 <div class="drop-zone" data-question="${globalIdx}">
-                                    ${savedAnswer ? `<div class="dropped-answer" data-answer="${savedAnswer}">${savedAnswer}</div>` : '<span class="drop-placeholder">Kéo thả đáp án vào đây</span>'}
+                                    ${savedAnswer ? `
+                                        <div class="dropped-answer" data-answer="${savedAnswer}">
+                                            ${savedAnswer}
+                                            <button class="remove-answer-btn" data-question="${globalIdx}" data-answer="${savedAnswer}">×</button>
+                                        </div>
+                                    ` : '<span class="drop-placeholder">Kéo vào đây</span>'}
                                 </div>
                             </div>
                         `;
@@ -200,12 +205,20 @@ function attachEventListeners() {
 function setupDragAndDrop() {
     let draggedElement = null;
     
+    // Update image availability on load
+    updateImageAvailability();
+    
     // Make image items draggable
     document.querySelectorAll('.reading-image-item').forEach(item => {
         item.addEventListener('dragstart', function(e) {
+            // Check if image is already used
+            if (this.classList.contains('used')) {
+                e.preventDefault();
+                return;
+            }
             draggedElement = this;
             this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', this.dataset.answer);
         });
         
@@ -218,7 +231,7 @@ function setupDragAndDrop() {
     document.querySelectorAll('.drop-zone').forEach(zone => {
         zone.addEventListener('dragover', function(e) {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
+            e.dataTransfer.dropEffect = 'move';
             this.classList.add('drag-over');
         });
         
@@ -233,7 +246,19 @@ function setupDragAndDrop() {
             const answer = e.dataTransfer.getData('text/plain');
             const questionIdx = parseInt(this.dataset.question);
             
-            // Remove existing answer if any
+            // Check if image is already used elsewhere
+            const imageElement = document.getElementById(`image-${answer}`);
+            if (imageElement && imageElement.classList.contains('used')) {
+                return; // Don't allow drop
+            }
+            
+            // Remove old answer if exists
+            const oldAnswer = this.querySelector('.dropped-answer')?.dataset.answer;
+            if (oldAnswer) {
+                returnImageToSource(oldAnswer);
+            }
+            
+            // Clear zone
             this.querySelectorAll('.dropped-answer').forEach(el => el.remove());
             this.querySelectorAll('.drop-placeholder').forEach(el => el.remove());
             
@@ -241,26 +266,59 @@ function setupDragAndDrop() {
             const answerEl = document.createElement('div');
             answerEl.className = 'dropped-answer';
             answerEl.dataset.answer = answer;
-            answerEl.textContent = answer;
-            answerEl.draggable = true;
-            
-            // Allow removing by dragging out
-            answerEl.addEventListener('click', function() {
-                if (confirm('Xóa đáp án này?')) {
-                    this.remove();
-                    zone.innerHTML = '<span class="drop-placeholder">Kéo thả đáp án vào đây</span>';
-                    removeUserAnswer(questionIdx);
-                    updateProgressCircles();
-                    updateNavButtons();
-                }
-            });
+            answerEl.innerHTML = `
+                ${answer}
+                <button class="remove-answer-btn" data-question="${questionIdx}" data-answer="${answer}">×</button>
+            `;
             
             this.appendChild(answerEl);
+            
+            // Hide source image
+            if (imageElement) {
+                imageElement.classList.add('used');
+            }
+            
+            // Setup remove button
+            const removeBtn = answerEl.querySelector('.remove-answer-btn');
+            removeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const ans = this.dataset.answer;
+                const qIdx = parseInt(this.dataset.question);
+                
+                // Return image to source
+                returnImageToSource(ans);
+                
+                // Clear drop zone
+                zone.innerHTML = '<span class="drop-placeholder">Kéo vào đây</span>';
+                
+                removeUserAnswer(qIdx);
+                updateProgressCircles();
+                updateNavButtons();
+            });
             
             saveUserAnswer(questionIdx, answer);
             updateProgressCircles();
             updateNavButtons();
         });
+    });
+}
+
+// ===== RETURN IMAGE TO SOURCE =====
+function returnImageToSource(answer) {
+    const imageElement = document.getElementById(`image-${answer}`);
+    if (imageElement) {
+        imageElement.classList.remove('used');
+    }
+}
+
+// ===== UPDATE IMAGE AVAILABILITY =====
+function updateImageAvailability() {
+    // Mark images as used based on current answers
+    Object.values(hsk2UserAnswers).forEach(answer => {
+        const imageElement = document.getElementById(`image-${answer}`);
+        if (imageElement) {
+            imageElement.classList.add('used');
+        }
     });
 }
 

@@ -103,7 +103,7 @@
         .reading-images-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 12px;
         }
         
         .reading-image-item {
@@ -123,6 +123,13 @@
         
         .reading-image-item.dragging {
             opacity: 0.5;
+        }
+        
+        .reading-image-item.used {
+            opacity: 0.3;
+            pointer-events: none;
+            cursor: not-allowed;
+            filter: grayscale(100%);
         }
         
         .image-label {
@@ -184,12 +191,33 @@
             font-size: 32px;
             font-weight: bold;
             color: #FF6B6B;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
         }
         
-        .dropped-answer:hover {
-            transform: scale(1.1);
+        .remove-answer-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 24px;
+            height: 24px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .remove-answer-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.2);
         }
         
         @media (max-width: 768px) {
