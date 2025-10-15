@@ -23,6 +23,12 @@ CREATE TABLE hsk2_questions (
     image_d_url TEXT,
     image_e_url TEXT,
     image_f_url TEXT,
+    word_a TEXT,
+    word_b TEXT,
+    word_c TEXT,
+    word_d TEXT,
+    word_e TEXT,
+    word_f TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -194,6 +200,25 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
     'https://your-storage-url.com/images/hsk2_img_F.jpg',
     'input_matching');
 
+-- PHẦN 6: ĐIỀN TỪ VÀO CHỖ TRỐNG (Questions 41-45) - 6 words + 5 fill-in-blank questions
+-- Tất cả 5 câu dùng chung 6 từ A-F
+INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, word_a, word_b, word_c, word_d, word_e, word_f, question_type) VALUES
+(41, 'word_matching', 'Háizi zuòcuòle shìqing, nǐ yào ràng tā cuò zài nǎr le (___)。', 'B',
+    '大家', '知道', '手机', '旁边', '贵', '离',
+    'fill_blank'),
+(42, 'word_matching', 'Tā jiā (___) gōngsī hěn jìn, měi tiān zhōngwǔ dōu huí jiā chī fàn。', 'F',
+    '大家', '知道', '手机', '旁边', '贵', '离',
+    'fill_blank'),
+(43, 'word_matching', 'Wǒ zhù fángjiān, jiù zài nǐ (___) 345。', 'D',
+    '大家', '知道', '手机', '旁边', '贵', '离',
+    'fill_blank'),
+(44, 'word_matching', 'Tā de huíf hěn yǒu yìsi, (___) dōu xiào le。', 'A',
+    '大家', '知道', '手机', '旁边', '贵', '离',
+    'fill_blank'),
+(45, 'word_matching', 'Nǚ: Zhège (___) hǎi yǒu shénme yánsè de? Nán: Hái yǒu hóngsè hé hēisè de。', 'C',
+    '大家', '知道', '手机', '旁边', '贵', '离',
+    'fill_blank');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
 SELECT order_number, section, correct_answer, question_type 
@@ -203,22 +228,24 @@ ORDER BY order_number;
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 40 câu hỏi
+- Tổng cộng: 45 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
 - Câu 21-30: Comprehension Part 1 (Multiple Choice A/B/C) - Đoạn văn 1
 - Câu 31-35: Comprehension Part 2 (Multiple Choice A/B/C) - Đoạn văn 2
 - Câu 36-40: Image Matching (Input A-F) - 6 hình ảnh + điền đáp án
+- Câu 41-45: Word Matching (Drag-Drop A-F) - 6 từ + điền vào chỗ trống
 
 📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
 - Reading: 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
 - Comprehension: 'A', 'B', hoặc 'C'
 - Image Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
+- Word Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 80 điểm (40 câu x 2 điểm)
+- Tổng điểm: 90 điểm (45 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
 1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)
@@ -228,6 +255,14 @@ ORDER BY order_number;
 5. Chạy file 'hsk2-update-answers.sql' để update các URL thực tế
 6. Update passage_text cho comprehension section với 2 đoạn văn thật (câu 21-30 và 31-35)
 7. Test trên website
+
+📌 6 TỪ VỰNG CHO PHẦN 6 (Câu 41-45):
+A = 大家 (dàjiā)
+B = 知道 (zhīdào)
+C = 手机 (shǒujī)
+D = 旁边 (pángbiān)
+E = 贵 (guì)
+F = 离 (lí)
 
 📌 CẬP NHẬT URL:
 Thay 'your-storage-url.com' bằng URL thực tế của Supabase Storage:

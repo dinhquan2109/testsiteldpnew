@@ -325,6 +325,73 @@ function displayCurrentPage() {
         `;
     }
     
+    // PAGE 5: WORD DRAG-DROP (41-45) - 6 words + 5 fill-in-blank questions
+    const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
+    if (hsk2CurrentPage === 5 && wordMatchingQuestions.length > 0) {
+        const wordMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length;
+        
+        // Get 6 words from first question
+        const words = {
+            'A': wordMatchingQuestions[0]?.word_a || 'A',
+            'B': wordMatchingQuestions[0]?.word_b || 'B',
+            'C': wordMatchingQuestions[0]?.word_c || 'C',
+            'D': wordMatchingQuestions[0]?.word_d || 'D',
+            'E': wordMatchingQuestions[0]?.word_e || 'E',
+            'F': wordMatchingQuestions[0]?.word_f || 'F'
+        };
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">✍️ PHẦN 6: ĐIỀN TỪ VÀO CHỖ TRỐNG (Fill in the Blanks)</div>
+                <div class="section-description">Kéo từ A-F vào chỗ trống trong câu (mỗi từ chỉ dùng 1 lần)</div>
+            </div>
+            <div class="word-matching-section">
+                <div class="words-container">
+                    <h4 style="text-align: center; margin-bottom: 15px;">Từ vựng (A-F)</h4>
+                    <div class="words-grid" id="wordsGrid">
+                        ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => {
+                            return `
+                                <div class="word-item" draggable="true" data-answer="${letter}" id="word-${letter}">
+                                    <span class="word-label">${letter}</span>
+                                    <span class="word-text">${words[letter]}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="word-questions-container">
+                    <h4 style="text-align: center; margin-bottom: 15px;">Câu hỏi (41-45)</h4>
+                    <div class="word-questions-list">
+                        ${wordMatchingQuestions.map((q, idx) => {
+                            const globalIdx = wordMatchingStartIdx + idx;
+                            const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                            const questionParts = q.question_text ? q.question_text.split('(___)') : ['', ''];
+                            
+                            return `
+                                <div class="word-question-item" id="question-${globalIdx}">
+                                    <span class="question-number-inline">${globalIdx + 1}.</span>
+                                    <div class="question-sentence">
+                                        <span class="sentence-part">${questionParts[0]}</span>
+                                        <div class="word-drop-zone" data-question="${globalIdx}">
+                                            ${savedAnswer ? `
+                                                <div class="dropped-word" data-answer="${savedAnswer}">
+                                                    <span class="dropped-word-label">${savedAnswer}</span>
+                                                    <span class="dropped-word-text">${words[savedAnswer]}</span>
+                                                    <button class="remove-word-btn" data-question="${globalIdx}" data-answer="${savedAnswer}">×</button>
+                                                </div>
+                                            ` : '<span class="drop-word-placeholder">(___)</span>'}
+                                        </div>
+                                        <span class="sentence-part">${questionParts[1] || ''}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
@@ -394,6 +461,9 @@ function attachEventListeners() {
     
     // Drag and Drop for reading section
     setupDragAndDrop();
+    
+    // Drag and Drop for word matching section
+    setupWordDragDrop();
     
     // Progress circles click to jump
     document.querySelectorAll('.circle').forEach((circle, idx) => {
@@ -517,6 +587,117 @@ function returnImageToSource(answer) {
     }
 }
 
+// ===== SETUP WORD DRAG AND DROP =====
+function setupWordDragDrop() {
+    const wordItems = document.querySelectorAll('.word-item');
+    const wordDropZones = document.querySelectorAll('.word-drop-zone');
+    
+    if (!wordItems.length || !wordDropZones.length) return;
+    
+    // Make words draggable
+    wordItems.forEach(word => {
+        word.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', this.dataset.answer);
+            this.classList.add('dragging');
+        });
+        
+        word.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+        });
+    });
+    
+    // Setup drop zones
+    wordDropZones.forEach(zone => {
+        zone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            if (!this.classList.contains('has-word')) {
+                this.classList.add('drag-over');
+            }
+        });
+        
+        zone.addEventListener('dragleave', function() {
+            this.classList.remove('drag-over');
+        });
+        
+        zone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            const answer = e.dataTransfer.getData('text/plain');
+            const questionIdx = parseInt(this.dataset.question);
+            
+            // Check if word is already used elsewhere
+            const wordElement = document.getElementById(`word-${answer}`);
+            if (wordElement && wordElement.classList.contains('used')) {
+                return; // Don't allow drop
+            }
+            
+            // Get word text
+            const wordText = wordElement ? wordElement.querySelector('.word-text').textContent : answer;
+            
+            // Remove old word if exists
+            const oldAnswer = this.querySelector('.dropped-word')?.dataset.answer;
+            if (oldAnswer) {
+                returnWordToSource(oldAnswer);
+            }
+            
+            // Clear zone
+            this.querySelectorAll('.dropped-word').forEach(el => el.remove());
+            this.querySelectorAll('.drop-word-placeholder').forEach(el => el.remove());
+            
+            // Add new word
+            const wordEl = document.createElement('div');
+            wordEl.className = 'dropped-word';
+            wordEl.dataset.answer = answer;
+            wordEl.innerHTML = `
+                <span class="dropped-word-label">${answer}</span>
+                <span class="dropped-word-text">${wordText}</span>
+                <button class="remove-word-btn" data-question="${questionIdx}" data-answer="${answer}">×</button>
+            `;
+            
+            this.appendChild(wordEl);
+            this.classList.add('has-word');
+            
+            // Hide source word
+            if (wordElement) {
+                wordElement.classList.add('used');
+            }
+            
+            // Setup remove button
+            const removeBtn = wordEl.querySelector('.remove-word-btn');
+            removeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const ans = this.dataset.answer;
+                const qIdx = parseInt(this.dataset.question);
+                
+                // Return word to source
+                returnWordToSource(ans);
+                
+                // Clear drop zone
+                zone.innerHTML = '<span class="drop-word-placeholder">(___)</span>';
+                zone.classList.remove('has-word');
+                
+                // Remove from answers
+                removeUserAnswer(qIdx);
+                updateProgressCircles();
+                updateNavButtons();
+            });
+            
+            // Save answer
+            saveUserAnswer(questionIdx, answer);
+            updateProgressCircles();
+            updateNavButtons();
+        });
+    });
+}
+
+function returnWordToSource(answer) {
+    const wordElement = document.getElementById(`word-${answer}`);
+    if (wordElement) {
+        wordElement.classList.remove('used');
+    }
+}
+
 // ===== UPDATE IMAGE AVAILABILITY =====
 function updateImageAvailability() {
     // Mark images as used based on current answers
@@ -615,6 +796,20 @@ function updateNavButtons() {
         const page4AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 40).length;
         
         if (page4AnsweredCount >= 5) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 5) {
+        // Page 5: Check if answered 5 word matching questions (40-44)
+        const page5AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 40 && parseInt(key) < 45).length;
+        
+        if (page5AnsweredCount >= 5) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -826,6 +1021,8 @@ document.addEventListener('click', function(e) {
             hsk2CurrentPage = 3;
         } else if (hsk2CurrentPage === 3) {
             hsk2CurrentPage = 4;
+        } else if (hsk2CurrentPage === 4) {
+            hsk2CurrentPage = 5;
         }
         displayCurrentPage();
         updateProgressCircles();
@@ -835,10 +1032,10 @@ document.addEventListener('click', function(e) {
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page4AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 35 && parseInt(key) < 40).length;
+        const page5AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 40 && parseInt(key) < 45).length;
         
-        if (page4AnsweredCount < 5) {
-            if (!confirm(`Bạn mới trả lời ${page4AnsweredCount}/5 câu phần 5.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page5AnsweredCount < 5) {
+            if (!confirm(`Bạn mới trả lời ${page5AnsweredCount}/5 câu phần 6.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -855,19 +1052,22 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-        document.body.classList.remove('page-2', 'page-3', 'page-4');
+        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/4 - Nghe & Đọc (Câu 1-20)';
+            pageInfo.textContent = 'Phần 1/5 - Nghe & Đọc (Câu 1-20)';
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/4 - Đọc hiểu 1 (Câu 21-30)';
+            pageInfo.textContent = 'Phần 2/5 - Đọc hiểu 1 (Câu 21-30)';
             document.body.classList.add('page-2');
         } else if (hsk2CurrentPage === 3) {
-            pageInfo.textContent = 'Phần 3/4 - Đọc hiểu 2 (Câu 31-35)';
+            pageInfo.textContent = 'Phần 3/5 - Đọc hiểu 2 (Câu 31-35)';
             document.body.classList.add('page-3');
         } else if (hsk2CurrentPage === 4) {
-            pageInfo.textContent = 'Phần 4/4 - Ghép hình ảnh (Câu 36-40)';
+            pageInfo.textContent = 'Phần 4/5 - Ghép hình ảnh (Câu 36-40)';
             document.body.classList.add('page-4');
+        } else if (hsk2CurrentPage === 5) {
+            pageInfo.textContent = 'Phần 5/5 - Điền từ (Câu 41-45)';
+            document.body.classList.add('page-5');
         }
     }
 }

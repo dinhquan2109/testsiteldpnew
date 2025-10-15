@@ -31,13 +31,15 @@
         /* Hide progress rows based on current page */
         .progress-row[data-page="2"],
         .progress-row[data-page="3"],
-        .progress-row[data-page="4"] {
+        .progress-row[data-page="4"],
+        .progress-row[data-page="5"] {
             display: none;
         }
         
         body.page-2 .progress-row[data-page="1"],
         body.page-2 .progress-row[data-page="3"],
-        body.page-2 .progress-row[data-page="4"] {
+        body.page-2 .progress-row[data-page="4"],
+        body.page-2 .progress-row[data-page="5"] {
             display: none;
         }
         
@@ -47,7 +49,8 @@
         
         body.page-3 .progress-row[data-page="1"],
         body.page-3 .progress-row[data-page="2"],
-        body.page-3 .progress-row[data-page="4"] {
+        body.page-3 .progress-row[data-page="4"],
+        body.page-3 .progress-row[data-page="5"] {
             display: none;
         }
         
@@ -57,11 +60,23 @@
         
         body.page-4 .progress-row[data-page="1"],
         body.page-4 .progress-row[data-page="2"],
-        body.page-4 .progress-row[data-page="3"] {
+        body.page-4 .progress-row[data-page="3"],
+        body.page-4 .progress-row[data-page="5"] {
             display: none;
         }
         
         body.page-4 .progress-row[data-page="4"] {
+            display: flex;
+        }
+        
+        body.page-5 .progress-row[data-page="1"],
+        body.page-5 .progress-row[data-page="2"],
+        body.page-5 .progress-row[data-page="3"],
+        body.page-5 .progress-row[data-page="4"] {
+            display: none;
+        }
+        
+        body.page-5 .progress-row[data-page="5"] {
             display: flex;
         }
         
@@ -466,6 +481,171 @@
             font-size: 14px;
         }
         
+        /* Word matching section (Page 5) */
+        .word-matching-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        
+        .words-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .word-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: grab;
+            transition: all 0.3s ease;
+        }
+        
+        .word-item:hover {
+            border-color: #FF6B6B;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .word-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        
+        .word-item.used {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .word-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FF6B6B;
+            min-width: 25px;
+        }
+        
+        .word-text {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .word-questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .word-question-item {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .question-sentence {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        .sentence-part {
+            color: #2c3e50;
+        }
+        
+        .word-drop-zone {
+            display: inline-flex;
+            align-items: center;
+            min-width: 120px;
+            min-height: 40px;
+            padding: 5px 10px;
+            border: 2px dashed #ddd;
+            border-radius: 6px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .word-drop-zone.drag-over {
+            border-color: #4CAF50;
+            background: #F1F8F4;
+        }
+        
+        .word-drop-zone.has-word {
+            border-style: solid;
+            border-color: #4CAF50;
+            background: #F1F8F4;
+        }
+        
+        .drop-word-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .dropped-word {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .dropped-word-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FF6B6B;
+        }
+        
+        .dropped-word-text {
+            font-size: 15px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .remove-word-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+        }
+        
+        .dropped-word:hover .remove-word-btn {
+            opacity: 1;
+        }
+        
+        .remove-word-btn:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+        
         @media (max-width: 768px) {
             .questions-two-col {
                 grid-template-columns: 1fr;
@@ -487,6 +667,14 @@
             
             .images-grid-6 {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .words-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .word-drop-zone {
+                min-width: 100px;
             }
         }
         
@@ -581,6 +769,13 @@
                             <div class="circle">38</div>
                             <div class="circle">39</div>
                             <div class="circle">40</div>
+                        </div>
+                        <div class="progress-row" data-page="5">
+                            <div class="circle">41</div>
+                            <div class="circle">42</div>
+                            <div class="circle">43</div>
+                            <div class="circle">44</div>
+                            <div class="circle">45</div>
                         </div>
                     </div>
                 </div>
