@@ -153,7 +153,7 @@ function displayAllQuestions() {
                                 <div class="drop-zone" data-question="${globalIdx}">
                                     ${savedAnswer ? `
                                         <div class="dropped-answer" data-answer="${savedAnswer}">
-                                            ${savedAnswer}
+                                            <span class="answer-letter">${savedAnswer}</span>
                                             <button class="remove-answer-btn" data-question="${globalIdx}" data-answer="${savedAnswer}">×</button>
                                         </div>
                                     ` : '<span class="drop-placeholder">Kéo vào đây</span>'}
@@ -267,7 +267,7 @@ function setupDragAndDrop() {
             answerEl.className = 'dropped-answer';
             answerEl.dataset.answer = answer;
             answerEl.innerHTML = `
-                ${answer}
+                <span class="answer-letter">${answer}</span>
                 <button class="remove-answer-btn" data-question="${questionIdx}" data-answer="${answer}">×</button>
             `;
             

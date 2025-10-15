@@ -192,32 +192,37 @@
             font-weight: bold;
             color: #FF6B6B;
             position: relative;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px;
         }
         
         .remove-answer-btn {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             background: #f44336;
             color: white;
             border: none;
             border-radius: 50%;
-            font-size: 18px;
+            font-size: 14px;
             line-height: 1;
             cursor: pointer;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        
+        .dropped-answer:hover .remove-answer-btn {
+            display: flex;
         }
         
         .remove-answer-btn:hover {
             background: #d32f2f;
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
         
         @media (max-width: 768px) {
