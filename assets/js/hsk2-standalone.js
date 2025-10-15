@@ -9,7 +9,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let hsk2TestQuestions = [];
 let hsk2UserAnswers = {};
 let hsk2CurrentQuestion = 1;
-// Removed page logic - display all questions at once
+let hsk2CurrentPage = 1; // 1 = questions 1-35, 2 = questions 36-60
 let hsk2TimerInterval = null;
 let hsk2AudioPlayCount = 0;
 const HSK2_MAX_AUDIO_PLAYS = 2;
@@ -59,7 +59,7 @@ async function loadHSK2Questions() {
         console.log('✅ Questions loaded:', hsk2TestQuestions.length);
         
         startTimer(60);
-        displayAllQuestions();
+        displayCurrentPage();
 
     } catch (error) {
         console.error('❌ Error loading questions:', error);
@@ -73,14 +73,21 @@ async function loadHSK2Questions() {
     }
 }
 
-// ===== DISPLAY ALL QUESTIONS =====
-function displayAllQuestions() {
+// ===== DISPLAY CURRENT PAGE =====
+function displayCurrentPage() {
     const container = document.getElementById('questionsContainer');
     let html = '';
     
     const listeningQuestions = hsk2TestQuestions.filter(q => q.section === 'listening');
     const readingQuestions = hsk2TestQuestions.filter(q => q.section === 'reading');
     const comprehensionQuestions = hsk2TestQuestions.filter(q => q.section === 'comprehension');
+    const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
+    const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
+    const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
+    const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
+    
+    // PAGE 1: Questions 1-35 (LISTENING COMPREHENSION)
+    if (hsk2CurrentPage === 1) {
     
     // 🎧 PHẦN 1 – 听力 (NGHE HIỂU) - Câu 1-35
     // Phần 1 (1-10): Mỗi câu có 1 bức tranh, nghe 1 câu đơn, chọn bức tranh phù hợp
@@ -276,11 +283,11 @@ function displayAllQuestions() {
         `;
     }
     
+    // End of PAGE 1 (Questions 1-35)
+    } else if (hsk2CurrentPage === 2) {
+    
+    // PAGE 2: Questions 36-60 (READING COMPREHENSION)
     // 📖 PHẦN 2 – 阅读 (ĐỌC HIỂU) - Câu 36-60
-    const imageMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'image_matching');
-    const wordMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'word_matching');
-    const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
-    const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
     
     // Phần 1 (36-40): Ghép 2 câu sao cho nghĩa hợp lý
     if (imageMatchingQuestions.length > 0) {
@@ -539,12 +546,17 @@ function displayAllQuestions() {
         }
     }
     
+    // End of PAGE 2 (Questions 36-60)
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
-    setupAudio();
+    if (hsk2CurrentPage === 1) {
+        setupAudio();
+    }
     updateNavButtons();
-    setupScrollListener();
+    updatePageInfo();
 }
 
 // ===== ATTACH EVENT LISTENERS =====
@@ -963,16 +975,23 @@ function updateNavButtons() {
     const btnSubmit = document.getElementById('btnSubmit');
     const btnNext = document.getElementById('btnNextSection');
     
-    // Hide Next button (not used anymore)
-    if (btnNext) btnNext.style.display = 'none';
-    
-    // Show Submit button when all 60 questions are answered
     const answeredCount = Object.keys(hsk2UserAnswers).length;
     
-    if (answeredCount >= 60) {
-        if (btnSubmit) btnSubmit.style.display = 'block';
-    } else {
+    if (hsk2CurrentPage === 1) {
+        // Page 1: Show "Tiếp tục" button when questions 1-35 are answered
+        const page1Answered = Object.keys(hsk2UserAnswers).filter(idx => parseInt(idx) < 35).length;
+        
+        if (btnNext) {
+            btnNext.style.display = page1Answered >= 35 ? 'block' : 'none';
+        }
         if (btnSubmit) btnSubmit.style.display = 'none';
+        
+    } else if (hsk2CurrentPage === 2) {
+        // Page 2: Show "Nộp bài" button when all 60 questions are answered
+        if (btnNext) btnNext.style.display = 'none';
+        if (btnSubmit) {
+            btnSubmit.style.display = answeredCount >= 60 ? 'block' : 'none';
+        }
     }
 }
 
@@ -1188,42 +1207,21 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-// ===== SETUP SCROLL LISTENER =====
-function setupScrollListener() {
-    let currentSection = 1; // 1 = part1, 2 = part2
+// ===== UPDATE PAGE INFO =====
+function updatePageInfo() {
+    const questionCounter = document.getElementById('questionCounter');
     
-    const updateProgressDisplay = () => {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        // Find section headers
-        const imageMatchingHeader = document.querySelector('.image-matching-section');
-        
-        if (imageMatchingHeader) {
-            const rect = imageMatchingHeader.getBoundingClientRect();
-            
-            // Switch to part 2 when image matching section is near viewport
-            if (rect.top < windowHeight * 0.5 && currentSection === 1) {
-                document.body.classList.add('show-part2');
-                const questionCounter = document.getElementById('questionCounter');
-                if (questionCounter) {
-                    questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
-                }
-                currentSection = 2;
-            } else if (rect.top >= windowHeight * 0.5 && currentSection === 2) {
-                document.body.classList.remove('show-part2');
-                const questionCounter = document.getElementById('questionCounter');
-                if (questionCounter) {
-                    questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
-                }
-                currentSection = 1;
-            }
+    if (hsk2CurrentPage === 1) {
+        if (questionCounter) {
+            questionCounter.textContent = '🎧 PHẦN 1 – 听力 NGHE HIỂU';
         }
-    };
-    
-    window.addEventListener('scroll', updateProgressDisplay);
-    // Initial check
-    updateProgressDisplay();
+        document.body.classList.remove('show-part2');
+    } else if (hsk2CurrentPage === 2) {
+        if (questionCounter) {
+            questionCounter.textContent = '📖 PHẦN 2 – 阅读 ĐỌC HIỂU';
+        }
+        document.body.classList.add('show-part2');
+    }
 }
 
 // ===== EVENT LISTENERS =====
@@ -1238,6 +1236,13 @@ document.addEventListener('click', function(e) {
         }
         
         submitTest();
+    }
+    
+    if (e.target.id === 'btnNextSection') {
+        // Go to page 2 (reading section)
+        hsk2CurrentPage = 2;
+        displayCurrentPage();
+        window.scrollTo(0, 0);
     }
     
     if (e.target.id === 'btnFinish') {

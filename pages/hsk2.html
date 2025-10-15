@@ -55,19 +55,17 @@
             flex-shrink: 0;
         }
         
-        /* Show only first 2 rows (1-20) initially */
-        .progress-row[data-page="1"]:nth-of-type(1),
-        .progress-row[data-page="1"]:nth-of-type(2) {
+        /* Show page 1 rows (18 + 17 circles) initially */
+        .progress-row[data-page="1"] {
             display: flex;
         }
         
-        /* When scrolled to part 2, show first 2 rows of part 2 */
+        /* When scrolled to part 2, hide page 1 and show page 2 rows (13 + 12 circles) */
         body.show-part2 .progress-row[data-page="1"] {
             display: none;
         }
         
-        body.show-part2 .progress-row[data-page="2"]:nth-of-type(5),
-        body.show-part2 .progress-row[data-page="2"]:nth-of-type(6) {
+        body.show-part2 .progress-row[data-page="2"] {
             display: flex;
         }
         
@@ -953,6 +951,46 @@
         .result-content > *:nth-child(5) { animation-delay: 0.5s; }
         .result-content > *:nth-child(6) { animation-delay: 0.6s; }
         .result-content > *:nth-child(7) { animation-delay: 0.7s; }
+        
+        /* Navigation buttons */
+        .question-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .nav-button {
+            padding: 14px 40px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.5);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -963,6 +1001,7 @@
                 <div class="question-progress">
                     <div class="progress-counter" id="questionCounter">🎧 PHẦN 1 – 听力 NGHE HIỂU</div>
                     <div class="progress-circles" id="progressCircles">
+                        <!-- Page 1: Phần 1 - NGHE HIỂU (1-35) -->
                         <div class="progress-row" data-page="1">
                             <div class="circle">1</div>
                             <div class="circle">2</div>
@@ -974,8 +1013,6 @@
                             <div class="circle">8</div>
                             <div class="circle">9</div>
                             <div class="circle">10</div>
-                        </div>
-                        <div class="progress-row" data-page="1">
                             <div class="circle">11</div>
                             <div class="circle">12</div>
                             <div class="circle">13</div>
@@ -984,10 +1021,10 @@
                             <div class="circle">16</div>
                             <div class="circle">17</div>
                             <div class="circle">18</div>
-                            <div class="circle">19</div>
-                            <div class="circle">20</div>
                         </div>
                         <div class="progress-row" data-page="1">
+                            <div class="circle">19</div>
+                            <div class="circle">20</div>
                             <div class="circle">21</div>
                             <div class="circle">22</div>
                             <div class="circle">23</div>
@@ -998,36 +1035,31 @@
                             <div class="circle">28</div>
                             <div class="circle">29</div>
                             <div class="circle">30</div>
-                        </div>
-                        <div class="progress-row" data-page="1">
                             <div class="circle">31</div>
                             <div class="circle">32</div>
                             <div class="circle">33</div>
                             <div class="circle">34</div>
                             <div class="circle">35</div>
                         </div>
+                        <!-- Page 2: Phần 2 - ĐỌC HIỂU (36-60) -->
                         <div class="progress-row" data-page="2">
                             <div class="circle">36</div>
                             <div class="circle">37</div>
                             <div class="circle">38</div>
                             <div class="circle">39</div>
                             <div class="circle">40</div>
-                        </div>
-                        <div class="progress-row" data-page="2">
                             <div class="circle">41</div>
                             <div class="circle">42</div>
                             <div class="circle">43</div>
                             <div class="circle">44</div>
                             <div class="circle">45</div>
-                        </div>
-                        <div class="progress-row" data-page="2">
                             <div class="circle">46</div>
                             <div class="circle">47</div>
                             <div class="circle">48</div>
-                            <div class="circle">49</div>
-                            <div class="circle">50</div>
                         </div>
                         <div class="progress-row" data-page="2">
+                            <div class="circle">49</div>
+                            <div class="circle">50</div>
                             <div class="circle">51</div>
                             <div class="circle">52</div>
                             <div class="circle">53</div>
@@ -1052,6 +1084,7 @@
             </div>
 
             <div class="question-nav">
+                <button class="nav-button btn-next" id="btnNextSection" style="display: none;">TIẾP TỤC</button>
                 <button class="nav-button btn-submit" id="btnSubmit" style="display: none;">NỘP BÀI</button>
             </div>
         </div>
