@@ -667,44 +667,11 @@ async function submitTest() {
 // ===== DISPLAY RESULT =====
 async function displayResult(scoreData) {
     const fullname = localStorage.getItem('fullname') || 'Thí sinh';
-    const percentage = (scoreData.score / scoreData.maxScore) * 100;
     
-    let levelBadge = '';
-    let message = '';
-    if (percentage >= 90) {
-        levelBadge = 'Xuất sắc';
-        message = 'Xuất sắc! Bạn có trình độ tiếng Trung rất cao, phía trung tâm sẽ liên hệ với bạn trong thời gian ngắn nhất!';
-    } else if (percentage >= 75) {
-        levelBadge = 'Rất tốt';
-        message = 'Rất tốt! Bạn có nền tảng tiếng Trung vững chắc, phía trung tâm sẽ liên hệ với bạn trong thời gian ngắn nhất!';
-    } else if (percentage >= 60) {
-        levelBadge = 'Khá';
-        message = 'Khá tốt! Bạn đang trên đà phát triển, phía trung tâm sẽ liên hệ với bạn trong thời gian ngắn nhất!';
-    } else if (percentage >= 40) {
-        levelBadge = 'Trung bình';
-        message = 'Tốt! Bạn đã có kiến thức cơ bản, phía trung tâm sẽ liên hệ với bạn trong thời gian ngắn nhất!';
-    } else {
-        levelBadge = 'Cần cải thiện';
-        message = 'Bạn đang bắt đầu hành trình học tiếng Trung, phía trung tâm sẽ liên hệ với bạn trong thời gian ngắn nhất!';
-    }
-    
+    // Only display name, no scores or AI feedback
     document.getElementById('resultName').textContent = fullname;
-    document.getElementById('resultLevel').textContent = 'HSK1';
-    document.getElementById('completionTime').textContent = '60 phút';
-    document.getElementById('levelBadge').textContent = levelBadge;
-    document.getElementById('resultMessage').textContent = 
-        `Tổng điểm: ${scoreData.score}/${scoreData.maxScore} điểm\n` +
-        `- Nghe: ${scoreData.listeningCorrect}/5 câu đúng (${scoreData.listeningCorrect * 2} điểm)\n` +
-        `- Đọc: ${scoreData.readingCorrect}/5 câu đúng (${scoreData.readingCorrect * 2} điểm)\n` +
-        `- Viết: ${scoreData.writingAIScore}/10 điểm (AI chấm)\n` +
-        `\n${message}`;
     
-    const writingIndex = getSectionQuestions().listeningQuestions.length + getSectionQuestions().readingQuestions.length;
-    const writingAnswer = hsk1UserAnswers[writingIndex];
-    
-    if (writingAnswer && writingAnswer.trim().length > 0) {
-        await getAIFeedbackDisplay(writingAnswer);
-    }
+    console.log('✅ Test completed with score:', scoreData.score, '/', scoreData.maxScore);
 }
 
 // ===== AI FEEDBACK DISPLAY =====
