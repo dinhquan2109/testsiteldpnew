@@ -810,6 +810,10 @@
             padding: 20px;
             background: #f8f9fa;
             border-radius: 10px;
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .sentence-option-box {
@@ -895,6 +899,11 @@
             
             .reading-section-layout {
                 grid-template-columns: 1fr;
+            }
+            
+            .sentence-options-grid {
+                position: static;
+                box-shadow: none;
             }
             
             .reading-images-col {

@@ -465,7 +465,7 @@ function displayCurrentPage() {
             };
             
             html += `
-                <div class="sentence-matching-part">
+                <div class="sentence-matching-part" id="sentence-part1">
                     <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 51-55</h4>
                     <div class="sentence-options-grid">
                         ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => `
@@ -508,7 +508,7 @@ function displayCurrentPage() {
             };
             
             html += `
-                <div class="sentence-matching-part" style="margin-top: 40px;">
+                <div class="sentence-matching-part" id="sentence-part2" style="margin-top: 40px;">
                     <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 56-60</h4>
                     <div class="sentence-options-grid">
                         ${['A', 'B', 'C', 'D', 'E'].map(letter => `
@@ -653,6 +653,24 @@ function attachEventListeners() {
             }
             updateProgressCircles();
             updateNavButtons();
+            
+            // Auto-scroll to Part 2 when Part 1 (51-55) is completed
+            if (questionIdx >= 50 && questionIdx < 55) {
+                const part1AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => {
+                    const qIdx = parseInt(key);
+                    return qIdx >= 50 && qIdx < 55 && hsk2UserAnswers[key];
+                }).length;
+                
+                if (part1AnsweredCount === 5) {
+                    // Wait a bit before scrolling
+                    setTimeout(() => {
+                        const part2Section = document.getElementById('sentence-part2');
+                        if (part2Section) {
+                            part2Section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 500);
+                }
+            }
         });
     });
     
