@@ -437,6 +437,110 @@ function displayCurrentPage() {
         `;
     }
     
+    // PAGE 7: SENTENCE MATCHING (51-60) - Two parts with options and fill-in answers
+    const sentenceMatchingQuestions = hsk2TestQuestions.filter(q => q.section === 'sentence_matching');
+    if (hsk2CurrentPage === 7 && sentenceMatchingQuestions.length > 0) {
+        const sentenceMatchingStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length + qaJudgmentQuestions.length;
+        
+        // Split into two parts: 51-55 (A-F) and 56-60 (A-E)
+        const part1Questions = sentenceMatchingQuestions.slice(0, 5); // 51-55
+        const part2Questions = sentenceMatchingQuestions.slice(5, 10); // 56-60
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">📝 PHẦN 8: GHÉP CÂU (Sentence Matching)</div>
+                <div class="section-description">Chọn đáp án phù hợp và điền vào ô trống</div>
+            </div>
+        `;
+        
+        // PART 1: Questions 51-55 with options A-F
+        if (part1Questions.length > 0) {
+            const part1Options = {
+                'A': part1Questions[0]?.option_a_sentence || 'A',
+                'B': part1Questions[0]?.option_b_sentence || 'B',
+                'C': part1Questions[0]?.option_c_sentence || 'C',
+                'D': part1Questions[0]?.option_d_sentence || 'D',
+                'E': part1Questions[0]?.option_e_sentence || 'E',
+                'F': part1Questions[0]?.option_f_sentence || 'F'
+            };
+            
+            html += `
+                <div class="sentence-matching-part">
+                    <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 51-55</h4>
+                    <div class="sentence-options-grid">
+                        ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => `
+                            <div class="sentence-option-box">
+                                <span class="option-letter">${letter}</span>
+                                <span class="option-sentence">${part1Options[letter]}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="sentence-questions-list">
+                        ${part1Questions.map((q, idx) => {
+                            const globalIdx = sentenceMatchingStartIdx + idx;
+                            const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                            return `
+                                <div class="sentence-question-item" id="question-${globalIdx}">
+                                    <span class="question-number-box">${globalIdx + 1}.</span>
+                                    <span class="question-sentence-text">${q.question_text || ''}</span>
+                                    <input type="text" 
+                                           class="sentence-answer-input" 
+                                           data-question="${globalIdx}"
+                                           value="${savedAnswer}"
+                                           maxlength="1"
+                                           placeholder="">
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // PART 2: Questions 56-60 with options A-E
+        if (part2Questions.length > 0) {
+            const part2Options = {
+                'A': part2Questions[0]?.option_a_sentence || 'A',
+                'B': part2Questions[0]?.option_b_sentence || 'B',
+                'C': part2Questions[0]?.option_c_sentence || 'C',
+                'D': part2Questions[0]?.option_d_sentence || 'D',
+                'E': part2Questions[0]?.option_e_sentence || 'E'
+            };
+            
+            html += `
+                <div class="sentence-matching-part" style="margin-top: 40px;">
+                    <h4 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Câu 56-60</h4>
+                    <div class="sentence-options-grid">
+                        ${['A', 'B', 'C', 'D', 'E'].map(letter => `
+                            <div class="sentence-option-box">
+                                <span class="option-letter">${letter}</span>
+                                <span class="option-sentence">${part2Options[letter]}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="sentence-questions-list">
+                        ${part2Questions.map((q, idx) => {
+                            const globalIdx = sentenceMatchingStartIdx + 5 + idx;
+                            const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                            return `
+                                <div class="sentence-question-item" id="question-${globalIdx}">
+                                    <span class="question-number-box">${globalIdx + 1}.</span>
+                                    <span class="question-sentence-text">${q.question_text || ''}</span>
+                                    <input type="text" 
+                                           class="sentence-answer-input" 
+                                           data-question="${globalIdx}"
+                                           value="${savedAnswer}"
+                                           maxlength="1"
+                                           placeholder="">
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
@@ -507,6 +611,35 @@ function attachEventListeners() {
             
             // Only allow A-F
             if (answer && !['A', 'B', 'C', 'D', 'E', 'F'].includes(answer)) {
+                answer = '';
+                this.value = '';
+            } else {
+                this.value = answer;
+            }
+            
+            if (answer) {
+                saveUserAnswer(questionIdx, answer);
+            } else {
+                removeUserAnswer(questionIdx);
+            }
+            updateProgressCircles();
+            updateNavButtons();
+        });
+    });
+    
+    // Sentence matching inputs
+    document.querySelectorAll('.sentence-answer-input').forEach(input => {
+        input.addEventListener('input', function() {
+            const questionIdx = parseInt(this.dataset.question);
+            let answer = this.value.toUpperCase().trim();
+            
+            // Determine allowed letters based on question number
+            const allowedLetters = questionIdx >= 50 && questionIdx < 55 
+                ? ['A', 'B', 'C', 'D', 'E', 'F']  // Questions 51-55
+                : ['A', 'B', 'C', 'D', 'E'];       // Questions 56-60
+            
+            // Only allow specified letters
+            if (answer && !allowedLetters.includes(answer)) {
                 answer = '';
                 this.value = '';
             } else {
@@ -888,6 +1021,20 @@ function updateNavButtons() {
         const page6AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 45 && parseInt(key) < 50).length;
         
         if (page6AnsweredCount >= 5) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 7) {
+        // Page 7: Check if answered 10 sentence matching questions (50-59)
+        const page7AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 50 && parseInt(key) < 60).length;
+        
+        if (page7AnsweredCount >= 10) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -1103,6 +1250,8 @@ document.addEventListener('click', function(e) {
             hsk2CurrentPage = 5;
         } else if (hsk2CurrentPage === 5) {
             hsk2CurrentPage = 6;
+        } else if (hsk2CurrentPage === 6) {
+            hsk2CurrentPage = 7;
         }
         displayCurrentPage();
         updateProgressCircles();
@@ -1112,10 +1261,10 @@ document.addEventListener('click', function(e) {
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page6AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 45 && parseInt(key) < 50).length;
+        const page7AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 50 && parseInt(key) < 60).length;
         
-        if (page6AnsweredCount < 5) {
-            if (!confirm(`Bạn mới trả lời ${page6AnsweredCount}/5 câu phần 7.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page7AnsweredCount < 10) {
+            if (!confirm(`Bạn mới trả lời ${page7AnsweredCount}/10 câu phần 8.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -1129,7 +1278,7 @@ document.addEventListener('click', function(e) {
     
     // TEST BUTTON - XÓA SAU KHI TEST XONG
     if (e.target.id === 'btnTestNext') {
-        if (hsk2CurrentPage < 6) {
+        if (hsk2CurrentPage < 7) {
             hsk2CurrentPage++;
             displayCurrentPage();
             updateProgressCircles();
@@ -1138,7 +1287,7 @@ document.addEventListener('click', function(e) {
             window.scrollTo(0, 0);
             console.log('🔧 TEST: Jumped to page', hsk2CurrentPage);
         } else {
-            alert('Đã đến page cuối (6/6)');
+            alert('Đã đến page cuối (7/7)');
         }
     }
 });
@@ -1147,25 +1296,28 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5', 'page-6');
+        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5', 'page-6', 'page-7');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/6 - Nghe & Đọc (Câu 1-20)';
+            pageInfo.textContent = 'Phần 1/7 - Nghe & Đọc (Câu 1-20)';
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/6 - Đọc hiểu 1 (Câu 21-30)';
+            pageInfo.textContent = 'Phần 2/7 - Đọc hiểu 1 (Câu 21-30)';
             document.body.classList.add('page-2');
         } else if (hsk2CurrentPage === 3) {
-            pageInfo.textContent = 'Phần 3/6 - Đọc hiểu 2 (Câu 31-35)';
+            pageInfo.textContent = 'Phần 3/7 - Đọc hiểu 2 (Câu 31-35)';
             document.body.classList.add('page-3');
         } else if (hsk2CurrentPage === 4) {
-            pageInfo.textContent = 'Phần 4/6 - Ghép hình ảnh (Câu 36-40)';
+            pageInfo.textContent = 'Phần 4/7 - Ghép hình ảnh (Câu 36-40)';
             document.body.classList.add('page-4');
         } else if (hsk2CurrentPage === 5) {
-            pageInfo.textContent = 'Phần 5/6 - Điền từ (Câu 41-45)';
+            pageInfo.textContent = 'Phần 5/7 - Điền từ (Câu 41-45)';
             document.body.classList.add('page-5');
         } else if (hsk2CurrentPage === 6) {
-            pageInfo.textContent = 'Phần 6/6 - Đánh giá (Câu 46-50)';
+            pageInfo.textContent = 'Phần 6/7 - Đánh giá (Câu 46-50)';
             document.body.classList.add('page-6');
+        } else if (hsk2CurrentPage === 7) {
+            pageInfo.textContent = 'Phần 7/7 - Ghép câu (Câu 51-60)';
+            document.body.classList.add('page-7');
         }
     }
 }

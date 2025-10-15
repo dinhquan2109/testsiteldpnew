@@ -30,6 +30,12 @@ CREATE TABLE hsk2_questions (
     word_e TEXT,
     word_f TEXT,
     answer_text TEXT,
+    option_a_sentence TEXT,
+    option_b_sentence TEXT,
+    option_c_sentence TEXT,
+    option_d_sentence TEXT,
+    option_e_sentence TEXT,
+    option_f_sentence TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -248,6 +254,92 @@ INSERT INTO hsk2_questions (order_number, section, question_text, answer_text, c
     'true',
     'qa_judgment');
 
+-- PHẦN 8: GHÉP CÂU (Questions 51-60) - Sentence Matching
+-- Part 1: Questions 51-55 với 6 đáp án A-F
+INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, 
+    option_a_sentence, option_b_sentence, option_c_sentence, 
+    option_d_sentence, option_e_sentence, option_f_sentence, question_type) VALUES
+(51, 'sentence_matching', 'Bù kèqi, huānyíng nín xià cì zài lái', 'B',
+    'Zuò gōnggòngqìchē qù, 20 fēnzhōng jiù néng dào',
+    'Méi wèntí, nín yǒu shénme shì?',
+    'Méi guānxi, mànman lái',
+    'Jīntiān wǎnr de hěn gāoxìng, xièxie',
+    'Tā zài nǎr ne? Nǐ kànjiàn tā le ma?',
+    'Nà dǎ diànhuà gàosu tā bié qù tī zúqiú le, míngtiān zài qù',
+    'sentence_matching'),
+(52, 'sentence_matching', 'Yī ge xīngqī le, dìdi hái méi xuě huì yóuyǒng ne', 'C',
+    'Zuò gōnggòngqìchē qù, 20 fēnzhōng jiù néng dào',
+    'Méi wèntí, nín yǒu shénme shì?',
+    'Méi guānxi, mànman lái',
+    'Jīntiān wǎnr de hěn gāoxìng, xièxie',
+    'Tā zài nǎr ne? Nǐ kànjiàn tā le ma?',
+    'Nà dǎ diànhuà gàosu tā bié qù tī zúqiú le, míngtiān zài qù',
+    'sentence_matching'),
+(53, 'sentence_matching', 'Cóng zhèr dào huǒchēzhàn yuǎn ma?', 'A',
+    'Zuò gōnggòngqìchē qù, 20 fēnzhōng jiù néng dào',
+    'Méi wèntí, nín yǒu shénme shì?',
+    'Méi guānxi, mànman lái',
+    'Jīntiān wǎnr de hěn gāoxìng, xièxie',
+    'Tā zài nǎr ne? Nǐ kànjiàn tā le ma?',
+    'Nà dǎ diànhuà gàosu tā bié qù tī zúqiú le, míngtiān zài qù',
+    'sentence_matching'),
+(54, 'sentence_matching', 'Wǒ xiǎng qǐng nǐ bāng wǒ yī gè máng', 'D',
+    'Zuò gōnggòngqìchē qù, 20 fēnzhōng jiù néng dào',
+    'Méi wèntí, nín yǒu shénme shì?',
+    'Méi guānxi, mànman lái',
+    'Jīntiān wǎnr de hěn gāoxìng, xièxie',
+    'Tā zài nǎr ne? Nǐ kànjiàn tā le ma?',
+    'Nà dǎ diànhuà gàosu tā bié qù tī zúqiú le, míngtiān zài qù',
+    'sentence_matching'),
+(55, 'sentence_matching', 'Tā hái zài jiàoshì lǐ xuéxí', 'E',
+    'Zuò gōnggòngqìchē qù, 20 fēnzhōng jiù néng dào',
+    'Méi wèntí, nín yǒu shénme shì?',
+    'Méi guānxi, mànman lái',
+    'Jīntiān wǎnr de hěn gāoxìng, xièxie',
+    'Tā zài nǎr ne? Nǐ kànjiàn tā le ma?',
+    'Nà dǎ diànhuà gàosu tā bié qù tī zúqiú le, míngtiān zài qù',
+    'sentence_matching');
+
+-- Part 2: Questions 56-60 với 5 đáp án A-E  
+INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer,
+    option_a_sentence, option_b_sentence, option_c_sentence,
+    option_d_sentence, option_e_sentence, question_type) VALUES
+(56, 'sentence_matching', 'Nǐ yǒu méi yǒu kòng bāng wǒ jiǎnchá yīxià', 'C',
+    'Tài hǎo le, wǒ yào yī bēi niúnǎi',
+    'Qǐngwèn nín xiǎng hē diǎnr shénme?',
+    'Yǒu, nǐ děng yīhuìr, wǒ mǎshàng lái',
+    'Bù kèqi',
+    'Zhège dìfāng zhēn piàoliang a',
+    'sentence_matching'),
+(57, 'sentence_matching', 'Fúwùyuán, lái liǎng bēi guǒzhī', 'A',
+    'Tài hǎo le, wǒ yào yī bēi niúnǎi',
+    'Qǐngwèn nín xiǎng hē diǎnr shénme?',
+    'Yǒu, nǐ děng yīhuìr, wǒ mǎshàng lái',
+    'Bù kèqi',
+    'Zhège dìfāng zhēn piàoliang a',
+    'sentence_matching'),
+(58, 'sentence_matching', 'Xièxie nǐ sòng wǒ de lǐwù', 'D',
+    'Tài hǎo le, wǒ yào yī bēi niúnǎi',
+    'Qǐngwèn nín xiǎng hē diǎnr shénme?',
+    'Yǒu, nǐ děng yīhuìr, wǒ mǎshàng lái',
+    'Bù kèqi',
+    'Zhège dìfāng zhēn piàoliang a',
+    'sentence_matching'),
+(59, 'sentence_matching', 'Zhèr de fēngjǐng hěn měi', 'E',
+    'Tài hǎo le, wǒ yào yī bēi niúnǎi',
+    'Qǐngwèn nín xiǎng hē diǎnr shénme?',
+    'Yǒu, nǐ děng yīhuìr, wǒ mǎshàng lái',
+    'Bù kèqi',
+    'Zhège dìfāng zhēn piàoliang a',
+    'sentence_matching'),
+(60, 'sentence_matching', 'Nǐ xiǎng hē shénme?', 'B',
+    'Tài hǎo le, wǒ yào yī bēi niúnǎi',
+    'Qǐngwèn nín xiǎng hē diǎnr shénme?',
+    'Yǒu, nǐ děng yīhuìr, wǒ mǎshàng lái',
+    'Bù kèqi',
+    'Zhège dìfāng zhēn piàoliang a',
+    'sentence_matching');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
 SELECT order_number, section, correct_answer, question_type 
@@ -257,7 +349,7 @@ ORDER BY order_number;
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 50 câu hỏi
+- Tổng cộng: 60 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
 - Câu 21-30: Comprehension Part 1 (Multiple Choice A/B/C) - Đoạn văn 1
@@ -265,6 +357,8 @@ ORDER BY order_number;
 - Câu 36-40: Image Matching (Input A-F) - 6 hình ảnh + điền đáp án
 - Câu 41-45: Word Matching (Drag-Drop A-F) - 6 từ + điền vào chỗ trống
 - Câu 46-50: Q&A Judgment (True/False) - Câu hỏi + Câu trả lời, đánh giá đúng/sai
+- Câu 51-55: Sentence Matching Part 1 (Input A-F) - 6 câu + điền đáp án
+- Câu 56-60: Sentence Matching Part 2 (Input A-E) - 5 câu + điền đáp án
 
 📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
@@ -273,10 +367,12 @@ ORDER BY order_number;
 - Image Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 - Word Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 - Q&A Judgment: 'true' hoặc 'false'
+- Sentence Matching (51-55): 'A', 'B', 'C', 'D', 'E', hoặc 'F'
+- Sentence Matching (56-60): 'A', 'B', 'C', 'D', hoặc 'E'
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 100 điểm (50 câu x 2 điểm)
+- Tổng điểm: 120 điểm (60 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
 1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)

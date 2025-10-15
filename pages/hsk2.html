@@ -33,7 +33,8 @@
         .progress-row[data-page="3"],
         .progress-row[data-page="4"],
         .progress-row[data-page="5"],
-        .progress-row[data-page="6"] {
+        .progress-row[data-page="6"],
+        .progress-row[data-page="7"] {
             display: none;
         }
         
@@ -89,11 +90,25 @@
         body.page-6 .progress-row[data-page="2"],
         body.page-6 .progress-row[data-page="3"],
         body.page-6 .progress-row[data-page="4"],
-        body.page-6 .progress-row[data-page="5"] {
+        body.page-6 .progress-row[data-page="5"],
+        body.page-6 .progress-row[data-page="7"] {
             display: none;
         }
         
         body.page-6 .progress-row[data-page="6"] {
+            display: flex;
+        }
+        
+        body.page-7 .progress-row[data-page="1"],
+        body.page-7 .progress-row[data-page="2"],
+        body.page-7 .progress-row[data-page="3"],
+        body.page-7 .progress-row[data-page="4"],
+        body.page-7 .progress-row[data-page="5"],
+        body.page-7 .progress-row[data-page="6"] {
+            display: none;
+        }
+        
+        body.page-7 .progress-row[data-page="7"] {
             display: flex;
         }
         
@@ -779,6 +794,100 @@
             border-color: #f44336;
         }
         
+        /* Sentence matching section (Page 7) */
+        .sentence-matching-part {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .sentence-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .sentence-option-box {
+            display: flex;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sentence-option-box:hover {
+            border-color: #FF6B6B;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+        }
+        
+        .option-letter {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FF6B6B;
+            min-width: 25px;
+        }
+        
+        .option-sentence {
+            font-size: 15px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .sentence-questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sentence-question-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .question-number-box {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 40px;
+        }
+        
+        .question-sentence-text {
+            flex: 1;
+            font-size: 16px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .sentence-answer-input {
+            width: 60px;
+            height: 45px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        
+        .sentence-answer-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: #F1F8F4;
+        }
+        
         @media (max-width: 768px) {
             .questions-two-col {
                 grid-template-columns: 1fr;
@@ -821,6 +930,10 @@
             
             .qa-judgment-btn {
                 max-width: 100%;
+            }
+            
+            .sentence-options-grid {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -929,6 +1042,18 @@
                             <div class="circle">48</div>
                             <div class="circle">49</div>
                             <div class="circle">50</div>
+                        </div>
+                        <div class="progress-row" data-page="7">
+                            <div class="circle">51</div>
+                            <div class="circle">52</div>
+                            <div class="circle">53</div>
+                            <div class="circle">54</div>
+                            <div class="circle">55</div>
+                            <div class="circle">56</div>
+                            <div class="circle">57</div>
+                            <div class="circle">58</div>
+                            <div class="circle">59</div>
+                            <div class="circle">60</div>
                         </div>
                     </div>
                 </div>
