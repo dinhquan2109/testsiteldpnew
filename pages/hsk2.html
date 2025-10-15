@@ -491,10 +491,14 @@
         }
         
         .words-container {
+            position: sticky;
+            top: 20px;
+            z-index: 10;
             margin-bottom: 30px;
             padding: 20px;
             background: #f8f9fa;
             border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .words-grid {
@@ -675,6 +679,11 @@
             
             .word-drop-zone {
                 min-width: 100px;
+            }
+            
+            .words-container {
+                position: static;
+                box-shadow: none;
             }
         }
         
