@@ -49,7 +49,7 @@ export function displaySection(sectionNum) {
         document.getElementById('pageInfo').textContent = 'Phần 1/3 - Nghe';
         
         // Update progress circles for listening section
-        updateSectionProgressCircles(sectionQuestions.length, 1);
+        updateSectionProgressCirclesWithParams(sectionQuestions.length, 1);
         
     } else if (sectionNum === 2) {
         // SECTION 2: HSK1 = Đọc/Điền; HSK2+ = Nghe + Hình ảnh
@@ -72,7 +72,7 @@ export function displaySection(sectionNum) {
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Đọc';
             
             // Update progress circles for reading section
-            updateSectionProgressCircles(sectionQuestions.length, 2);
+            updateSectionProgressCirclesWithParams(sectionQuestions.length, 2);
         } else {
             html += `
                 <div class="section-header">
@@ -97,7 +97,7 @@ export function displaySection(sectionNum) {
             document.getElementById('pageInfo').textContent = 'Phần 2/3 - Nghe + Hình ảnh';
             
             // Update progress circles for listening+images section
-            updateSectionProgressCircles(sectionQuestions.length, 2);
+            updateSectionProgressCirclesWithParams(sectionQuestions.length, 2);
         }
         
     } else if (sectionNum === 3) {
@@ -128,7 +128,7 @@ export function displaySection(sectionNum) {
         document.getElementById('pageInfo').textContent = 'Phần 3/3 - Viết';
         
         // Update progress circles for writing section
-        updateSectionProgressCircles(sectionQuestions.length, 3);
+        updateSectionProgressCirclesWithParams(sectionQuestions.length, 3);
     }
     
     container.innerHTML = html;
@@ -482,8 +482,8 @@ function isSectionComplete() {
     return true;
 }
 
-// ===== UPDATE PROGRESS CIRCLES =====
-function updateSectionProgressCircles(totalQuestions, sectionNum) {
+// ===== UPDATE PROGRESS CIRCLES WITH PARAMETERS =====
+function updateSectionProgressCirclesWithParams(totalQuestions, sectionNum) {
     const progressCircles = document.querySelector('.progress-circles');
     if (!progressCircles) return;
     
