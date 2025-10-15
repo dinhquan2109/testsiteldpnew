@@ -409,13 +409,13 @@ function displayCurrentPage() {
                     
                     return `
                         <div class="qa-judgment-item" id="question-${globalIdx}">
-                            <div class="qa-number">★ ${globalIdx + 1}</div>
+                            <div class="qa-number">${globalIdx + 1}</div>
                             <div class="qa-content">
                                 <div class="qa-question">
-                                    <strong>Câu hỏi:</strong> ${q.question_text || ''}
+                                    ${q.question_text || ''}
                                 </div>
                                 <div class="qa-answer-given">
-                                    <strong>Câu trả lời:</strong> ${q.answer_text || ''}
+                                    ★ ${q.answer_text || ''}
                                 </div>
                                 <div class="qa-judgment-buttons">
                                     <button class="qa-judgment-btn qa-correct ${savedAnswer === 'true' ? 'selected' : ''}" 
