@@ -101,61 +101,65 @@ function displayAllQuestions() {
         </div>
     `;
     
-    // Render listening questions (1-10)
+    // Render listening questions (1-10) - 2 câu per row
+    html += '<div class="questions-two-col">';
     listeningQuestions.forEach((q, idx) => {
         const savedAnswer = hsk2UserAnswers[idx];
         html += `
-            <div class="question-item" id="question-${idx}">
+            <div class="question-item-half" id="question-${idx}">
                 <div class="question-header">${idx + 1}. ${q.question_text}</div>
-                ${q.image_url ? `<div class="question-image"><img src="${q.image_url}" alt="Question ${idx + 1}" style="max-width: 100%; border-radius: 8px;"></div>` : ''}
+                ${q.image_url ? `<div class="question-image"><img src="${q.image_url}" alt="Question ${idx + 1}" style="max-width: 100%; border-radius: 8px; margin: 10px 0;"></div>` : ''}
                 <div class="true-false-options">
-                    <button class="tf-option ${savedAnswer === 'true' ? 'selected' : ''}" data-question="${idx}" data-answer="true">
-                        ✓ Đúng
+                    <button class="tf-option tf-true ${savedAnswer === 'true' ? 'selected' : ''}" data-question="${idx}" data-answer="true">
+                        ✓
                     </button>
-                    <button class="tf-option ${savedAnswer === 'false' ? 'selected' : ''}" data-question="${idx}" data-answer="false">
-                        ✗ Sai
+                    <button class="tf-option tf-false ${savedAnswer === 'false' ? 'selected' : ''}" data-question="${idx}" data-answer="false">
+                        ✗
                     </button>
                 </div>
             </div>
         `;
     });
+    html += '</div>';
     
-    // READING SECTION (11-15)
+    // READING SECTION (11-20) - Drag & Drop
     const readingStartIdx = listeningQuestions.length;
     html += `
         <div class="section-header" style="margin-top: 40px;">
             <div class="section-title">📖 PHẦN 2: ĐỌC (Reading)</div>
-            <div class="section-description">Chọn hình ảnh (A-F) phù hợp với mỗi câu</div>
+            <div class="section-description">Kéo thả đáp án A-F vào các ô câu hỏi 11-20</div>
         </div>
-        <div class="reading-images" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-            <div class="reading-img-box"><strong>A</strong><br><img src="https://via.placeholder.com/150?text=A" style="width: 100%; border-radius: 8px;"></div>
-            <div class="reading-img-box"><strong>B</strong><br><img src="https://via.placeholder.com/150?text=B" style="width: 100%; border-radius: 8px;"></div>
-            <div class="reading-img-box"><strong>C</strong><br><img src="https://via.placeholder.com/150?text=C" style="width: 100%; border-radius: 8px;"></div>
-            <div class="reading-img-box"><strong>D</strong><br><img src="https://via.placeholder.com/150?text=D" style="width: 100%; border-radius: 8px;"></div>
-            <div class="reading-img-box"><strong>E</strong><br><img src="https://via.placeholder.com/150?text=E" style="width: 100%; border-radius: 8px;"></div>
-            <div class="reading-img-box"><strong>F</strong><br><img src="https://via.placeholder.com/150?text=F" style="width: 100%; border-radius: 8px;"></div>
-        </div>
-    `;
-    
-    // Render reading questions (11-15)
-    readingQuestions.forEach((q, idx) => {
-        const globalIdx = readingStartIdx + idx;
-        const savedAnswer = hsk2UserAnswers[globalIdx];
-        html += `
-            <div class="question-item" id="question-${globalIdx}">
-                <div class="question-header">${globalIdx + 1}. ${q.question_text}</div>
-                <div class="text-input-container">
-                    <input type="text" 
-                           class="text-input" 
-                           data-question="${globalIdx}" 
-                           value="${savedAnswer || ''}" 
-                           placeholder="Nhập A, B, C, D, E hoặc F"
-                           maxlength="1"
-                           style="text-transform: uppercase;">
+        <div class="reading-section-layout">
+            <div class="reading-images-col">
+                <h4 style="text-align: center; margin-bottom: 15px;">Hình ảnh (A-F)</h4>
+                <div class="reading-images-grid" id="readingImagesGrid">
+                    ${['A', 'B', 'C', 'D', 'E', 'F'].map(letter => `
+                        <div class="reading-image-item" draggable="true" data-answer="${letter}">
+                            <div class="image-label">${letter}</div>
+                            <img src="https://via.placeholder.com/120?text=${letter}" alt="${letter}">
+                        </div>
+                    `).join('')}
                 </div>
             </div>
-        `;
-    });
+            <div class="reading-questions-col">
+                <h4 style="text-align: center; margin-bottom: 15px;">Câu hỏi (11-20)</h4>
+                <div class="reading-questions-list">
+                    ${Array.from({length: 10}, (_, i) => {
+                        const globalIdx = readingStartIdx + i;
+                        const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                        return `
+                            <div class="reading-question-box" id="question-${globalIdx}" data-question="${globalIdx}">
+                                <div class="question-number">${globalIdx + 1}</div>
+                                <div class="drop-zone" data-question="${globalIdx}">
+                                    ${savedAnswer ? `<div class="dropped-answer" data-answer="${savedAnswer}">${savedAnswer}</div>` : '<span class="drop-placeholder">Kéo thả đáp án vào đây</span>'}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
     
     container.innerHTML = html;
     attachEventListeners();
@@ -181,25 +185,81 @@ function attachEventListeners() {
         });
     });
     
-    // Text inputs (reading)
-    document.querySelectorAll('.text-input').forEach(input => {
-        input.addEventListener('input', function() {
-            const questionIdx = parseInt(this.dataset.question);
-            const value = this.value.trim().toUpperCase();
-            if (/^[A-F]$/.test(value)) {
-                saveUserAnswer(questionIdx, value);
-            } else if (value === '') {
-                removeUserAnswer(questionIdx);
-            }
-            updateProgressCircles();
-            updateNavButtons();
-        });
-    });
+    // Drag and Drop for reading section
+    setupDragAndDrop();
     
     // Progress circles click to jump
     document.querySelectorAll('.circle').forEach((circle, idx) => {
         circle.addEventListener('click', function() {
             scrollToQuestion(idx);
+        });
+    });
+}
+
+// ===== SETUP DRAG AND DROP =====
+function setupDragAndDrop() {
+    let draggedElement = null;
+    
+    // Make image items draggable
+    document.querySelectorAll('.reading-image-item').forEach(item => {
+        item.addEventListener('dragstart', function(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', this.dataset.answer);
+        });
+        
+        item.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+        });
+    });
+    
+    // Setup drop zones
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            this.classList.add('drag-over');
+        });
+        
+        zone.addEventListener('dragleave', function() {
+            this.classList.remove('drag-over');
+        });
+        
+        zone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            const answer = e.dataTransfer.getData('text/plain');
+            const questionIdx = parseInt(this.dataset.question);
+            
+            // Remove existing answer if any
+            this.querySelectorAll('.dropped-answer').forEach(el => el.remove());
+            this.querySelectorAll('.drop-placeholder').forEach(el => el.remove());
+            
+            // Add new answer
+            const answerEl = document.createElement('div');
+            answerEl.className = 'dropped-answer';
+            answerEl.dataset.answer = answer;
+            answerEl.textContent = answer;
+            answerEl.draggable = true;
+            
+            // Allow removing by dragging out
+            answerEl.addEventListener('click', function() {
+                if (confirm('Xóa đáp án này?')) {
+                    this.remove();
+                    zone.innerHTML = '<span class="drop-placeholder">Kéo thả đáp án vào đây</span>';
+                    removeUserAnswer(questionIdx);
+                    updateProgressCircles();
+                    updateNavButtons();
+                }
+            });
+            
+            this.appendChild(answerEl);
+            
+            saveUserAnswer(questionIdx, answer);
+            updateProgressCircles();
+            updateNavButtons();
         });
     });
 }
@@ -360,7 +420,7 @@ function calculateScore() {
         
         const userAnswer = hsk2UserAnswers[idx];
         if (userAnswer && userAnswer.toLowerCase() === q.correct_answer.toLowerCase()) {
-            score += 2; // 2 points per question
+            score += 2; // 2 points per question (20 questions × 2 = 40 points)
             correct++;
         }
     });

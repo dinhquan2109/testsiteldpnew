@@ -42,22 +42,27 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 (9, 'listening', 'Nghe và chọn đúng (✓) hoặc sai (✗)', 'true', 'https://your-storage-url.com/audio/hsk2_q9.mp3', 'https://your-storage-url.com/images/hsk2_q9.jpg', 'true_false'),
 (10, 'listening', 'Nghe và chọn đúng (✓) hoặc sai (✗)', 'false', 'https://your-storage-url.com/audio/hsk2_q10.mp3', 'https://your-storage-url.com/images/hsk2_q10.jpg', 'true_false');
 
--- ===== PHẦN 2: ĐỌC (Questions 11-15) =====
--- 6 images (A-F) + 5 questions
+-- ===== PHẦN 2: ĐỌC (Questions 11-20) =====
+-- 6 images (A-F) + 10 questions
 -- Đáp án: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 
--- Question 11-15: Reading comprehension with image matching
+-- Question 11-20: Reading comprehension with image matching (drag & drop)
 INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, question_type) VALUES
 (11, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'A', 'image_matching'),
 (12, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'C', 'image_matching'),
 (13, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'E', 'image_matching'),
 (14, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'B', 'image_matching'),
-(15, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching');
+(15, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching'),
+(16, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'F', 'image_matching'),
+(17, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'A', 'image_matching'),
+(18, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'B', 'image_matching'),
+(19, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'C', 'image_matching'),
+(20, 'reading', 'Chọn hình ảnh phù hợp với câu văn', 'D', 'image_matching');
 
--- ===== PHẦN 3: VIẾT (Question 16) - OPTIONAL =====
+-- ===== PHẦN 3: VIẾT (Question 21) - OPTIONAL =====
 -- Writing essay (không tính điểm, chỉ để AI feedback)
 -- INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer, question_type) VALUES
--- (16, 'writing', 'Viết đoạn văn ngắn 50-80 từ về chủ đề "Một ngày của tôi"', '', 'essay');
+-- (21, 'writing', 'Viết đoạn văn ngắn 50-80 từ về chủ đề "Một ngày của tôi"', '', 'essay');
 
 -- ===== LƯU Ý QUAN TRỌNG =====
 -- 1. Thay thế URL audio và image bằng URL thực tế từ Supabase Storage hoặc CDN của bạn
@@ -79,8 +84,8 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
 SELECT * FROM hsk2_questions ORDER BY order_number;
 
 -- ===== KẾT QUẢ MONG ĐỢI =====
--- Tổng: 16 câu hỏi
+-- Tổng: 20 câu hỏi (hoặc 21 nếu có writing)
 -- - Questions 1-10: Listening (true/false với audio + image)
--- - Questions 11-15: Reading (chọn A/B/C/D/E/F)
--- - Question 16: Writing (essay không tính điểm)
+-- - Questions 11-20: Reading (drag & drop A/B/C/D/E/F)
+-- - Question 21: Writing (essay không tính điểm - optional)
 
