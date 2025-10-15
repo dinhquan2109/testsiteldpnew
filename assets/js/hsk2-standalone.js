@@ -124,6 +124,15 @@ function displayAllQuestions() {
     
     // READING SECTION (11-20) - Drag & Drop
     const readingStartIdx = listeningQuestions.length;
+    
+    // Create image map from reading questions (each question has correct_answer A-J and image_url)
+    const imageMap = {};
+    readingQuestions.forEach(q => {
+        if (q.correct_answer && q.image_url) {
+            imageMap[q.correct_answer] = q.image_url;
+        }
+    });
+    
     html += `
         <div class="section-header" style="margin-top: 40px;">
             <div class="section-title">📖 PHẦN 2: ĐỌC (Reading)</div>
@@ -133,12 +142,15 @@ function displayAllQuestions() {
             <div class="reading-images-col">
                 <h4 style="text-align: center; margin-bottom: 15px;">Hình ảnh (A-J)</h4>
                 <div class="reading-images-grid" id="readingImagesGrid">
-                    ${['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map(letter => `
-                        <div class="reading-image-item" draggable="true" data-answer="${letter}" id="image-${letter}">
-                            <div class="image-label">${letter}</div>
-                            <img src="https://via.placeholder.com/120?text=${letter}" alt="${letter}">
-                        </div>
-                    `).join('')}
+                    ${['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map(letter => {
+                        const imageUrl = imageMap[letter] || `https://via.placeholder.com/120?text=${letter}`;
+                        return `
+                            <div class="reading-image-item" draggable="true" data-answer="${letter}" id="image-${letter}">
+                                <div class="image-label">${letter}</div>
+                                <img src="${imageUrl}" alt="${letter}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
             </div>
             <div class="reading-questions-col">

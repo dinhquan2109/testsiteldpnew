@@ -64,10 +64,17 @@ UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/stor
 UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_q10.jpg' WHERE order_number = 10;
 
 -- ===== CẬP NHẬT URL IMAGES READING (Questions 11-20) =====
--- Lưu ý: Không cần update image_url cho reading questions vì chúng dùng placeholder
--- Nhưng nếu bạn muốn hiển thị ảnh thật, có thể update như sau:
--- UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_A.jpg' WHERE order_number = 11;
--- ... tương tự cho B-J
+-- Các ảnh này sẽ hiển thị trong grid kéo thả (A-J)
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_A.jpg' WHERE order_number = 11;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_B.jpg' WHERE order_number = 12;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_C.jpg' WHERE order_number = 13;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_D.jpg' WHERE order_number = 14;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_E.jpg' WHERE order_number = 15;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_F.jpg' WHERE order_number = 16;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_G.jpg' WHERE order_number = 17;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_H.jpg' WHERE order_number = 18;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_I.jpg' WHERE order_number = 19;
+UPDATE hsk2_questions SET image_url = 'https://YOUR_PROJECT_REF.supabase.co/storage/v1/object/public/images/hsk2_reading_J.jpg' WHERE order_number = 20;
 
 -- ===== CẬP NHẬT TEXT CÂU HỎI =====
 -- Nếu muốn thay đổi nội dung câu hỏi
