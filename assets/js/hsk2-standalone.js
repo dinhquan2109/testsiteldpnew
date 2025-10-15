@@ -392,6 +392,51 @@ function displayCurrentPage() {
         `;
     }
     
+    // PAGE 6: Q&A JUDGMENT (46-50) - Question + Answer, judge if answer is correct
+    const qaJudgmentQuestions = hsk2TestQuestions.filter(q => q.section === 'qa_judgment');
+    if (hsk2CurrentPage === 6 && qaJudgmentQuestions.length > 0) {
+        const qaJudgmentStartIdx = listeningQuestions.length + readingQuestions.length + comprehensionQuestions.length + imageMatchingQuestions.length + wordMatchingQuestions.length;
+        
+        html += `
+            <div class="section-header" style="margin-top: 40px;">
+                <div class="section-title">💬 PHẦN 7: ĐÁNH GIÁ CÂU TRẢ LỜI (Q&A Judgment)</div>
+                <div class="section-description">Đọc câu hỏi và câu trả lời, chọn câu trả lời đúng (✓) hoặc sai (✗)</div>
+            </div>
+            <div class="qa-judgment-section">
+                ${qaJudgmentQuestions.map((q, idx) => {
+                    const globalIdx = qaJudgmentStartIdx + idx;
+                    const savedAnswer = hsk2UserAnswers[globalIdx] || '';
+                    
+                    return `
+                        <div class="qa-judgment-item" id="question-${globalIdx}">
+                            <div class="qa-number">★ ${globalIdx + 1}</div>
+                            <div class="qa-content">
+                                <div class="qa-question">
+                                    <strong>Câu hỏi:</strong> ${q.question_text || ''}
+                                </div>
+                                <div class="qa-answer-given">
+                                    <strong>Câu trả lời:</strong> ${q.answer_text || ''}
+                                </div>
+                                <div class="qa-judgment-buttons">
+                                    <button class="qa-judgment-btn qa-correct ${savedAnswer === 'true' ? 'selected' : ''}" 
+                                            data-question="${globalIdx}" 
+                                            data-answer="true">
+                                        ✓ Đúng
+                                    </button>
+                                    <button class="qa-judgment-btn qa-incorrect ${savedAnswer === 'false' ? 'selected' : ''}" 
+                                            data-question="${globalIdx}" 
+                                            data-answer="false">
+                                        ✗ Sai
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+    
     container.innerHTML = html;
     attachEventListeners();
     updateProgressCircles();
@@ -427,6 +472,25 @@ function attachEventListeners() {
             questionItem.querySelectorAll('.comprehension-option').forEach(b => b.classList.remove('selected'));
             
             // Add selected to clicked option
+            this.classList.add('selected');
+            
+            saveUserAnswer(questionIdx, answer);
+            updateProgressCircles();
+            updateNavButtons();
+        });
+    });
+    
+    // Q&A Judgment buttons
+    document.querySelectorAll('.qa-judgment-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const questionIdx = parseInt(this.dataset.question);
+            const answer = this.dataset.answer;
+            
+            // Remove selected from all buttons of this question
+            const qaItem = this.closest('.qa-judgment-item');
+            qaItem.querySelectorAll('.qa-judgment-btn').forEach(b => b.classList.remove('selected'));
+            
+            // Add selected to clicked button
             this.classList.add('selected');
             
             saveUserAnswer(questionIdx, answer);
@@ -810,6 +874,20 @@ function updateNavButtons() {
         const page5AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 40 && parseInt(key) < 45).length;
         
         if (page5AnsweredCount >= 5) {
+            if (btnNext) {
+                btnNext.style.display = 'block';
+                btnNext.textContent = 'Tiếp tục →';
+            }
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+            if (btnNext) btnNext.style.display = 'none';
+            if (btnSubmit) btnSubmit.style.display = 'none';
+        }
+    } else if (hsk2CurrentPage === 6) {
+        // Page 6: Check if answered 5 Q&A judgment questions (45-49)
+        const page6AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 45 && parseInt(key) < 50).length;
+        
+        if (page6AnsweredCount >= 5) {
             if (btnSubmit) btnSubmit.style.display = 'block';
             if (btnNext) btnNext.style.display = 'none';
         } else {
@@ -1023,6 +1101,8 @@ document.addEventListener('click', function(e) {
             hsk2CurrentPage = 4;
         } else if (hsk2CurrentPage === 4) {
             hsk2CurrentPage = 5;
+        } else if (hsk2CurrentPage === 5) {
+            hsk2CurrentPage = 6;
         }
         displayCurrentPage();
         updateProgressCircles();
@@ -1032,10 +1112,10 @@ document.addEventListener('click', function(e) {
     }
     
     if (e.target.id === 'btnSubmit') {
-        const page5AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 40 && parseInt(key) < 45).length;
+        const page6AnsweredCount = Object.keys(hsk2UserAnswers).filter(key => parseInt(key) >= 45 && parseInt(key) < 50).length;
         
-        if (page5AnsweredCount < 5) {
-            if (!confirm(`Bạn mới trả lời ${page5AnsweredCount}/5 câu phần 6.\nBạn có chắc chắn muốn nộp bài?`)) {
+        if (page6AnsweredCount < 5) {
+            if (!confirm(`Bạn mới trả lời ${page6AnsweredCount}/5 câu phần 7.\nBạn có chắc chắn muốn nộp bài?`)) {
                 return;
             }
         }
@@ -1052,22 +1132,25 @@ document.addEventListener('click', function(e) {
 function updatePageInfo() {
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5');
+        document.body.classList.remove('page-2', 'page-3', 'page-4', 'page-5', 'page-6');
         
         if (hsk2CurrentPage === 1) {
-            pageInfo.textContent = 'Phần 1/5 - Nghe & Đọc (Câu 1-20)';
+            pageInfo.textContent = 'Phần 1/6 - Nghe & Đọc (Câu 1-20)';
         } else if (hsk2CurrentPage === 2) {
-            pageInfo.textContent = 'Phần 2/5 - Đọc hiểu 1 (Câu 21-30)';
+            pageInfo.textContent = 'Phần 2/6 - Đọc hiểu 1 (Câu 21-30)';
             document.body.classList.add('page-2');
         } else if (hsk2CurrentPage === 3) {
-            pageInfo.textContent = 'Phần 3/5 - Đọc hiểu 2 (Câu 31-35)';
+            pageInfo.textContent = 'Phần 3/6 - Đọc hiểu 2 (Câu 31-35)';
             document.body.classList.add('page-3');
         } else if (hsk2CurrentPage === 4) {
-            pageInfo.textContent = 'Phần 4/5 - Ghép hình ảnh (Câu 36-40)';
+            pageInfo.textContent = 'Phần 4/6 - Ghép hình ảnh (Câu 36-40)';
             document.body.classList.add('page-4');
         } else if (hsk2CurrentPage === 5) {
-            pageInfo.textContent = 'Phần 5/5 - Điền từ (Câu 41-45)';
+            pageInfo.textContent = 'Phần 5/6 - Điền từ (Câu 41-45)';
             document.body.classList.add('page-5');
+        } else if (hsk2CurrentPage === 6) {
+            pageInfo.textContent = 'Phần 6/6 - Đánh giá (Câu 46-50)';
+            document.body.classList.add('page-6');
         }
     }
 }

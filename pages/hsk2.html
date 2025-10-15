@@ -32,14 +32,16 @@
         .progress-row[data-page="2"],
         .progress-row[data-page="3"],
         .progress-row[data-page="4"],
-        .progress-row[data-page="5"] {
+        .progress-row[data-page="5"],
+        .progress-row[data-page="6"] {
             display: none;
         }
         
         body.page-2 .progress-row[data-page="1"],
         body.page-2 .progress-row[data-page="3"],
         body.page-2 .progress-row[data-page="4"],
-        body.page-2 .progress-row[data-page="5"] {
+        body.page-2 .progress-row[data-page="5"],
+        body.page-2 .progress-row[data-page="6"] {
             display: none;
         }
         
@@ -50,7 +52,8 @@
         body.page-3 .progress-row[data-page="1"],
         body.page-3 .progress-row[data-page="2"],
         body.page-3 .progress-row[data-page="4"],
-        body.page-3 .progress-row[data-page="5"] {
+        body.page-3 .progress-row[data-page="5"],
+        body.page-3 .progress-row[data-page="6"] {
             display: none;
         }
         
@@ -61,7 +64,8 @@
         body.page-4 .progress-row[data-page="1"],
         body.page-4 .progress-row[data-page="2"],
         body.page-4 .progress-row[data-page="3"],
-        body.page-4 .progress-row[data-page="5"] {
+        body.page-4 .progress-row[data-page="5"],
+        body.page-4 .progress-row[data-page="6"] {
             display: none;
         }
         
@@ -72,11 +76,24 @@
         body.page-5 .progress-row[data-page="1"],
         body.page-5 .progress-row[data-page="2"],
         body.page-5 .progress-row[data-page="3"],
-        body.page-5 .progress-row[data-page="4"] {
+        body.page-5 .progress-row[data-page="4"],
+        body.page-5 .progress-row[data-page="6"] {
             display: none;
         }
         
         body.page-5 .progress-row[data-page="5"] {
+            display: flex;
+        }
+        
+        body.page-6 .progress-row[data-page="1"],
+        body.page-6 .progress-row[data-page="2"],
+        body.page-6 .progress-row[data-page="3"],
+        body.page-6 .progress-row[data-page="4"],
+        body.page-6 .progress-row[data-page="5"] {
+            display: none;
+        }
+        
+        body.page-6 .progress-row[data-page="6"] {
             display: flex;
         }
         
@@ -650,6 +667,118 @@
             transform: scale(1.1);
         }
         
+        /* Q&A Judgment section (Page 6) */
+        .qa-judgment-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding: 20px 0;
+        }
+        
+        .qa-judgment-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .qa-judgment-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            border-color: #FF6B6B;
+        }
+        
+        .qa-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FF6B6B;
+            margin-bottom: 15px;
+        }
+        
+        .qa-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .qa-question {
+            padding: 15px;
+            background: #F0F8FF;
+            border-left: 4px solid #4A90E2;
+            border-radius: 6px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .qa-answer-given {
+            padding: 15px;
+            background: #FFF9E6;
+            border-left: 4px solid #FFB84D;
+            border-radius: 6px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .qa-judgment-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        
+        .qa-judgment-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .qa-judgment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .qa-judgment-btn.qa-correct {
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .qa-judgment-btn.qa-correct:hover {
+            background: #E8F5E9;
+        }
+        
+        .qa-judgment-btn.qa-correct.selected {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        .qa-judgment-btn.qa-incorrect {
+            color: #f44336;
+            border-color: #f44336;
+        }
+        
+        .qa-judgment-btn.qa-incorrect:hover {
+            background: #FFEBEE;
+        }
+        
+        .qa-judgment-btn.qa-incorrect.selected {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
         @media (max-width: 768px) {
             .questions-two-col {
                 grid-template-columns: 1fr;
@@ -684,6 +813,14 @@
             .words-container {
                 position: static;
                 box-shadow: none;
+            }
+            
+            .qa-judgment-buttons {
+                flex-direction: column;
+            }
+            
+            .qa-judgment-btn {
+                max-width: 100%;
             }
         }
         
@@ -785,6 +922,13 @@
                             <div class="circle">43</div>
                             <div class="circle">44</div>
                             <div class="circle">45</div>
+                        </div>
+                        <div class="progress-row" data-page="6">
+                            <div class="circle">46</div>
+                            <div class="circle">47</div>
+                            <div class="circle">48</div>
+                            <div class="circle">49</div>
+                            <div class="circle">50</div>
                         </div>
                     </div>
                 </div>

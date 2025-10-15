@@ -29,6 +29,7 @@ CREATE TABLE hsk2_questions (
     word_d TEXT,
     word_e TEXT,
     word_f TEXT,
+    answer_text TEXT,
     question_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT NOW()
 );
@@ -219,6 +220,34 @@ INSERT INTO hsk2_questions (order_number, section, question_text, correct_answer
     '大家', '知道', '手机', '旁边', '贵', '离',
     'fill_blank');
 
+-- PHẦN 7: ĐÁNH GIÁ CÂU TRẢ LỜI (Questions 46-50) - Question + Answer, judge true/false
+INSERT INTO hsk2_questions (order_number, section, question_text, answer_text, correct_answer, question_type) VALUES
+(46, 'qa_judgment', 
+    'Wǒ xiànzài zài chūzūchē shang, hěn kuài jiù dào huǒchēzhàn le. Nǐ zhǎo wǒ shénme shì?',
+    'Tā yǐjīng dào huǒchēzhàn le.',
+    'false',
+    'qa_judgment'),
+(47, 'qa_judgment',
+    'Yī nián yǒu tiān, měi tiān dōu huì yǒu gāoxìng de shì, měi tiān zhǎo yīdiǎn kuàilè.',
+    'Kuàilè jīu zài wǒmen shēnbiān.',
+    'true',
+    'qa_judgment'),
+(48, 'qa_judgment',
+    'Wǒ huì tiàowǔ, dàn tiào de bù zěnmeyàng.',
+    'Wǒ tiào de hěn hǎo.',
+    'false',
+    'qa_judgment'),
+(49, 'qa_judgment',
+    'Tāmen yǐjīng dào le, tāmen zài nǎr le.',
+    'Tāmen hái méi dào.',
+    'false',
+    'qa_judgment'),
+(50, 'qa_judgment',
+    'Xiànzài shì diǎn fēn, tāmen yǐjīng yóule fēnzhōng le.',
+    'Tāmen diǎn fēn kāishǐ yóuyǒng.',
+    'true',
+    'qa_judgment');
+
 -- ===== BƯỚC 6: VERIFY DỮ LIỆU =====
 -- Kiểm tra xem dữ liệu đã được insert đúng chưa
 SELECT order_number, section, correct_answer, question_type 
@@ -228,13 +257,14 @@ ORDER BY order_number;
 -- ===== THÔNG TIN QUAN TRỌNG =====
 /*
 📌 CẤU TRÚC BẢNG:
-- Tổng cộng: 45 câu hỏi
+- Tổng cộng: 50 câu hỏi
 - Câu 1-10: Listening (True/False) - Có audio_url và image_url
 - Câu 11-20: Reading (Image Matching) - Kéo thả từ A đến J
 - Câu 21-30: Comprehension Part 1 (Multiple Choice A/B/C) - Đoạn văn 1
 - Câu 31-35: Comprehension Part 2 (Multiple Choice A/B/C) - Đoạn văn 2
 - Câu 36-40: Image Matching (Input A-F) - 6 hình ảnh + điền đáp án
 - Câu 41-45: Word Matching (Drag-Drop A-F) - 6 từ + điền vào chỗ trống
+- Câu 46-50: Q&A Judgment (True/False) - Câu hỏi + Câu trả lời, đánh giá đúng/sai
 
 📌 ĐÁP ÁN:
 - Listening: 'true' hoặc 'false'
@@ -242,10 +272,11 @@ ORDER BY order_number;
 - Comprehension: 'A', 'B', hoặc 'C'
 - Image Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
 - Word Matching: 'A', 'B', 'C', 'D', 'E', hoặc 'F'
+- Q&A Judgment: 'true' hoặc 'false'
 
 📌 SCORING:
 - Mỗi câu: 2 điểm
-- Tổng điểm: 90 điểm (45 câu x 2 điểm)
+- Tổng điểm: 100 điểm (50 câu x 2 điểm)
 
 📌 SAU KHI CHẠY FILE NÀY:
 1. Upload audio files vào Supabase Storage bucket 'audio' (10 files)
