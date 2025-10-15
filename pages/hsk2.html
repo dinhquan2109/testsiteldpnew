@@ -113,6 +113,14 @@
             margin: 20px 0;
         }
         
+        .reading-images-col {
+            position: sticky;
+            top: 20px;
+            align-self: start;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
         .reading-images-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -351,6 +359,12 @@
             
             .reading-section-layout {
                 grid-template-columns: 1fr;
+            }
+            
+            .reading-images-col {
+                position: static;
+                max-height: none;
+                overflow-y: visible;
             }
             
             .reading-questions-list {
