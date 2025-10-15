@@ -135,7 +135,7 @@ function displayAllQuestions() {
     
     html += `
         <div class="section-header" style="margin-top: 40px;">
-            <div class="section-title">📖 PHẦN 2: ĐỌC (Reading)</div>
+            <div class="section-title">🎧 Nghe và chọn đáp án đúng</div>
             <div class="section-description">Kéo thả đáp án A-J vào các ô câu hỏi 11-20 (mỗi ảnh chỉ dùng 1 lần)</div>
         </div>
         <div class="reading-section-layout">
