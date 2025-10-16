@@ -1071,7 +1071,16 @@ function formatTime(seconds) {
 // ===== SAVE TEST RESULTS =====
 async function saveTestResults(resultData) {
     try {
-        const { error } = await supabase
+        console.log('💾 Attempting to save to Supabase...');
+        console.log('📦 Data to save:', {
+            placement_id: resultData.userId,
+            answers: resultData.answers,
+            score: resultData.score,
+            selected_level: resultData.selectedHSK,
+            answersCount: Object.keys(resultData.answers).length
+        });
+        
+        const { data, error } = await supabase
             .from('test_results')
             .insert([{
                 placement_id: resultData.userId,
@@ -1079,12 +1088,18 @@ async function saveTestResults(resultData) {
                 score: resultData.score,
                 selected_level: resultData.selectedHSK,
                 completed_at: new Date().toISOString()
-            }]);
+            }])
+            .select();
 
-        if (error) throw error;
-        return { success: true };
+        if (error) {
+            console.error('❌ Supabase error:', error);
+            throw error;
+        }
+        
+        console.log('✅ Successfully saved to Supabase:', data);
+        return { success: true, data };
     } catch (error) {
-        console.error('Error saving test results:', error);
+        console.error('❌ Error saving test results:', error);
         return { success: false, error: error.message };
     }
 }
@@ -1101,12 +1116,14 @@ function calculateScore() {
     // Phần 2: Câu 36-60 (ĐỌC HIỂU) - 100 điểm
     const pointsPerQuestionPart2 = 100 / 25; // = 4 điểm/câu
     
-    hsk2TestQuestions.forEach((q, idx) => {
+    hsk2TestQuestions.forEach((q) => {
         if (q.section === 'writing') return; // Skip writing
         
-        const userAnswer = hsk2UserAnswers[idx];
+        const questionNum = q.order_number;
+        const userAnswer = hsk2UserAnswers[questionNum];
+        
         if (userAnswer && userAnswer.toLowerCase() === q.correct_answer.toLowerCase()) {
-            if (idx < 35) {
+            if (questionNum <= 35) {
                 // Câu 1-35: NGHE HIỂU
                 score += pointsPerQuestionPart1;
                 correctPart1++;
@@ -1153,10 +1170,14 @@ async function submitTest() {
         `;
 
         console.log('🔢 Calculating score...');
+        console.log('📝 Total user answers:', Object.keys(hsk2UserAnswers).length);
+        
         const scoreData = calculateScore();
         console.log('✅ Score calculated:', scoreData);
         
         const userId = localStorage.getItem('userRowId') || Date.now();
+        console.log('👤 User ID:', userId);
+        
         const resultData = {
             userId: userId,
             answers: hsk2UserAnswers,
@@ -1164,12 +1185,21 @@ async function submitTest() {
             selectedHSK: '2'
         };
         
-        console.log('💾 Saving to Supabase...');
+        console.log('💾 Preparing to save to Supabase...');
+        console.log('📦 Result data summary:', {
+            userId: resultData.userId,
+            answersCount: Object.keys(resultData.answers).length,
+            score: resultData.score,
+            level: resultData.selectedHSK
+        });
+        
         const saveResult = await saveTestResults(resultData);
         if (saveResult.success) {
-            console.log('✅ Results saved to Supabase');
+            console.log('✅ Results saved to Supabase successfully!');
+            console.log('💚 Saved data ID:', saveResult.data);
         } else {
             console.warn('⚠️ Failed to save to Supabase:', saveResult.error);
+            alert('Cảnh báo: Không thể lưu kết quả vào database. Lỗi: ' + saveResult.error);
         }
         
         document.getElementById('testPage').classList.remove('show');
@@ -1187,7 +1217,30 @@ async function submitTest() {
 function displayResult(scoreData) {
     const fullname = localStorage.getItem('fullname') || 'Thí sinh';
     document.getElementById('resultName').textContent = fullname;
+    
+    // Display score details in console
     console.log('✅ Test completed with score:', scoreData.score, '/', scoreData.maxScore);
+    console.log('📊 Correct answers:', scoreData.correct, '/', scoreData.total);
+    console.log('📋 User answers:', hsk2UserAnswers);
+    
+    // Add score display to result page (for debugging/admin view)
+    const resultContent = document.querySelector('.result-content');
+    const scoreDisplay = document.createElement('div');
+    scoreDisplay.style.cssText = 'background: #f0f4f8; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #e2e8f0;';
+    scoreDisplay.innerHTML = `
+        <p style="margin: 5px 0; color: #2c3e50; font-size: 16px;">
+            <strong>Điểm số:</strong> ${scoreData.score}/${scoreData.maxScore}
+        </p>
+        <p style="margin: 5px 0; color: #4a5568; font-size: 14px;">
+            Số câu đúng: ${scoreData.correct}/${scoreData.total}
+        </p>
+    `;
+    
+    // Insert after the subtitle
+    const subtitle = resultContent.querySelector('p');
+    if (subtitle && subtitle.nextSibling) {
+        resultContent.insertBefore(scoreDisplay, subtitle.nextSibling);
+    }
 }
 
 // ===== INITIALIZATION =====
