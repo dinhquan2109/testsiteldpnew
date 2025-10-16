@@ -1135,17 +1135,29 @@ function calculateScore() {
         }
     });
     
-    // Round score to 2 decimal places
-    score = Math.round(score * 100) / 100;
+    // Round score to integer for database (score column is INTEGER type)
+    const scoreDecimal = Math.round(score * 100) / 100; // For display
+    const scoreInteger = Math.round(score); // For database
     
     const totalQuestions = hsk2TestQuestions.filter(q => q.section !== 'writing').length;
     const correct = correctPart1 + correctPart2;
     
-    console.log('📊 PHẦN 1 (1-35):', correctPart1, '/35 câu đúng,', Math.round(correctPart1 * pointsPerQuestionPart1 * 100) / 100, '/100 điểm');
-    console.log('📊 PHẦN 2 (36-60):', correctPart2, '/25 câu đúng,', Math.round(correctPart2 * pointsPerQuestionPart2 * 100) / 100, '/100 điểm');
-    console.log('🎯 TỔNG:', correct, '/', totalQuestions, 'câu đúng,', score, '/200 điểm');
+    const part1Score = Math.round(correctPart1 * pointsPerQuestionPart1 * 100) / 100;
+    const part2Score = Math.round(correctPart2 * pointsPerQuestionPart2 * 100) / 100;
     
-    return { score, correct, total: totalQuestions, maxScore: 200 };
+    console.log('📊 PHẦN 1 (1-35):', correctPart1, '/35 câu đúng,', part1Score, '/100 điểm');
+    console.log('📊 PHẦN 2 (36-60):', correctPart2, '/25 câu đúng,', part2Score, '/100 điểm');
+    console.log('🎯 TỔNG:', correct, '/', totalQuestions, 'câu đúng');
+    console.log('💯 Điểm thập phân:', scoreDecimal, '/200 điểm');
+    console.log('💯 Điểm làm tròn (lưu DB):', scoreInteger, '/200 điểm');
+    
+    return { 
+        score: scoreInteger,        // For database (integer)
+        scoreDecimal: scoreDecimal, // For display (decimal)
+        correct, 
+        total: totalQuestions, 
+        maxScore: 200 
+    };
 }
 
 // ===== SUBMIT TEST =====
@@ -1218,29 +1230,36 @@ function displayResult(scoreData) {
     const fullname = localStorage.getItem('fullname') || 'Thí sinh';
     document.getElementById('resultName').textContent = fullname;
     
-    // Display score details in console
+    // Display score details in console (for admin/debugging only)
     console.log('✅ Test completed with score:', scoreData.score, '/', scoreData.maxScore);
     console.log('📊 Correct answers:', scoreData.correct, '/', scoreData.total);
     console.log('📋 User answers:', hsk2UserAnswers);
     
-    // Add score display to result page (for debugging/admin view)
+    // Score display is HIDDEN from users - only admins can see in console
+    // Students will NOT see their scores on the result page
+    // Scores are saved to database for admin review
+    
+    /* HIDDEN: Score display on result page
     const resultContent = document.querySelector('.result-content');
     const scoreDisplay = document.createElement('div');
     scoreDisplay.style.cssText = 'background: #f0f4f8; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #e2e8f0;';
     scoreDisplay.innerHTML = `
-        <p style="margin: 5px 0; color: #2c3e50; font-size: 16px;">
-            <strong>Điểm số:</strong> ${scoreData.score}/${scoreData.maxScore}
+        <p style="margin: 5px 0; color: #2c3e50; font-size: 18px;">
+            <strong>Điểm số:</strong> ${scoreData.scoreDecimal || scoreData.score}/${scoreData.maxScore}
         </p>
         <p style="margin: 5px 0; color: #4a5568; font-size: 14px;">
             Số câu đúng: ${scoreData.correct}/${scoreData.total}
         </p>
+        <p style="margin: 5px 0; color: #718096; font-size: 12px; font-style: italic;">
+            (Điểm lưu vào database: ${scoreData.score}/${scoreData.maxScore})
+        </p>
     `;
     
-    // Insert after the subtitle
     const subtitle = resultContent.querySelector('p');
     if (subtitle && subtitle.nextSibling) {
         resultContent.insertBefore(scoreDisplay, subtitle.nextSibling);
     }
+    */
 }
 
 // ===== INITIALIZATION =====
