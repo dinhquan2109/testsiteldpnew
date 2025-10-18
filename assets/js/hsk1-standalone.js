@@ -464,7 +464,7 @@ async function getAIWritingScore(essay, hskLevel) {
 5) Biểu đạt & cảm xúc (表达): có cảm xúc, tự nhiên, tích cực.
 Trả về JSON thuần theo schema: {"content":0-2,"vocab":0-2,"grammar":0-2,"coherence":0-2,"expression":0-2,"total":0-10,"notes":"ngắn gọn"}. Không kèm văn bản nào ngoài JSON.`;
 
-        const GEMINI_API_KEY = 'AIzaSyA0KtdYeuXgVA33SgZHpfYZLrsJN1uouSQ';
+        const GEMINI_API_KEY = 'AIzaSyA7p63DY10aG6q8EFMhevhB3o5T13BZqF8';
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         
         const response = await fetch(apiUrl, { 
@@ -499,7 +499,7 @@ async function getAIWritingComment(essay, hskLevel) {
     try {
         const prompt = `Bạn là giáo viên tiếng Trung. Hãy viết nhận xét ngắn gọn, thân thiện (120-200 chữ), chỉ ra điểm mạnh và điểm cần cải thiện theo 5 tiêu chí: nội dung, từ vựng (HSK${hskLevel||'1'}), ngữ pháp, liên kết, biểu đạt & cảm xúc. Kết thúc bằng lời động viên. Nhận xét bằng tiếng việt nhé, phần đầu sẽ là Chào em và nói thêm 1, 2 câu gì đó khích lệ.`;
         
-        const GEMINI_API_KEY = 'AIzaSyA0KtdYeuXgVA33SgZHpfYZLrsJN1uouSQ';
+        const GEMINI_API_KEY = 'AIzaSyA7p63DY10aG6q8EFMhevhB3o5T13BZqF8';
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         
         const response = await fetch(apiUrl, { 
@@ -693,7 +693,7 @@ async function getAIFeedbackDisplay(essay) {
     `;
     
     try {
-        const GEMINI_API_KEY = 'AIzaSyA0KtdYeuXgVA33SgZHpfYZLrsJN1uouSQ';
+        const GEMINI_API_KEY = 'AIzaSyA7p63DY10aG6q8EFMhevhB3o5T13BZqF8';
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         
         const response = await fetch(apiUrl, {
